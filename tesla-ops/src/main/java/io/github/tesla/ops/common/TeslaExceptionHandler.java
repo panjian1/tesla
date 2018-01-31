@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * 
  */
 @RestControllerAdvice
-public class BDExceptionHandler {
+public class TeslaExceptionHandler {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	/**
 	 * 自定义异常
 	 */
-	@ExceptionHandler(BDException.class)
-	public CommonResponse handleBDException(BDException e) {
+	@ExceptionHandler(TeslaException.class)
+	public CommonResponse handleBDException(TeslaException e) {
 		CommonResponse r = new CommonResponse();
 		r.put("code", e.getCode());
 		r.put("msg", e.getMessage());

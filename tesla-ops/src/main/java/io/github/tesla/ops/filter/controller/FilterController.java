@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.collect.Lists;
-import io.github.tesla.ops.common.BDException;
+import io.github.tesla.ops.common.TeslaException;
 import io.github.tesla.ops.common.BaseController;
 import io.github.tesla.ops.common.CommonResponse;
 import io.github.tesla.ops.common.Log;
@@ -124,7 +124,7 @@ public class FilterController extends BaseController {
         fitlerService.save(zuulDto);
       }
     } catch (IOException e) {
-      throw new BDException("保存路由失败", e);
+      throw new TeslaException("保存路由失败", e);
     }
     return CommonResponse.ok();
   }
@@ -164,7 +164,7 @@ public class FilterController extends BaseController {
         fitlerService.update(zuulDto);
       }
     } catch (IOException e) {
-      throw new BDException("保存路由失败", e);
+      throw new TeslaException("保存路由失败", e);
     }
     return CommonResponse.ok();
   }

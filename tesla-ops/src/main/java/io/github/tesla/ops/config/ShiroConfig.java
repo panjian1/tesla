@@ -49,7 +49,7 @@ public class ShiroConfig {
   public SessionManager sessionManager() {
     DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
     Collection<SessionListener> listeners = new ArrayList<SessionListener>();
-    listeners.add(new BDSessionListener());
+    listeners.add(new TeslaSessionListener());
     sessionManager.setSessionListeners(listeners);
     sessionManager.setSessionDAO(sessionDAO());
     return sessionManager;

@@ -35,7 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.github.os72.protocjar.Protoc;
 import com.google.common.collect.ImmutableList;
-import io.github.tesla.ops.common.BDException;
+import io.github.tesla.ops.common.TeslaException;
 import io.github.tesla.ops.filter.service.ProtobufService;
 
 /**
@@ -67,7 +67,7 @@ public class ProtobufServiceImpl implements ProtobufService {
       String protoFilePath = filter.getProtoFilePath();
       return this.runProtoc(fileDirectory, protoFilePath);
     } catch (IOException e) {
-      throw new BDException(e.getMessage(), e);
+      throw new TeslaException(e.getMessage(), e);
     } finally {
       if (fileDirectory != null) {
         FileUtils.deleteQuietly(new File(fileDirectory));
@@ -82,7 +82,7 @@ public class ProtobufServiceImpl implements ProtobufService {
       filePath = this.uploadSimpleFile(inputStream, fileName);
       return this.runProtoc(null, filePath);
     } catch (IOException e) {
-      throw new BDException(e.getMessage(), e);
+      throw new TeslaException(e.getMessage(), e);
     } finally {
       if (filePath != null) {
         FileUtils.deleteQuietly(new File(filePath));
@@ -107,7 +107,7 @@ public class ProtobufServiceImpl implements ProtobufService {
       }
       return Files.readAllBytes(descriptorPath);
     } catch (IOException | InterruptedException e) {
-      throw new BDException(e.getMessage(), e);
+      throw new TeslaException(e.getMessage(), e);
     }
   }
 
