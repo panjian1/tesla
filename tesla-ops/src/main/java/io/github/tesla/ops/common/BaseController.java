@@ -1,21 +1,16 @@
 package io.github.tesla.ops.common;
 
+import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
-
-import io.github.tesla.ops.system.domain.UserDO;
-import io.github.tesla.ops.utils.ShiroUtils;
 
 @Controller
 public class BaseController {
-  public UserDO getUser() {
-    return ShiroUtils.getUser();
+
+  public static Long getUserId() {
+    return (Long) SecurityUtils.getSubject().getPrincipal();
   }
 
-  public Long getUserId() {
-    return getUser().getUserId();
-  }
-
-  public String getUsername() {
-    return getUser().getUsername();
+  public static String getUsername() {
+    return SecurityUtils.getSubject().getPrincipals().getRealmNames().iterator().next();
   }
 }

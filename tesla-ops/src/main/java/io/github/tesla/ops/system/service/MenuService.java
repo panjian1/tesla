@@ -1,7 +1,6 @@
 package io.github.tesla.ops.system.service;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -10,23 +9,22 @@ import io.github.tesla.ops.system.domain.Tree;
 
 @Service
 public interface MenuService {
-	Tree<MenuDO> getSysMenuTree(Long id);
+  Tree<MenuDO> getSysMenuTree(Long id);
 
-	List<Tree<MenuDO>> listMenuTree(Long id);
+  List<Tree<MenuDO>> listMenuTree(Long id);
 
-	Tree<MenuDO> getTree();
+  Tree<MenuDO> getTree();
 
-	Tree<MenuDO> getTree(Long id);
+  Tree<MenuDO> getTree(Long id);
 
-	List<MenuDO> list();
+  List<MenuDO> list();
 
-	int remove(Long id);
+  int remove(Long id);
 
-	int save(MenuDO menu);
+  int save(MenuDO menu);
 
-	int update(MenuDO menu);
+  int update(MenuDO menu);
 
-	MenuDO get(Long id);
+  MenuDO get(Long id);
 
-	Set<String> listPerms(Long userId);
 }

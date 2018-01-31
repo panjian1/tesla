@@ -1,14 +1,10 @@
 package io.github.tesla.ops.system.service.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -127,18 +123,6 @@ public class MenuServiceImpl implements MenuService {
     }
     Tree<MenuDO> t = BuildTree.build(trees);
     return t;
-  }
-
-  @Override
-  public Set<String> listPerms(Long userId) {
-    List<String> perms = menuMapper.listUserPerms(userId);
-    Set<String> permsSet = new HashSet<>();
-    for (String perm : perms) {
-      if (StringUtils.isNotBlank(perm)) {
-        permsSet.addAll(Arrays.asList(perm.trim().split(",")));
-      }
-    }
-    return permsSet;
   }
 
   @Override

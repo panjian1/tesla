@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import io.github.tesla.authz.domain.UserOnline;
+import io.github.tesla.authz.service.SessionService;
 import io.github.tesla.ops.common.CommonResponse;
-import io.github.tesla.ops.system.domain.UserOnline;
-import io.github.tesla.ops.system.service.SessionService;
 
 @RequestMapping("/sys/online")
 @Controller

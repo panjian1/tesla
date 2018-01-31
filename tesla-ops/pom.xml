@@ -11,10 +11,21 @@
 	<artifactId>tesla-ops</artifactId>
 	<name>tesla-ops</name>
 	<dependencies>
+		<!-- grpc -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.github.os72</groupId>
+			<artifactId>protoc-jar</artifactId>
+		</dependency>
+		<!-- shiro and oauth2 -->
+		<dependency>
+			<groupId>io.github.tesla</groupId>
+			<artifactId>tesla-authz</artifactId>
+		</dependency>
+		<!-- web -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
@@ -35,30 +46,7 @@
 			<groupId>io.github.tesla</groupId>
 			<artifactId>tesla-dao</artifactId>
 		</dependency>
-		<!--shiro -->
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-spring</artifactId>
-		</dependency>
-		<!-- shiro ehcache -->
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-ehcache</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.github.theborakompanioni</groupId>
-			<artifactId>thymeleaf-extras-shiro</artifactId>
-		</dependency>
-		<!-- utils -->
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-		</dependency>
-		<!-- ehchache -->
+		<!--cache -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-cache</artifactId>
@@ -66,15 +54,6 @@
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
-		</dependency>
-		<!-- protobbuf依赖 -->
-		<dependency>
-			<groupId>com.google.protobuf</groupId>
-			<artifactId>protobuf-java</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.github.os72</groupId>
-			<artifactId>protoc-jar</artifactId>
 		</dependency>
 		<!--commons -->
 		<dependency>
@@ -88,6 +67,10 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
 		</dependency>
 		<!-- 管理数据库初始化 -->
 		<dependency>

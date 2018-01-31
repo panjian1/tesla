@@ -1,8 +1,9 @@
-package io.github.tesla.ops.system.service.impl;
+package io.github.tesla.authz.service.impl;
 
-import io.github.tesla.ops.system.domain.UserDO;
-import io.github.tesla.ops.system.domain.UserOnline;
-import io.github.tesla.ops.system.service.SessionService;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.subject.SimplePrincipalCollection;
@@ -10,13 +11,13 @@ import org.apache.shiro.subject.support.DefaultSubjectContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import io.github.tesla.authz.domain.UserOnline;
+import io.github.tesla.authz.service.SessionService;
 
 
 @Service
 public class SessionServiceImpl implements SessionService {
+
   @Autowired
   private SessionDAO sessionDAO;
 
@@ -26,15 +27,13 @@ public class SessionServiceImpl implements SessionService {
     Collection<Session> sessions = sessionDAO.getActiveSessions();
     for (Session session : sessions) {
       UserOnline userOnline = new UserOnline();
-      UserDO userDO = new UserDO();
-      SimplePrincipalCollection principalCollection = new SimplePrincipalCollection();
       if (session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY) == null) {
         continue;
       } else {
-        principalCollection = (SimplePrincipalCollection) session
+        SimplePrincipalCollection principalCollection = (SimplePrincipalCollection) session
             .getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
-        userDO = (UserDO) principalCollection.getPrimaryPrincipal();
-        userOnline.setUsername(userDO.getUsername());
+        String userName = principalCollection.getRealmNames().iterator().next();
+        userOnline.setUsername(userName);
       }
       userOnline.setId((String) session.getId());
       userOnline.setHost(session.getHost());

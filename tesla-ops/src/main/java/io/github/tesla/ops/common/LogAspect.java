@@ -15,11 +15,9 @@ import org.springframework.stereotype.Component;
 
 import io.github.tesla.ops.system.dao.LogDao;
 import io.github.tesla.ops.system.domain.LogDO;
-import io.github.tesla.ops.system.domain.UserDO;
 import io.github.tesla.ops.utils.HttpContextUtils;
 import io.github.tesla.ops.utils.IPUtils;
 import io.github.tesla.ops.utils.JSONUtils;
-import io.github.tesla.ops.utils.ShiroUtils;
 
 @Aspect
 @Component
@@ -68,8 +66,9 @@ public class LogAspect {
     // 设置IP地址
     sysLog.setIp(IPUtils.getIpAddr(request));
     // 用户名
-    UserDO currUser = ShiroUtils.getUser();
-    if (null == currUser) {
+    Long currentUserId = BaseController.getUserId();
+    String currentUserName = BaseController.getUsername();
+    if (null == currentUserId) {
       if (null != sysLog.getParams()) {
         sysLog.setUserId(-1L);
         sysLog.setUsername(sysLog.getParams());
@@ -78,8 +77,8 @@ public class LogAspect {
         sysLog.setUsername("获取用户信息为空");
       }
     } else {
-      sysLog.setUserId(ShiroUtils.getUserId());
-      sysLog.setUsername(ShiroUtils.getUser().getUsername());
+      sysLog.setUserId(currentUserId);
+      sysLog.setUsername(currentUserName);
     }
     sysLog.setTime((int) time);
     // 系统当前时间

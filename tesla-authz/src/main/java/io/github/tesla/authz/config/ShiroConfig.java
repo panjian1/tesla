@@ -1,8 +1,11 @@
-package io.github.tesla.ops.config;
+package io.github.tesla.authz.config;
 
-import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 
-import io.github.tesla.ops.system.shiro.UserRealm;
+import javax.sql.DataSource;
+
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.SessionListener;
@@ -19,12 +22,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import io.github.tesla.authz.shiro.TeslaSessionListener;
+import io.github.tesla.authz.shiro.TeslaUserRealm;
 
 @Configuration
 public class ShiroConfig {
+
   @Bean
   public EhCacheManager getEhCacheManager() {
     EhCacheManager em = new EhCacheManager();
@@ -33,14 +37,15 @@ public class ShiroConfig {
   }
 
   @Bean
-  UserRealm userRealm(EhCacheManager cacheManager) {
-    UserRealm userRealm = new UserRealm();
+  public TeslaUserRealm userRealm(EhCacheManager cacheManager, DataSource dataSource) {
+    TeslaUserRealm userRealm = new TeslaUserRealm();
     userRealm.setCacheManager(cacheManager);
+    userRealm.setDataSource(dataSource);
     return userRealm;
   }
 
   @Bean
-  SessionDAO sessionDAO() {
+  public SessionDAO sessionDAO() {
     MemorySessionDAO sessionDAO = new MemorySessionDAO();
     return sessionDAO;
   }
@@ -56,7 +61,7 @@ public class ShiroConfig {
   }
 
   @Bean
-  SecurityManager securityManager(UserRealm userRealm) {
+  public SecurityManager securityManager(TeslaUserRealm userRealm) {
     DefaultWebSecurityManager manager = new DefaultWebSecurityManager();
     manager.setRealm(userRealm);
     manager.setCacheManager(getEhCacheManager());
@@ -65,7 +70,7 @@ public class ShiroConfig {
   }
 
   @Bean
-  ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
+  public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
     ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
     shiroFilterFactoryBean.setSecurityManager(securityManager);
     shiroFilterFactoryBean.setLoginUrl("/login");

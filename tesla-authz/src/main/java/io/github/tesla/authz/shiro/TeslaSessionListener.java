@@ -1,4 +1,4 @@
-package io.github.tesla.ops.config;
+package io.github.tesla.authz.shiro;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

@@ -20,7 +20,6 @@ import io.github.tesla.ops.system.domain.MenuDO;
 import io.github.tesla.ops.system.domain.Tree;
 import io.github.tesla.ops.system.service.MenuService;
 import io.github.tesla.ops.utils.MD5Utils;
-import io.github.tesla.ops.utils.ShiroUtils;
 
 @Controller
 public class LoginController extends BaseController {
@@ -38,8 +37,7 @@ public class LoginController extends BaseController {
   String index(Model model) {
     List<Tree<MenuDO>> menus = menuService.listMenuTree(getUserId());
     model.addAttribute("menus", menus);
-    model.addAttribute("name", getUser().getName());
-    model.addAttribute("username", getUser().getUsername());
+    model.addAttribute("username", BaseController.getUsername());
     return "index";
   }
 
@@ -65,7 +63,8 @@ public class LoginController extends BaseController {
 
   @GetMapping("/logout")
   String logout() {
-    ShiroUtils.logout();
+    Subject subject = SecurityUtils.getSubject();
+    subject.logout();
     return "redirect:/login";
   }
 

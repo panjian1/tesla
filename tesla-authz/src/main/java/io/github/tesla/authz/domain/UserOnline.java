@@ -1,11 +1,8 @@
-package io.github.tesla.ops.system.domain;
+package io.github.tesla.authz.domain;
 
 import java.util.Date;
 
-/**
- *
- *
- */
+
 public class UserOnline {
 
   /**
