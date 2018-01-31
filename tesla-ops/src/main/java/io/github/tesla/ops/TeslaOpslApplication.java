@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableTransactionManagement
-@MapperScan(value = {"io.github.tesla.ops.*.dao",
-    "com.quancheng.saluki.gateway.persistence.*.dao"})
+@MapperScan(value = {"io.github.tesla.ops.*.dao", "io.github.tesla.persistence.*.dao"})
 @SpringBootApplication
 public class TeslaOpslApplication {
   public static void main(String[] args) {

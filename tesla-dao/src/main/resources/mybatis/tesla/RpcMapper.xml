@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.quancheng.saluki.gateway.persistence.filter.dao.RpcDao">
+<mapper namespace="io.github.tesla.persistence.dao.RpcDao">
 
-	<select id="get"
-		resultType="com.quancheng.saluki.gateway.persistence.filter.domain.RpcDO">
+	<select id="get" resultType="io.github.tesla.persistence.domain.RpcDO">
 		select
 		`id`,`route_id`,`service_name`,`method_name`,`service_group`,`service_version`,`proto_context`,`input_param`,`gmt_create`,`gmt_modified`
 		from gateway_rpc
 		where route_id = #{routeId}
 	</select>
-	
-	<select id="getByService" resultType="com.quancheng.saluki.gateway.persistence.filter.domain.RpcDO">
+
+	<select id="getByService" resultType="io.github.tesla.persistence.domain.RpcDO">
 		select
 		`id`,`route_id`,`service_name`,`method_name`,`service_group`,`service_version`,`proto_context`,`input_param`,`gmt_create`,`gmt_modified`
 		from gateway_rpc
 		where
 		service_name = #{serviceName}
 		and
-		method_name = #{methodName}
+		method_name =
+		#{methodName}
 		and
 		service_group = #{group}
 		and
-		service_version = #{version}
+		service_version =
+		#{version}
 	</select>
-	
-	
-	<select id="list"
-		resultType="com.quancheng.saluki.gateway.persistence.filter.domain.RpcDO">
+
+
+	<select id="list" resultType="io.github.tesla.persistence.domain.RpcDO">
 		select
 		`id`,`route_id`,`service_name`,`method_name`,`service_group`,`service_version`,`proto_context`,`input_param`,`gmt_create`,`gmt_modified`
 		from gateway_rpc
@@ -50,8 +50,7 @@
 		</if>
 	</select>
 
-	<insert id="save"
-		parameterType="com.quancheng.saluki.gateway.persistence.filter.domain.RpcDO"
+	<insert id="save" parameterType="io.github.tesla.persistence.domain.RpcDO"
 		useGeneratedKeys="true" keyProperty="id">
 		insert into gateway_rpc
 		(
@@ -79,8 +78,7 @@
 		)
 	</insert>
 
-	<update id="update"
-		parameterType="com.quancheng.saluki.gateway.persistence.filter.domain.RpcDO">
+	<update id="update" parameterType="io.github.tesla.persistence.domain.RpcDO">
 		update gateway_rpc
 		<set>
 			<if test="serviceName != null and serviceName != ''">`service_name`=#{serviceName},</if>

@@ -28,7 +28,7 @@ import io.github.tesla.gateway.netty.transmit.DefaultHttpProxyServer;
  * @author liushiming
  * @version SalukiGateWayApplication.java, v 0.0.1 2018年1月24日 下午4:37:37 liushiming
  */
-@MapperScan(value = {"com.quancheng.saluki.gateway.persistence.*.dao"})
+@MapperScan(value = {"io.github.tesla.persistence.*.dao"})
 @SpringBootApplication(
     exclude = {ValidationAutoConfiguration.class, DataSourceAutoConfiguration.class})
 public class TeslaGateWayApplication implements CommandLineRunner {
