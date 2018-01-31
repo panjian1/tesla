@@ -1,6 +1,6 @@
 # 概述
 
-* Tesla是一个微服务API网关，类似于netflix的zuul，但是比zuul性能要好，因为不依赖于servlet的规范
+* Tesla是一个微服务API网关，类似于netflix的zuul
 
 # 功能
 
