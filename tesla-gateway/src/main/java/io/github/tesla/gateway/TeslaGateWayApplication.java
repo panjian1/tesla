@@ -13,6 +13,7 @@
  */
 package io.github.tesla.gateway;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -28,7 +29,7 @@ import io.github.tesla.gateway.netty.transmit.DefaultHttpProxyServer;
  * @author liushiming
  * @version SalukiGateWayApplication.java, v 0.0.1 2018年1月24日 下午4:37:37 liushiming
  */
-@MapperScan(value = {"io.github.tesla.persistence.*.dao"})
+@MapperScan(basePackages = {"io.github.tesla.persistence"}, annotationClass = Mapper.class)
 @SpringBootApplication(
     exclude = {ValidationAutoConfiguration.class, DataSourceAutoConfiguration.class})
 public class TeslaGateWayApplication implements CommandLineRunner {

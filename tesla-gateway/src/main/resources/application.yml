@@ -1,3 +1,8 @@
+spring:
+  application:
+    name: Tesla
+  profiles:
+    active: dev
 server:
   port: 9000
 mybatis:
@@ -8,4 +13,4 @@ saluki:
   grpc:
     registryAddress: localhost:8500
   dubbo:
-    registryAddress: zookeeper://224.0.0.0:1111
+    registryAddress: zookeeper://127.0.0.1:2181

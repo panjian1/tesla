@@ -50,6 +50,9 @@ public class GateWayProxyConfig {
     @Value("${saluki.dubbo.registryAddress}")
     private String registry;
 
+    @Value("${spring.application.name}")
+    private String applicationName;
+
     @Bean
     protected ApplicationConfig dubboApplicationConfig() {
       ApplicationConfig appConfig = new ApplicationConfig();
