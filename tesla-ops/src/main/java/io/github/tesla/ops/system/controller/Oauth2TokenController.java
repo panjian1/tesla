@@ -18,11 +18,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import io.github.tesla.authz.repository.Oauth2Dao;
 
 /**
- * client的维护
+ * 展示token，并可以删除token
  */
-public class Oauth2ClientController {
+public class Oauth2TokenController {
 
   @Autowired
   private Oauth2Dao oauth2Dao;
+
 
 }
