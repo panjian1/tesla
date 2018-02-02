@@ -22,7 +22,7 @@ import org.apache.oltu.oauth2.common.domain.client.BasicClientInfo;
  * @author liushiming
  * @version Oauth2Client.java, v 0.0.1 2018年2月2日 上午10:34:24 liushiming
  */
-public class ClientDO extends BasicClientInfo implements Serializable {
+public class AuthzClientDO extends BasicClientInfo implements Serializable {
 
   private static final long serialVersionUID = 1L;
   private Long id;
