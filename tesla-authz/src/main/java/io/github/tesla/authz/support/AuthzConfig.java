@@ -1,4 +1,4 @@
-package io.github.tesla.authz.config;
+package io.github.tesla.authz.support;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,8 +29,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import io.github.tesla.authz.repository.UserDao;
-import io.github.tesla.authz.support.TeslaSessionListener;
-import io.github.tesla.authz.support.TeslaUserRealm;
 
 @Configuration
 public class AuthzConfig {
