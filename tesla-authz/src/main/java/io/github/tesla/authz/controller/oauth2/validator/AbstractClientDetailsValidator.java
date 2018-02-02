@@ -11,9 +11,9 @@ import org.apache.oltu.oauth2.common.message.OAuthResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.github.tesla.authz.SpringContextHolder;
 import io.github.tesla.authz.domain.ClientDetails;
 import io.github.tesla.authz.service.OauthService;
-import io.github.tesla.authz.support.SpringContextHolder;
 
 
 public abstract class AbstractClientDetailsValidator {

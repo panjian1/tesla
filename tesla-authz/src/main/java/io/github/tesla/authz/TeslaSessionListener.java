@@ -1,4 +1,4 @@
-package io.github.tesla.authz.support;
+package io.github.tesla.authz;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

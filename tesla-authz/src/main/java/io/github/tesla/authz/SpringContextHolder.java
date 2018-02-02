@@ -1,4 +1,4 @@
-package io.github.tesla.authz.support;
+package io.github.tesla.authz;
 
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.ApplicationContext;
