@@ -41,7 +41,6 @@ public class CodeClientDetailsValidator extends AbstractClientDetailsValidator {
       LOG.debug("Invalid 'state', it is required, but it is empty");
       return invalidStateResponse();
     }
-
     return null;
   }
 

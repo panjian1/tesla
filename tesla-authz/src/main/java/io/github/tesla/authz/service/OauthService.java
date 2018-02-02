@@ -24,8 +24,10 @@ public class OauthService {
 
   @Autowired
   private Oauth2Dao oauthRepository;
+
   @Autowired
   private DefaultAuthenticationIdGenerator authenticationIdGenerator;
+
   @Autowired
   private OAuthIssuer oAuthIssuer;
 

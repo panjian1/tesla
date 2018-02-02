@@ -11,9 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.oltu.oauth2.common.OAuth;
 import org.apache.oltu.oauth2.common.message.OAuthResponse;
 
-/**
- * @author Shengzhao Li
- */
+
 public abstract class WebUtils {
 
 

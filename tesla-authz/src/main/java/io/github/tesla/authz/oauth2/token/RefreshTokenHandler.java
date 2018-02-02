@@ -35,7 +35,6 @@ public class RefreshTokenHandler extends AbstractOAuthTokenHandler {
     final OAuthResponse tokenResponse = createTokenResponse(accessToken, false);
     LOG.debug("'refresh_token' response: {}", tokenResponse);
     WebUtils.writeOAuthJsonResponse(response, tokenResponse);
-
   }
 
   @Override

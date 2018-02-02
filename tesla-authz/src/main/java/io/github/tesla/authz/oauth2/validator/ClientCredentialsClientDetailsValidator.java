@@ -40,7 +40,6 @@ public class ClientCredentialsClientDetailsValidator extends AbstractOauthTokenV
     if (scopes.isEmpty() || excludeScopes(scopes, clientDetails)) {
       return invalidScopeResponse();
     }
-
     return null;
   }
 

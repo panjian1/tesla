@@ -16,5 +16,4 @@ public interface OAuthTokenHandler {
   void handle(OAuthTokenxRequest tokenRequest, HttpServletResponse response)
       throws OAuthProblemException, OAuthSystemException;
 
-
 }

@@ -18,8 +18,8 @@ public abstract class AbstractOAuthTokenHandler extends OAuthHandler implements 
 
   private static final Logger LOG = LoggerFactory.getLogger(AbstractOAuthTokenHandler.class);
 
-
   protected OAuthTokenxRequest tokenRequest;
+
   protected HttpServletResponse response;
 
   @Override
@@ -27,13 +27,9 @@ public abstract class AbstractOAuthTokenHandler extends OAuthHandler implements 
       throws OAuthProblemException, OAuthSystemException {
     this.tokenRequest = tokenRequest;
     this.response = response;
-
-    // validate
     if (validateFailed()) {
       return;
     }
-
-
     handleAfterValidation();
   }
 
@@ -55,12 +51,13 @@ public abstract class AbstractOAuthTokenHandler extends OAuthHandler implements 
     return false;
   }
 
-  protected abstract AbstractClientDetailsValidator getValidator();
-
-
   protected String clientId() {
     return tokenRequest.getClientId();
   }
+
+
+  protected abstract AbstractClientDetailsValidator getValidator();
+
 
   protected abstract void handleAfterValidation()
       throws OAuthProblemException, OAuthSystemException;

@@ -16,10 +16,11 @@ import io.github.tesla.authz.oauth2.token.OAuthTokenHandleDispatcher;
 
 
 @Controller
+@RequestMapping("oauth/")
 public class OauthTokenController {
 
 
-  @RequestMapping("/accessToken")
+  @RequestMapping("token")
   public void authorize(HttpServletRequest request, HttpServletResponse response)
       throws OAuthSystemException {
     try {

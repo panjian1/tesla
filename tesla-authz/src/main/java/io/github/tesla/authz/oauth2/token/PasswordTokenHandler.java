@@ -33,11 +33,9 @@ public class PasswordTokenHandler extends AbstractOAuthTokenHandler {
 
   @Override
   public void handleAfterValidation() throws OAuthProblemException, OAuthSystemException {
-
     AccessToken accessToken = oauthService.retrievePasswordAccessToken(clientDetails(),
         tokenRequest.getScopes(), tokenRequest.getUsername());
     final OAuthResponse tokenResponse = createTokenResponse(accessToken, false);
-
     LOG.debug("'password' response: {}", tokenResponse);
     WebUtils.writeOAuthJsonResponse(response, tokenResponse);
 

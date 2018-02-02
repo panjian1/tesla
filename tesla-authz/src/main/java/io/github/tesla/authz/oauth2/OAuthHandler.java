@@ -42,7 +42,6 @@ public abstract class OAuthHandler {
             .location(tempClientDetails.getRedirectUri()).setAccessToken(accessToken.tokenId())
             .setExpiresIn(String.valueOf(accessToken.currentTokenExpiredSeconds()))
             .setTokenType(accessToken.tokenType());
-
     final String refreshToken = accessToken.refreshToken();
     if (StringUtils.isNotEmpty(refreshToken)) {
       builder.setRefreshToken(refreshToken);
