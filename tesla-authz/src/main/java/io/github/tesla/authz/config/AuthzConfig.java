@@ -6,6 +6,10 @@ import java.util.LinkedHashMap;
 
 import javax.sql.DataSource;
 
+import org.apache.oltu.oauth2.as.issuer.MD5Generator;
+import org.apache.oltu.oauth2.as.issuer.OAuthIssuer;
+import org.apache.oltu.oauth2.as.issuer.OAuthIssuerImpl;
+import org.apache.oltu.oauth2.as.issuer.ValueGenerator;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.SessionListener;
@@ -21,13 +25,21 @@ import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreato
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import io.github.tesla.authz.dao.UserDao;
 import io.github.tesla.authz.shiro.TeslaSessionListener;
 import io.github.tesla.authz.shiro.TeslaUserRealm;
 
 @Configuration
-public class ShiroConfig {
+public class AuthzConfig {
+
+
+  @Bean
+  public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+    return new JdbcTemplate(dataSource, true);
+  }
 
   @Bean
   public EhCacheManager getEhCacheManager() {
@@ -37,10 +49,10 @@ public class ShiroConfig {
   }
 
   @Bean
-  public TeslaUserRealm userRealm(EhCacheManager cacheManager, DataSource dataSource) {
-    TeslaUserRealm userRealm = new TeslaUserRealm();
+  public TeslaUserRealm userRealm(EhCacheManager cacheManager, DataSource dataSource,
+      UserDao userDao) {
+    TeslaUserRealm userRealm = new TeslaUserRealm(userDao);
     userRealm.setCacheManager(cacheManager);
-    userRealm.setDataSource(dataSource);
     return userRealm;
   }
 
@@ -85,6 +97,7 @@ public class ShiroConfig {
     filterChainDefinitionMap.put("/druid/**", "anon");
     filterChainDefinitionMap.put("/upload/**", "anon");
     filterChainDefinitionMap.put("/files/**", "anon");
+    filterChainDefinitionMap.put("/oauth/**", "anon");
     filterChainDefinitionMap.put("/logout", "logout");
     filterChainDefinitionMap.put("/", "anon");
     filterChainDefinitionMap.put("/**", "authc");
@@ -116,6 +129,17 @@ public class ShiroConfig {
         new AuthorizationAttributeSourceAdvisor();
     authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
     return authorizationAttributeSourceAdvisor;
+  }
+
+  /*** otlu oauth2 **/
+  @Bean
+  public ValueGenerator ValueGenerator() {
+    return new MD5Generator();
+  }
+
+  @Bean
+  public OAuthIssuer oAuthIssuer(ValueGenerator valueGenerator) {
+    return new OAuthIssuerImpl(valueGenerator);
   }
 
 }

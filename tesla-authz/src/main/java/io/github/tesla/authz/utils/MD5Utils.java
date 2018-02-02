@@ -1,4 +1,4 @@
-package io.github.tesla.authz.common;
+package io.github.tesla.authz.utils;
 
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
