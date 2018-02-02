@@ -33,8 +33,8 @@ public class Oauth2Dao extends AuthzRowMapper {
 
   public int saveClientDetails(final ClientDetails clientDetails) {
     final String sql =
-        " insert into oauth_client_details(client_id,client_secret,client_name, client_uri,client_icon_uri,resource_ids, scope,grant_types, "
-            + "redirect_uri,roles,access_token_validity,refresh_token_validity,description,archived,trusted) values (?,?,?, ?,?,?,?,?, ?,?, ?,? ,?,?,?)";
+        " insert into oauth_client_details(client_id,client_secret,client_name, client_uri,client_icon_uri, scope,grant_types,"
+            + "redirect_uri,access_token_validity,refresh_token_validity,description,trusted) values (?,?,?, ?,?,?,?,?, ?,?, ?,?)";
 
     return jdbcTemplate.update(sql, new PreparedStatementSetter() {
 
@@ -42,24 +42,17 @@ public class Oauth2Dao extends AuthzRowMapper {
         ps.setString(1, clientDetails.getClientId());
         ps.setString(2, clientDetails.getClientSecret());
         ps.setString(3, clientDetails.getName());
-
         ps.setString(4, clientDetails.getClientUri());
         ps.setString(5, clientDetails.getIconUri());
-        ps.setString(6, clientDetails.resourceIds());
-
-        ps.setString(7, clientDetails.scope());
-        ps.setString(8, clientDetails.grantTypes());
-        ps.setString(9, clientDetails.getRedirectUri());
-
-        ps.setString(10, clientDetails.roles());
-        ps.setInt(11,
+        ps.setString(6, clientDetails.scope());
+        ps.setString(7, clientDetails.grantTypes());
+        ps.setString(8, clientDetails.getRedirectUri());
+        ps.setInt(9,
             clientDetails.accessTokenValidity() == null ? -1 : clientDetails.accessTokenValidity());
-        ps.setInt(12, clientDetails.refreshTokenValidity() == null ? -1
+        ps.setInt(10, clientDetails.refreshTokenValidity() == null ? -1
             : clientDetails.refreshTokenValidity());
-
-        ps.setString(13, clientDetails.getDescription());
-        ps.setBoolean(14, clientDetails.archived());
-        ps.setBoolean(15, clientDetails.trusted());
+        ps.setString(11, clientDetails.getDescription());
+        ps.setBoolean(12, clientDetails.trusted());
       }
     });
   }

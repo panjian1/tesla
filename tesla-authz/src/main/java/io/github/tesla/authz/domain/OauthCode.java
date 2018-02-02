@@ -8,15 +8,14 @@ import io.github.tesla.authz.utils.DateUtils;
 public class OauthCode implements Serializable {
 
   private static final long serialVersionUID = 7861853986708936572L;
+
   private String code;
 
   private String username;
 
   private String clientId;
 
-
   private Date createTime = DateUtils.now();
-
 
   public String code() {
     return code;

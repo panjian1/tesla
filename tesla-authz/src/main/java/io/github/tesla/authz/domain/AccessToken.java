@@ -153,6 +153,10 @@ public class AccessToken implements Serializable {
     return this;
   }
 
+  public AccessToken cloneMe() {
+    return new AccessToken().username(username).clientId(clientId).tokenType(tokenType);
+  }
+
   @Override
   public String toString() {
     return "AccessToken [tokenId=" + tokenId + ", username=" + username + ", clientId=" + clientId
@@ -162,8 +166,6 @@ public class AccessToken implements Serializable {
         + createTime + "]";
   }
 
-  public AccessToken cloneMe() {
-    return new AccessToken().username(username).clientId(clientId).tokenType(tokenType);
-  }
+
 
 }

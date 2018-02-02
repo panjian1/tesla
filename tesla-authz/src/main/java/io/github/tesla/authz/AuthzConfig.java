@@ -26,13 +26,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import io.github.tesla.authz.dao.UserDao;
 
 @Configuration
 public class AuthzConfig {
-
 
   @Bean
   public JdbcTemplate jdbcTemplate(DataSource dataSource) {
@@ -140,4 +142,21 @@ public class AuthzConfig {
     return new OAuthIssuerImpl(valueGenerator);
   }
 
+
+  /*** otlu oauth2 call back url **/
+  @Configuration
+  protected static class WebMvcAutoconfig extends WebMvcConfigurerAdapter {
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+      registry.addResourceHandler("oauth2.html").//
+          addResourceLocations("classpath:/META-INF/static/");
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+      registry.addViewController("/oauth2.html").setViewName("/oauth2.html");
+    }
+
+  };
 }
