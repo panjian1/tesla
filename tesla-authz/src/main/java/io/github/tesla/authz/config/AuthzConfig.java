@@ -28,9 +28,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
-import io.github.tesla.authz.dao.UserDao;
-import io.github.tesla.authz.shiro.TeslaSessionListener;
-import io.github.tesla.authz.shiro.TeslaUserRealm;
+import io.github.tesla.authz.repository.UserDao;
+import io.github.tesla.authz.support.TeslaSessionListener;
+import io.github.tesla.authz.support.TeslaUserRealm;
 
 @Configuration
 public class AuthzConfig {

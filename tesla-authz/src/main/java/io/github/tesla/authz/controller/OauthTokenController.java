@@ -10,9 +10,9 @@ import org.apache.oltu.oauth2.common.message.OAuthResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import io.github.tesla.authz.oauth2.OAuthTokenxRequest;
-import io.github.tesla.authz.oauth2.WebUtils;
-import io.github.tesla.authz.oauth2.token.OAuthTokenHandleDispatcher;
+import io.github.tesla.authz.controller.oauth2.OAuthTokenxRequest;
+import io.github.tesla.authz.controller.oauth2.WebUtils;
+import io.github.tesla.authz.controller.oauth2.token.OAuthTokenHandleDispatcher;
 
 
 @Controller

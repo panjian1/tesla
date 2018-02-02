@@ -12,10 +12,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.github.tesla.authz.dao.Oauth2Dao;
-import io.github.tesla.authz.domain.AccessToken;
-import io.github.tesla.authz.domain.ClientDetails;
-import io.github.tesla.authz.domain.OauthCode;
+import io.github.tesla.authz.repository.Oauth2Dao;
+import io.github.tesla.authz.repository.domain.AccessToken;
+import io.github.tesla.authz.repository.domain.ClientDetails;
+import io.github.tesla.authz.repository.domain.OauthCode;
+import io.github.tesla.authz.support.DefaultAuthenticationIdGenerator;
 
 @Service
 public class OauthService {

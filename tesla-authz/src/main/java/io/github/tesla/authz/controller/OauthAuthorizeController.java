@@ -16,10 +16,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import io.github.tesla.authz.oauth2.OAuthAuthxRequest;
-import io.github.tesla.authz.oauth2.WebUtils;
-import io.github.tesla.authz.oauth2.authorize.CodeAuthorizeHandler;
-import io.github.tesla.authz.oauth2.authorize.TokenAuthorizeHandler;
+import io.github.tesla.authz.controller.oauth2.OAuthAuthxRequest;
+import io.github.tesla.authz.controller.oauth2.WebUtils;
+import io.github.tesla.authz.controller.oauth2.authorize.CodeAuthorizeHandler;
+import io.github.tesla.authz.controller.oauth2.authorize.TokenAuthorizeHandler;
 
 
 @Controller
