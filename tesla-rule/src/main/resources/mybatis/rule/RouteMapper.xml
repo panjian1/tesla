@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="io.github.tesla.persistence.dao.RouteDao">
+<mapper namespace="io.github.tesla.rule.dao.RouteDao">
 
-	<select id="get" resultType="io.github.tesla.persistence.domain.RouteDO">
+	<select id="get" resultType="io.github.tesla.rule.domain.RouteDO">
 		select
 		`id`,`from_path`,`to_hostport`,`to_path`,`service_id`,`rpc`,`gmt_create`,`gmt_modified`
 		from gateway_route
@@ -12,7 +12,7 @@
 	</select>
 
 
-	<select id="load" resultType="io.github.tesla.persistence.domain.RouteDO">
+	<select id="load" resultType="io.github.tesla.rule.domain.RouteDO">
 		select
 		`id`,`from_path`,`to_hostport`,`to_path`,`service_id`,`rpc`,`gmt_create`,`gmt_modified`
 		from gateway_route
@@ -21,7 +21,7 @@
 		concat(concat(#{value},'%'))
 	</select>
 
-	<select id="list" resultType="io.github.tesla.persistence.domain.RouteDO">
+	<select id="list" resultType="io.github.tesla.rule.domain.RouteDO">
 		select
 		`id`,`from_path`,`to_hostport`,`to_path`,`service_id`,`rpc`,`gmt_create`,`gmt_modified`
 		from gateway_route
@@ -58,7 +58,7 @@
 		</where>
 	</select>
 
-	<insert id="save" parameterType="io.github.tesla.persistence.domain.RouteDO"
+	<insert id="save" parameterType="io.github.tesla.rule.domain.RouteDO"
 		useGeneratedKeys="true" keyProperty="id">
 		<selectKey resultType="java.lang.Long" order="AFTER"
 			keyProperty="id">
@@ -86,7 +86,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="io.github.tesla.persistence.domain.RouteDO">
+	<update id="update" parameterType="io.github.tesla.rule.domain.RouteDO">
 		update gateway_route
 		<set>
 			<if test="fromPath != null and fromPath != ''"> from_path = #{fromPath} </if>

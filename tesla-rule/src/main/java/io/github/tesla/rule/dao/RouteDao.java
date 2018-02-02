@@ -11,14 +11,14 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package io.github.tesla.persistence.dao;
+package io.github.tesla.rule.dao;
 
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import io.github.tesla.persistence.domain.RouteDO;
+import io.github.tesla.rule.domain.RouteDO;
 
 /**
  * @author liushiming

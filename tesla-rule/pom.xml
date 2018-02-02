@@ -8,8 +8,8 @@
 		<artifactId>tesla</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>tesla-dao</artifactId>
-	<name>tesla-dao</name>
+	<artifactId>tesla-rule</artifactId>
+	<name>tesla-rule</name>
 
 	<dependencies>
 

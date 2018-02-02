@@ -14,7 +14,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>io.github.tesla</groupId>
-			<artifactId>tesla-dao</artifactId>
+			<artifactId>tesla-rule</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>

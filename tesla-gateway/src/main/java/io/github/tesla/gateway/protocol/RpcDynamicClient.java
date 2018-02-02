@@ -13,7 +13,7 @@
  */
 package io.github.tesla.gateway.protocol;
 
-import io.github.tesla.persistence.domain.RpcDO;
+import io.github.tesla.rule.domain.RpcDO;
 
 /**
  * @author liushiming

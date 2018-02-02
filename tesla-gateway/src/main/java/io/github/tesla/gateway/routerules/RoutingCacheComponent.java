@@ -32,10 +32,10 @@ import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalNotification;
 import com.google.common.collect.Maps;
 
-import io.github.tesla.persistence.dao.RouteDao;
-import io.github.tesla.persistence.dao.RpcDao;
-import io.github.tesla.persistence.domain.RouteDO;
-import io.github.tesla.persistence.domain.RpcDO;
+import io.github.tesla.rule.dao.RouteDao;
+import io.github.tesla.rule.dao.RpcDao;
+import io.github.tesla.rule.domain.RouteDO;
+import io.github.tesla.rule.domain.RpcDO;
 
 /**
  * @author liushiming

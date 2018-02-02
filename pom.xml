@@ -9,7 +9,7 @@
 	<modules>
 		<module>tesla-ops</module>
 		<module>tesla-gateway</module>
-		<module>tesla-dao</module>
+		<module>tesla-rule</module>
 		<module>tesla-authz</module>
 	</modules>
 	<properties>
@@ -27,7 +27,7 @@
 			</dependency>
 			<dependency>
 				<groupId>io.github.tesla</groupId>
-				<artifactId>tesla-dao</artifactId>
+				<artifactId>tesla-rule</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
