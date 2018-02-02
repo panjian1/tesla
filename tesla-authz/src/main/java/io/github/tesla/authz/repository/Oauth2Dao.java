@@ -170,5 +170,8 @@ public class Oauth2Dao extends AuthzRowMapper {
     return jdbcTemplate.query(sql, clientDetailsRowMapper);
   }
 
+  /****** admin for ops *****/
+
+
 
 }
