@@ -1,4 +1,4 @@
-package io.github.tesla.authz.repository;
+package io.github.tesla.authz.dao;
 
 import java.util.List;
 

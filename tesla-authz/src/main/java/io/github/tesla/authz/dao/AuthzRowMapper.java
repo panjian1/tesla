@@ -11,7 +11,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package io.github.tesla.authz.repository;
+package io.github.tesla.authz.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

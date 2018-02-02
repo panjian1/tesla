@@ -15,7 +15,7 @@ package io.github.tesla.ops.system.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import io.github.tesla.authz.repository.Oauth2Dao;
+import io.github.tesla.authz.dao.Oauth2Dao;
 
 /**
  * client的维护
