@@ -11,7 +11,7 @@ import io.github.tesla.authz.controller.oauth2.OAuthTokenxRequest;
 import io.github.tesla.authz.controller.oauth2.WebUtils;
 import io.github.tesla.authz.controller.oauth2.validator.AbstractClientDetailsValidator;
 import io.github.tesla.authz.controller.oauth2.validator.PasswordClientDetailsValidator;
-import io.github.tesla.authz.repository.domain.AccessToken;
+import io.github.tesla.authz.domain.AccessToken;
 
 
 public class PasswordTokenHandler extends AbstractOAuthTokenHandler {

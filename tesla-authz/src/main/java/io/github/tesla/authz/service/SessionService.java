@@ -11,7 +11,7 @@ import org.apache.shiro.subject.support.DefaultSubjectContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.github.tesla.authz.repository.domain.UserOnline;
+import io.github.tesla.authz.domain.UserOnline;
 
 
 @Service

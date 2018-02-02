@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import io.github.tesla.authz.repository.domain.Users;
+import io.github.tesla.authz.domain.Users;
 
 
 @Repository

@@ -30,8 +30,8 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 
+import io.github.tesla.authz.domain.Users;
 import io.github.tesla.authz.repository.UserDao;
-import io.github.tesla.authz.repository.domain.Users;
 
 /**
  * @author liushiming

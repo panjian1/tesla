@@ -12,10 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import io.github.tesla.authz.domain.AccessToken;
+import io.github.tesla.authz.domain.ClientDetails;
+import io.github.tesla.authz.domain.OauthCode;
 import io.github.tesla.authz.repository.Oauth2Dao;
-import io.github.tesla.authz.repository.domain.AccessToken;
-import io.github.tesla.authz.repository.domain.ClientDetails;
-import io.github.tesla.authz.repository.domain.OauthCode;
 import io.github.tesla.authz.support.DefaultAuthenticationIdGenerator;
 
 @Service
@@ -59,13 +59,10 @@ public class OauthService {
 
     OauthCode oauthCode = oauthRepository.findOauthCodeByUsernameClientId(username, clientId);
     if (oauthCode != null) {
-      // Always delete exist
       LOG.debug("OauthCode ({}) is existed, remove it and create a new one", oauthCode);
       oauthRepository.deleteOauthCode(oauthCode);
     }
-    // create a new one
     oauthCode = createOauthCode(clientDetails);
-
     return oauthCode.code();
   }
 
@@ -76,29 +73,22 @@ public class OauthService {
     String scope = OAuthUtils.encodeScopes(scopes);
     final String username = currentUsername();
     final String clientId = clientDetails.getClientId();
-
     final String authenticationId = authenticationIdGenerator.generate(clientId, username, scope);
-
     AccessToken accessToken = oauthRepository.findAccessToken(clientId, username, authenticationId);
     if (accessToken == null) {
       accessToken =
           createAndSaveAccessToken(clientDetails, includeRefreshToken, username, authenticationId);
       LOG.debug("Create a new AccessToken: {}", accessToken);
     }
-
     return accessToken;
   }
-
-  // Always return new AccessToken, exclude refreshToken
 
   public AccessToken retrieveNewAccessToken(ClientDetails clientDetails, Set<String> scopes)
       throws OAuthSystemException {
     String scope = OAuthUtils.encodeScopes(scopes);
     final String username = currentUsername();
     final String clientId = clientDetails.getClientId();
-
     final String authenticationId = authenticationIdGenerator.generate(clientId, username, scope);
-
     AccessToken accessToken = oauthRepository.findAccessToken(clientId, username, authenticationId);
     if (accessToken != null) {
       LOG.debug("Delete existed AccessToken: {}", accessToken);
@@ -106,7 +96,6 @@ public class OauthService {
     }
     accessToken = createAndSaveAccessToken(clientDetails, false, username, authenticationId);
     LOG.debug("Create a new AccessToken: {}", accessToken);
-
     return accessToken;
   }
 
@@ -123,16 +112,13 @@ public class OauthService {
     return rows > 0;
   }
 
-  // Always return new AccessToken
 
   public AccessToken retrieveAuthorizationCodeAccessToken(ClientDetails clientDetails, String code)
       throws OAuthSystemException {
     final OauthCode oauthCode = loadOauthCode(code, clientDetails);
     final String username = oauthCode.username();
     final String clientId = clientDetails.getClientId();
-
     final String authenticationId = authenticationIdGenerator.generate(clientId, username, null);
-
     AccessToken accessToken = oauthRepository.findAccessToken(clientId, username, authenticationId);
     if (accessToken != null) {
       LOG.debug("Delete existed AccessToken: {}", accessToken);
@@ -145,16 +131,13 @@ public class OauthService {
     return accessToken;
   }
 
-  // grant_type=password AccessToken
 
   public AccessToken retrievePasswordAccessToken(ClientDetails clientDetails, Set<String> scopes,
       String username) throws OAuthSystemException {
     String scope = OAuthUtils.encodeScopes(scopes);
     final String clientId = clientDetails.getClientId();
-
     final String authenticationId = authenticationIdGenerator.generate(clientId, username, scope);
     AccessToken accessToken = oauthRepository.findAccessToken(clientId, username, authenticationId);
-
     boolean needCreate = false;
     if (accessToken == null) {
       needCreate = true;
@@ -168,29 +151,22 @@ public class OauthService {
     } else {
       LOG.debug("Use existed AccessToken: {}, client_id: {}", accessToken, clientId);
     }
-
     if (needCreate) {
       accessToken = createAndSaveAccessToken(clientDetails, clientDetails.supportRefreshToken(),
           username, authenticationId);
       LOG.debug("Create a new AccessToken: {}", accessToken);
     }
-
     return accessToken;
 
   }
 
 
-  // grant_type=client_credentials
-
   public AccessToken retrieveClientCredentialsAccessToken(ClientDetails clientDetails,
       Set<String> scopes) throws OAuthSystemException {
     String scope = OAuthUtils.encodeScopes(scopes);
     final String clientId = clientDetails.getClientId();
-    // username = clientId
-
     final String authenticationId = authenticationIdGenerator.generate(clientId, clientId, scope);
     AccessToken accessToken = oauthRepository.findAccessToken(clientId, clientId, authenticationId);
-
     boolean needCreate = false;
     if (accessToken == null) {
       needCreate = true;
@@ -204,15 +180,11 @@ public class OauthService {
     } else {
       LOG.debug("Use existed AccessToken: {}, client_id: {}", accessToken, clientId);
     }
-
     if (needCreate) {
-      // Ignore refresh_token
       accessToken = createAndSaveAccessToken(clientDetails, false, clientId, authenticationId);
       LOG.debug("Create a new AccessToken: {}", accessToken);
     }
-
     return accessToken;
-
   }
 
 
@@ -221,31 +193,21 @@ public class OauthService {
     return oauthRepository.findAccessTokenByRefreshToken(refreshToken, clientId);
   }
 
-  /*
-   * Get AccessToken Generate a new AccessToken from existed(exclude token,refresh_token) Update
-   * access_token,refresh_token, expired. Save and remove old
-   */
 
   public AccessToken changeAccessTokenByRefreshToken(String refreshToken, String clientId)
       throws OAuthSystemException {
     final AccessToken oldToken = loadAccessTokenByRefreshToken(refreshToken, clientId);
-
     AccessToken newAccessToken = oldToken.cloneMe();
     LOG.debug("Create new AccessToken: {} from old AccessToken: {}", newAccessToken, oldToken);
-
     ClientDetails details = oauthRepository.findClientDetails(clientId);
     newAccessToken.updateByClientDetails(details);
-
     final String authId = authenticationIdGenerator.generate(clientId, oldToken.username(), null);
     newAccessToken.authenticationId(authId).tokenId(oAuthIssuer.accessToken())
         .refreshToken(oAuthIssuer.refreshToken());
-
     oauthRepository.deleteAccessToken(oldToken);
     LOG.debug("Delete old AccessToken: {}", oldToken);
-
     oauthRepository.saveAccessToken(newAccessToken);
     LOG.debug("Save new AccessToken: {}", newAccessToken);
-
     return newAccessToken;
   }
 

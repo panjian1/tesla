@@ -18,10 +18,10 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import io.github.tesla.authz.repository.domain.AccessToken;
-import io.github.tesla.authz.repository.domain.ClientDetails;
-import io.github.tesla.authz.repository.domain.OauthCode;
-import io.github.tesla.authz.repository.domain.Users;
+import io.github.tesla.authz.domain.AccessToken;
+import io.github.tesla.authz.domain.ClientDetails;
+import io.github.tesla.authz.domain.OauthCode;
+import io.github.tesla.authz.domain.Users;
 
 /**
  * @author liushiming

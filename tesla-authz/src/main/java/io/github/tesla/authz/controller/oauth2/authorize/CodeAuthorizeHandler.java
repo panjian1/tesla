@@ -14,7 +14,7 @@ import io.github.tesla.authz.controller.oauth2.OAuthAuthxRequest;
 import io.github.tesla.authz.controller.oauth2.WebUtils;
 import io.github.tesla.authz.controller.oauth2.validator.AbstractClientDetailsValidator;
 import io.github.tesla.authz.controller.oauth2.validator.CodeClientDetailsValidator;
-import io.github.tesla.authz.repository.domain.ClientDetails;
+import io.github.tesla.authz.domain.ClientDetails;
 
 
 public class CodeAuthorizeHandler extends AbstractAuthorizeHandler {

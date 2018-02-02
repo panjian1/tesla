@@ -10,9 +10,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
-import io.github.tesla.authz.repository.domain.AccessToken;
-import io.github.tesla.authz.repository.domain.ClientDetails;
-import io.github.tesla.authz.repository.domain.OauthCode;
+import io.github.tesla.authz.domain.AccessToken;
+import io.github.tesla.authz.domain.ClientDetails;
+import io.github.tesla.authz.domain.OauthCode;
 
 
 @Repository

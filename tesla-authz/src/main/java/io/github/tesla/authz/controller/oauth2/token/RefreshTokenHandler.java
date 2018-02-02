@@ -11,7 +11,7 @@ import io.github.tesla.authz.controller.oauth2.OAuthTokenxRequest;
 import io.github.tesla.authz.controller.oauth2.WebUtils;
 import io.github.tesla.authz.controller.oauth2.validator.AbstractClientDetailsValidator;
 import io.github.tesla.authz.controller.oauth2.validator.RefreshTokenClientDetailsValidator;
-import io.github.tesla.authz.repository.domain.AccessToken;
+import io.github.tesla.authz.domain.AccessToken;
 
 
 public class RefreshTokenHandler extends AbstractOAuthTokenHandler {

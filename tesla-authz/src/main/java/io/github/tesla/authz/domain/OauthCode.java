@@ -1,4 +1,4 @@
-package io.github.tesla.authz.repository.domain;
+package io.github.tesla.authz.domain;
 
 import java.io.Serializable;
 import java.util.Date;

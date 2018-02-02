@@ -9,8 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.github.tesla.authz.controller.oauth2.OAuthTokenxRequest;
-import io.github.tesla.authz.repository.domain.ClientDetails;
-import io.github.tesla.authz.repository.domain.OauthCode;
+import io.github.tesla.authz.domain.ClientDetails;
+import io.github.tesla.authz.domain.OauthCode;
 
 
 public class AuthorizationCodeClientDetailsValidator extends AbstractOauthTokenValidator {
