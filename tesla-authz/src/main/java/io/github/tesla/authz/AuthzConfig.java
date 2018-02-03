@@ -31,7 +31,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
-import io.github.tesla.authz.dao.UserDao;
+import io.github.tesla.authz.dao.AuthzUserDao;
 
 @Configuration
 public class AuthzConfig {
@@ -50,7 +50,7 @@ public class AuthzConfig {
 
   @Bean
   public TeslaUserRealm userRealm(EhCacheManager cacheManager, DataSource dataSource,
-      UserDao userDao) {
+      AuthzUserDao userDao) {
     TeslaUserRealm userRealm = new TeslaUserRealm(userDao);
     userRealm.setCacheManager(cacheManager);
     return userRealm;
@@ -149,13 +149,14 @@ public class AuthzConfig {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-      registry.addResourceHandler("oauth2.html").//
+      registry.addResourceHandler("/oauth/oauth2.html").//
           addResourceLocations("classpath:/META-INF/static/");
+      super.addResourceHandlers(registry);
     }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-      registry.addViewController("/oauth2.html").setViewName("/oauth2.html");
+      registry.addViewController("/oauth/oauth2.html").setViewName("/oauth/oauth2.html");
     }
 
   };

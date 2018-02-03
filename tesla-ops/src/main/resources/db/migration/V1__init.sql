@@ -266,6 +266,7 @@ CREATE TABLE `gateway_rpc` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='rpc服务映射表';
 
 
+
 DROP TABLE IF EXISTS `oauth_access_token`;
 
 CREATE TABLE `oauth_access_token` (
@@ -281,7 +282,6 @@ CREATE TABLE `oauth_access_token` (
   UNIQUE KEY `token_id` (`token_id`),
   UNIQUE KEY `refresh_token` (`refresh_token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 DROP TABLE IF EXISTS `oauth_client_details`;
 
@@ -302,6 +302,10 @@ CREATE TABLE `oauth_client_details` (
   PRIMARY KEY (`client_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+INSERT INTO `oauth_client_details` (`client_id`, `client_secret`, `client_name`, `client_uri`, `client_icon_uri`, `scope`, `grant_types`, `redirect_uri`, `access_token_validity`, `refresh_token_validity`, `description`, `create_time`, `trusted`)
+VALUES
+	('test','test','Test Client','http://www.baidu.com','http://www.baidu.com/favicon.ico','read write','authorization_code,password,refresh_token,client_credentials','http://localhost:8080/oauth/oauth2.html',-1,-1,NULL,'2018-02-03 03:52:00',0);
+
 
 DROP TABLE IF EXISTS `oauth_code`;
 
@@ -312,5 +316,6 @@ CREATE TABLE `oauth_code` (
   `client_id` varchar(255) DEFAULT NULL,
   UNIQUE KEY `code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
  

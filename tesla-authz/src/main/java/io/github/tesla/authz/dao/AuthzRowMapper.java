@@ -84,7 +84,8 @@ public abstract class AuthzRowMapper {
       Users users = new Users()//
           .userId(rs.getLong("user_id"))//
           .username(rs.getString("username"))//
-          .password(rs.getString("password"));
+          .password(rs.getString("password"))//
+          .status(rs.getInt("status"));
       return users;
     }
   }

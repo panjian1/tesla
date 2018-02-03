@@ -10,7 +10,7 @@ import io.github.tesla.authz.domain.Users;
 
 
 @Repository
-public class UserDao extends AuthzRowMapper {
+public class AuthzUserDao extends AuthzRowMapper {
 
   private static final UsersRowMapper usersRowMapper = new UsersRowMapper();
 
@@ -29,7 +29,8 @@ public class UserDao extends AuthzRowMapper {
   }
 
   public Users findByUserNamed(String userName) {
-    String sql = "select u.user_id,u.username,u.password from sys_user u where u.username = ?";
+    String sql =
+        "select u.user_id,u.username,u.password,u.status from sys_user u where u.username = ?";
     final List<Users> list = this.jdbcTemplate.query(sql, usersRowMapper, userName);
     Users user = list.isEmpty() ? null : list.get(0);
     if (user != null) {

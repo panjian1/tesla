@@ -30,7 +30,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 
-import io.github.tesla.authz.dao.UserDao;
+import io.github.tesla.authz.dao.AuthzUserDao;
 import io.github.tesla.authz.domain.Users;
 
 /**
@@ -40,9 +40,9 @@ import io.github.tesla.authz.domain.Users;
 public class TeslaUserRealm extends AuthorizingRealm {
 
 
-  private final UserDao userDao;
+  private final AuthzUserDao userDao;
 
-  public TeslaUserRealm(UserDao userDao) {
+  public TeslaUserRealm(AuthzUserDao userDao) {
     this.userDao = userDao;
   }
 
