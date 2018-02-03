@@ -22,14 +22,17 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import io.github.tesla.authz.dao.AuthzUserDao;
@@ -146,24 +149,28 @@ public class AuthzConfig {
 
   /*** otlu oauth2 call back url **/
   @Configuration
-  protected static class WebMvcAutoconfig extends WebMvcConfigurerAdapter {
+  protected static class WebMvcAutoconfig extends WebMvcConfigurerAdapter
+      implements InitializingBean {
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-      registry.addResourceHandler("/oauth/oauth2.html").//
-          addResourceLocations("classpath:/META-INF/static/");
-      super.addResourceHandlers(registry);
-    }
+    @Autowired
+    private SpringTemplateEngine springtemplateEngine;
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-      registry.addViewController("/oauth/oauth2.html").setViewName("/oauth/oauth2.html");
+      registry.addViewController("/oauth2/default.html").setViewName("/oauth2/default");
     }
 
     @Override
-    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-      configurer.enable();
+    public void afterPropertiesSet() throws Exception {
+      ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
+      resolver.setPrefix("META-INF/static");
+      resolver.setSuffix(".html");
+      resolver.setTemplateMode("HTML5");
+      resolver.setCharacterEncoding("UTF-8");
+      resolver.setCacheable(true);
+      springtemplateEngine.addTemplateResolver(resolver);
     }
+
 
   };
 }
