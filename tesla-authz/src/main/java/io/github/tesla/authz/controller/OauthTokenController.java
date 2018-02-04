@@ -7,6 +7,8 @@ import org.apache.oltu.oauth2.as.response.OAuthASResponse;
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.OAuthResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -19,6 +21,8 @@ import io.github.tesla.authz.controller.oauth2.token.OAuthTokenHandleDispatcher;
 @RequestMapping("oauth/")
 public class OauthTokenController {
 
+  private static final Logger LOG = LoggerFactory.getLogger(OauthTokenController.class);
+
 
   @RequestMapping("token")
   public void authorize(HttpServletRequest request, HttpServletResponse response)
@@ -29,6 +33,7 @@ public class OauthTokenController {
           new OAuthTokenHandleDispatcher(tokenRequest, response);
       tokenHandleDispatcher.dispatch();
     } catch (OAuthProblemException e) {
+      LOG.debug(e.getMessage(),e);
       OAuthResponse oAuthResponse = OAuthASResponse.errorResponse(HttpServletResponse.SC_FOUND)
           .location(e.getRedirectUri()).error(e).buildJSONMessage();
       WebUtils.writeOAuthJsonResponse(response, oAuthResponse);

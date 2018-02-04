@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.github.tesla.authz.controller.oauth2.OAuthTokenxRequest;
+import io.github.tesla.authz.utils.MD5Utils;
 
 
 public abstract class AbstractOauthTokenValidator extends AbstractClientDetailsValidator {
@@ -39,7 +40,8 @@ public abstract class AbstractOauthTokenValidator extends AbstractClientDetailsV
 
   protected boolean invalidUsernamePassword() {
     final String username = tokenRequest.getUsername();
-    final String password = tokenRequest.getPassword();
+    String password = tokenRequest.getPassword();
+    password = MD5Utils.encrypt(username, password);
     try {
       SecurityUtils.getSubject().login(new UsernamePasswordToken(username, password));
     } catch (Exception e) {

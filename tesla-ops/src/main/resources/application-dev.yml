@@ -1,6 +1,6 @@
 logging:
   level:
-    com.quancheng: debug
+    io.github: debug
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource

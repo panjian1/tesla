@@ -50,6 +50,7 @@ public class OauthAuthorizeController {
       }
 
     } catch (OAuthProblemException e) {
+      LOG.debug(e.getMessage(), e);
       OAuthResponse oAuthResponse = OAuthASResponse.errorResponse(HttpServletResponse.SC_FOUND)
           .location(e.getRedirectUri()).error(e).buildJSONMessage();
       WebUtils.writeOAuthJsonResponse(response, oAuthResponse);

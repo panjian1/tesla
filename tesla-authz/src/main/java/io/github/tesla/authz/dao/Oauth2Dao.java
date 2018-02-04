@@ -26,7 +26,7 @@ public class Oauth2Dao extends AuthzRowMapper {
   private JdbcTemplate jdbcTemplate;
 
   public ClientDetails findClientDetails(String clientId) {
-    final String sql = " select * from oauth_client_details where archived = 0 and client_id = ? ";
+    final String sql = " select * from oauth_client_details where client_id = ? ";
     final List<ClientDetails> list = jdbcTemplate.query(sql, clientDetailsRowMapper, clientId);
     return list.isEmpty() ? null : list.get(0);
   }
@@ -154,7 +154,7 @@ public class Oauth2Dao extends AuthzRowMapper {
 
 
   public List<ClientDetails> findClientDetailsListByClientId(String clientId) {
-    String sql = " select * from oauth_client_details where archived = 0 ";
+    String sql = " select * from oauth_client_details where 1=1 ";
     if (StringUtils.isNotEmpty(clientId)) {
       sql += " and client_id = ? order by create_time desc ";
       return jdbcTemplate.query(sql, clientDetailsRowMapper, clientId);
