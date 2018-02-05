@@ -15,9 +15,12 @@ package io.github.tesla.ops.system.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import io.github.tesla.authz.dao.Oauth2Dao;
 import io.github.tesla.authz.domain.AccessToken;
 import io.github.tesla.authz.domain.ClientDetails;
+import io.github.tesla.ops.common.CommonResponse;
 import io.github.tesla.ops.system.domain.PageDO;
 import io.github.tesla.ops.system.service.Oauth2Service;
 import io.github.tesla.ops.utils.Query;
@@ -26,10 +29,40 @@ import io.github.tesla.ops.utils.Query;
  * @author liushiming
  * @version Oauth2ServiceImpl.java, v 0.0.1 2018年2月5日 下午3:33:04 liushiming
  */
+@Service
 public class Oauth2ServiceImpl implements Oauth2Service {
 
 
   private Oauth2Dao oauth2Dao;
+
+  @Override
+  public ClientDetails get(String clientId) {
+    return oauth2Dao.findClientDetails(clientId);
+  }
+
+  @Override
+  public int save(ClientDetails client) {
+    return oauth2Dao.saveClientDetails(client);
+  }
+
+  @Override
+  public int update(ClientDetails client) {
+    oauth2Dao.delteClientDetail(client.getClientId());
+    return oauth2Dao.saveClientDetails(client);
+  }
+
+  @Override
+  public int remove(String clientId) {
+    return oauth2Dao.delteClientDetail(clientId);
+  }
+
+  @Override
+  public int batchremove(String[] ids) {
+    for (String id : ids) {
+      oauth2Dao.delteClientDetail(id);
+    }
+    return CommonResponse.SUCCESS;
+  }
 
   @Override
   public PageDO<ClientDetails> queryClientDetailsList(Query query) {
@@ -52,8 +85,9 @@ public class Oauth2ServiceImpl implements Oauth2Service {
   }
 
   @Override
-  public int invokeToken(Integer tokenId) {
+  public int invokeToken(String tokenId) {
     return oauth2Dao.deleteAccessToken(tokenId);
   }
+
 
 }

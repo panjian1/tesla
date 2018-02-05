@@ -25,12 +25,23 @@ import io.github.tesla.ops.utils.Query;
 public interface Oauth2Service {
 
 
+  ClientDetails get(String clientId);
+
+  int save(ClientDetails client);
+
+  int update(ClientDetails client);
+
+  int remove(String clientId);
+
+  int batchremove(String[] clientIds);
+
+
   PageDO<ClientDetails> queryClientDetailsList(Query query);
 
 
   PageDO<AccessToken> queryTokenList(Query query);
 
 
-  int invokeToken(Integer tokenId);
+  int invokeToken(String tokenId);
 
 }

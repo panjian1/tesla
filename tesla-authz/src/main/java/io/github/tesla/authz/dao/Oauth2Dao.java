@@ -186,12 +186,22 @@ public class Oauth2Dao extends AuthzRowMapper {
     return jdbcTemplate.query(sql, accessTokenRowMapper, start, limit);
   }
 
-  public int deleteAccessToken(final Integer tokenId) {
+  public int delteClientDetail(String clientId) {
+    final String sql = "delete from oauth_client_details where client_id = ? ";
+    return jdbcTemplate.update(sql, new PreparedStatementSetter() {
+
+      public void setValues(PreparedStatement ps) throws SQLException {
+        ps.setString(1, clientId);
+      }
+    });
+  }
+
+  public int deleteAccessToken(final String tokenId) {
     final String sql = " delete from oauth_access_token where token_id = ?";
     return jdbcTemplate.update(sql, new PreparedStatementSetter() {
 
       public void setValues(PreparedStatement ps) throws SQLException {
-        ps.setLong(1, tokenId);
+        ps.setString(1, tokenId);
       }
     });
   }
