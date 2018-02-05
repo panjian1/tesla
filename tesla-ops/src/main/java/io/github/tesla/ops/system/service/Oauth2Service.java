@@ -11,16 +11,26 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package io.github.tesla.ops.system.controller;
+package io.github.tesla.ops.system.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import io.github.tesla.authz.dao.Oauth2Dao;
+import io.github.tesla.authz.domain.AccessToken;
+import io.github.tesla.authz.domain.ClientDetails;
+import io.github.tesla.ops.system.domain.PageDO;
+import io.github.tesla.ops.utils.Query;
 
 /**
- * client的维护
+ * @author liushiming
+ * @version Oauth2Service.java, v 0.0.1 2018年2月5日 下午3:29:37 liushiming
  */
-public class Oauth2ClientController {
+public interface Oauth2Service {
 
+
+  PageDO<ClientDetails> queryClientDetailsList(Query query);
+
+
+  PageDO<AccessToken> queryTokenList(Query query);
+
+
+  int invokeToken(Integer tokenId);
 
 }

@@ -166,5 +166,34 @@ public class Oauth2Dao extends AuthzRowMapper {
   /****** admin for ops *****/
 
 
+  public Integer countClient() {
+    String sql = " select count(1) from oauth_client_details where 1=1";
+    return jdbcTemplate.queryForObject(sql, Integer.class);
+  }
+
+  public List<ClientDetails> listClient(final Integer start, final Integer limit) {
+    String sql = " select * from oauth_client_details where 1=1  limit ?,?";
+    return jdbcTemplate.query(sql, clientDetailsRowMapper, start, limit);
+  }
+
+  public Integer countToken() {
+    String sql = " select count(1) from oauth_access_token where 1=1";
+    return jdbcTemplate.queryForObject(sql, Integer.class);
+  }
+
+  public List<AccessToken> listToken(final Integer start, final Integer limit) {
+    final String sql = " select * from oauth_access_token where 1=1 limit ?,?";
+    return jdbcTemplate.query(sql, accessTokenRowMapper, start, limit);
+  }
+
+  public int deleteAccessToken(final Integer tokenId) {
+    final String sql = " delete from oauth_access_token where token_id = ?";
+    return jdbcTemplate.update(sql, new PreparedStatementSetter() {
+
+      public void setValues(PreparedStatement ps) throws SQLException {
+        ps.setLong(1, tokenId);
+      }
+    });
+  }
 
 }
