@@ -13,17 +13,10 @@
  */
 package io.github.tesla.ops.system.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import io.github.tesla.authz.dao.Oauth2Dao;
-
 /**
- * 展示token，并可以删除token
+ * client的维护
  */
-public class Oauth2TokenController {
-
-  @Autowired
-  private Oauth2Dao oauth2Dao;
+public class Oauth2Controller {
 
 
 }
