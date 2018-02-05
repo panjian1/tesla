@@ -156,7 +156,7 @@ public class AuthzConfig {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-      registry.addViewController("/oauth2/default.html").setViewName("/oauth2/default");
+      registry.addViewController("/oauth/default.html").setViewName("/oauth/default");
     }
 
     @Override
