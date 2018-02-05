@@ -62,6 +62,7 @@ CREATE TABLE `sys_menu` (
 -- ----------------------------
 INSERT INTO `sys_menu` VALUES ('1', '0', '系统管理', null, null, '0', 'fa fa-desktop', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 INSERT INTO `sys_menu` VALUES ('2', '0', '系统监控', null, null, '0', 'fa fa-video-camera', '5', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('35', '0', '授权监控', null, null, '0', 'fa fa-video-camera', '5', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 INSERT INTO `sys_menu` VALUES ('3', '0', '网关管理', null, null, '0', 'fa fa-bar-chart', '7', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 
 
@@ -72,6 +73,7 @@ INSERT INTO `sys_menu` VALUES ('4', '1', '系统菜单', 'sys/menu', 'sys:menu:m
 INSERT INTO `sys_menu` VALUES ('5', '1', '用户管理', 'sys/user', 'sys:user:user', '1', 'fa fa-user', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 INSERT INTO `sys_menu` VALUES ('6', '1', '角色管理', 'sys/role', 'sys:role:role', '1', 'fa fa-paw', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 INSERT INTO `sys_menu` VALUES ('7', '1', '部门管理', 'sys/dept', 'sys:dept:dept', '1', 'fa fa-users', '3', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+
 
 
 INSERT INTO `sys_menu` VALUES ('8', '4', '新增', '', 'sys:menu:add', '2', '', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
@@ -120,7 +122,15 @@ INSERT INTO `sys_menu` VALUES ('33', '28', '编辑', '', 'filter:route:edit', '2
 INSERT INTO `sys_menu` VALUES ('34', '28', '删除', '', 'filter:route:remove', '2', '', '3', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 
 
- 
+
+INSERT INTO `sys_menu` VALUES ('36', '35', '客户端管理', 'sys/oauth2/listClients', 'sys:oauth2:listclient', '1', 'fa fa-th-list', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('37', '35', '令牌监控', 'sys/oauth2/listTokens', 'sys:oauth2:listTokenr', '1', 'fa fa-user', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+
+INSERT INTO `sys_menu` VALUES ('38', '36', '新增', '', 'sys:oauth2:add', '2', '', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('39', '36', '批量删除', '', 'sys:oauth2:batchRemove', '2','', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('40', '36', '编辑', '', 'sys:oauth2:edit', '2', '', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('41', '36', '删除', '', 'sys:oauth2:remove', '2', '', '3', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+
 -- ----------------------------
 -- Table structure for `sys_role`
 -- ----------------------------

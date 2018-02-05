@@ -39,11 +39,23 @@ import io.github.tesla.ops.utils.Query;
 @Controller
 public class Oauth2Controller {
 
-  private String prefix = "system/oauth2";
+  private String prefix = "oauth2";
 
   @Autowired
   private Oauth2Service oauth2Service;
 
+
+  @RequiresPermissions("sys:oauth2:listToken")
+  @GetMapping()
+  String token() {
+    return prefix + "/token";
+  }
+
+  @RequiresPermissions("sys:oauth2:listclient")
+  @GetMapping()
+  String client() {
+    return prefix + "/client";
+  }
 
   @Log("添加客户端")
   @RequiresPermissions("sys:oauth2:add")
