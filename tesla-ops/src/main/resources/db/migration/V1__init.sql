@@ -205,7 +205,7 @@ INSERT INTO `sys_role_menu` VALUES ('37', '1', '37');
 INSERT INTO `sys_role_menu` VALUES ('38', '1', '38');
 INSERT INTO `sys_role_menu` VALUES ('39', '1', '39');
 INSERT INTO `sys_role_menu` VALUES ('40', '1', '40');
-INSERT INTO `sys_role_menu` VALUES ('41', '1', '42');
+INSERT INTO `sys_role_menu` VALUES ('41', '1', '41');
 -- ----------------------------
 -- Table structure for `sys_user`
 -- ----------------------------
