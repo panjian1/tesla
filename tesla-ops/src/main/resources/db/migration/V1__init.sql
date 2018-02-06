@@ -199,7 +199,13 @@ INSERT INTO `sys_role_menu` VALUES ('31', '1', '31');
 INSERT INTO `sys_role_menu` VALUES ('32', '1', '32');
 INSERT INTO `sys_role_menu` VALUES ('33', '1', '33');
 INSERT INTO `sys_role_menu` VALUES ('34', '1', '34');
-
+INSERT INTO `sys_role_menu` VALUES ('35', '1', '35');
+INSERT INTO `sys_role_menu` VALUES ('36', '1', '36');
+INSERT INTO `sys_role_menu` VALUES ('37', '1', '37');
+INSERT INTO `sys_role_menu` VALUES ('38', '1', '38');
+INSERT INTO `sys_role_menu` VALUES ('39', '1', '39');
+INSERT INTO `sys_role_menu` VALUES ('40', '1', '40');
+INSERT INTO `sys_role_menu` VALUES ('41', '1', '42');
 -- ----------------------------
 -- Table structure for `sys_user`
 -- ----------------------------
