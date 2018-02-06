@@ -52,14 +52,11 @@ public abstract class AuthzRowMapper {
       details.setClientId(rs.getString("client_id"));
       details.setClientSecret(rs.getString("client_secret"));
       details.setName(rs.getString("client_name"));
-      details.setClientUri(rs.getString("client_uri"));
-      details.setIconUri(rs.getString("client_icon_uri"));
       details.scope(rs.getString("scope"));
       details.grantTypes(rs.getString("grant_types"));
       details.setRedirectUri(rs.getString("redirect_uri"));
       details.accessTokenValidity(rs.getInt("access_token_validity"));
       details.refreshTokenValidity(rs.getInt("refresh_token_validity"));
-      details.setDescription(rs.getString("description"));
       details.createTime(rs.getTimestamp("create_time"));
       details.trusted(rs.getBoolean("trusted"));
       return details;

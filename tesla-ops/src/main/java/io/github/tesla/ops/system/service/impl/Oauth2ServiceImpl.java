@@ -15,6 +15,7 @@ package io.github.tesla.ops.system.service.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.github.tesla.authz.dao.Oauth2Dao;
@@ -32,7 +33,7 @@ import io.github.tesla.ops.utils.Query;
 @Service
 public class Oauth2ServiceImpl implements Oauth2Service {
 
-
+  @Autowired
   private Oauth2Dao oauth2Dao;
 
   @Override

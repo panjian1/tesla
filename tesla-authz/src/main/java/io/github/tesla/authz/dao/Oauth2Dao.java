@@ -33,8 +33,8 @@ public class Oauth2Dao extends AuthzRowMapper {
 
   public int saveClientDetails(final ClientDetails clientDetails) {
     final String sql =
-        " insert into oauth_client_details(client_id,client_secret,client_name, client_uri,client_icon_uri, scope,grant_types,"
-            + "redirect_uri,access_token_validity,refresh_token_validity,description,trusted) values (?,?,?, ?,?,?,?,?, ?,?, ?,?)";
+        " insert into oauth_client_details(client_id,client_secret,client_name, scope,grant_types,"
+            + "redirect_uri,access_token_validity,refresh_token_validity,trusted) values (?,?,?,?,?,?,?,?,?)";
 
     return jdbcTemplate.update(sql, new PreparedStatementSetter() {
 
@@ -42,17 +42,14 @@ public class Oauth2Dao extends AuthzRowMapper {
         ps.setString(1, clientDetails.getClientId());
         ps.setString(2, clientDetails.getClientSecret());
         ps.setString(3, clientDetails.getName());
-        ps.setString(4, clientDetails.getClientUri());
-        ps.setString(5, clientDetails.getIconUri());
-        ps.setString(6, clientDetails.scope());
-        ps.setString(7, clientDetails.grantTypes());
-        ps.setString(8, clientDetails.getRedirectUri());
-        ps.setInt(9,
+        ps.setString(4, clientDetails.scope());
+        ps.setString(5, clientDetails.grantTypes());
+        ps.setString(6, clientDetails.getRedirectUri());
+        ps.setInt(7,
             clientDetails.accessTokenValidity() == null ? -1 : clientDetails.accessTokenValidity());
-        ps.setInt(10, clientDetails.refreshTokenValidity() == null ? -1
+        ps.setInt(8, clientDetails.refreshTokenValidity() == null ? -1
             : clientDetails.refreshTokenValidity());
-        ps.setString(11, clientDetails.getDescription());
-        ps.setBoolean(12, clientDetails.trusted());
+        ps.setBoolean(9, clientDetails.trusted());
       }
     });
   }

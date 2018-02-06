@@ -123,8 +123,8 @@ INSERT INTO `sys_menu` VALUES ('34', '28', '删除', '', 'filter:route:remove', 
 
 
 
-INSERT INTO `sys_menu` VALUES ('36', '35', '客户端管理', 'sys/oauth2/listClients', 'sys:oauth2:listclient', '1', 'fa fa-th-list', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('37', '35', '令牌监控', 'sys/oauth2/listTokens', 'sys:oauth2:listTokenr', '1', 'fa fa-user', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('36', '35', '客户端管理', 'sys/oauth2/client', 'sys:oauth2:listclient', '1', 'fa fa-th-list', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('37', '35', '令牌监控', 'sys/oauth2/token', 'sys:oauth2:listTokenr', '1', 'fa fa-user', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 
 INSERT INTO `sys_menu` VALUES ('38', '36', '新增', '', 'sys:oauth2:add', '2', '', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 INSERT INTO `sys_menu` VALUES ('39', '36', '批量删除', '', 'sys:oauth2:batchRemove', '2','', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
@@ -305,8 +305,6 @@ CREATE TABLE `oauth_client_details` (
   `client_id` varchar(255) NOT NULL,
   `client_secret` varchar(255) DEFAULT NULL,
   `client_name` varchar(255) DEFAULT NULL,
-  `client_uri` varchar(255) DEFAULT NULL,
-  `client_icon_uri` varchar(255) DEFAULT NULL,
   `scope` varchar(255) DEFAULT NULL,
   `grant_types` varchar(255) DEFAULT NULL,
   `redirect_uri` varchar(255) DEFAULT NULL,
@@ -318,9 +316,9 @@ CREATE TABLE `oauth_client_details` (
   PRIMARY KEY (`client_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `oauth_client_details` (`client_id`, `client_secret`, `client_name`, `client_uri`, `client_icon_uri`, `scope`, `grant_types`, `redirect_uri`, `access_token_validity`, `refresh_token_validity`, `description`, `create_time`, `trusted`)
+INSERT INTO `oauth_client_details` (`client_id`, `client_secret`, `client_name`, `scope`, `grant_types`, `redirect_uri`, `access_token_validity`, `refresh_token_validity`, `description`, `create_time`, `trusted`)
 VALUES
-	('test','test','Test Client','http://www.baidu.com','http://www.baidu.com/favicon.ico','read write','authorization_code,password,refresh_token,client_credentials','http://localhost:8080/oauth/oauth2.html',-1,-1,NULL,'2018-02-03 03:52:00',0);
+	('test','test','Test Client','read write','authorization_code,password,refresh_token,client_credentials','http://localhost:8080/oauth/oauth2.html',-1,-1,NULL,'2018-02-03 03:52:00',0);
 
 
 DROP TABLE IF EXISTS `oauth_code`;

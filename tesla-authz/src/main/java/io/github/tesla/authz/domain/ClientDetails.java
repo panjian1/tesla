@@ -30,6 +30,54 @@ public class ClientDetails extends BasicClientInfo {
   private Date createTime = DateUtils.now();
 
 
+  public String getScope() {
+    return scope;
+  }
+
+  public void setScope(String scope) {
+    this.scope = scope;
+  }
+
+  public String getGrantTypes() {
+    return grantTypes;
+  }
+
+  public void setGrantTypes(String grantTypes) {
+    this.grantTypes = grantTypes;
+  }
+
+  public Integer getAccessTokenValidity() {
+    return accessTokenValidity;
+  }
+
+  public void setAccessTokenValidity(Integer accessTokenValidity) {
+    this.accessTokenValidity = accessTokenValidity;
+  }
+
+  public Integer getRefreshTokenValidity() {
+    return refreshTokenValidity;
+  }
+
+  public void setRefreshTokenValidity(Integer refreshTokenValidity) {
+    this.refreshTokenValidity = refreshTokenValidity;
+  }
+
+  public boolean isTrusted() {
+    return trusted;
+  }
+
+  public void setTrusted(boolean trusted) {
+    this.trusted = trusted;
+  }
+
+  public Date getCreateTime() {
+    return createTime;
+  }
+
+  public void setCreateTime(Date createTime) {
+    this.createTime = createTime;
+  }
+
   public String scope() {
     return scope;
   }

@@ -122,7 +122,7 @@ public class Oauth2Controller {
   }
 
   @ResponseBody
-  @GetMapping("/listClients")
+  @GetMapping("/listClient")
   @RequiresPermissions("sys:oauth2:listclient")
   PageDO<ClientDetails> listClients(@RequestParam Map<String, Object> params) {
     Query query = new Query(params);
@@ -131,7 +131,7 @@ public class Oauth2Controller {
   }
 
   @ResponseBody
-  @GetMapping("/listTokens")
+  @GetMapping("/listToken")
   @RequiresPermissions("sys:oauth2:listToken")
   PageDO<AccessToken> listTokens(@RequestParam Map<String, Object> params) {
     Query query = new Query(params);
