@@ -46,13 +46,13 @@ public class Oauth2Controller {
 
 
   @RequiresPermissions("sys:oauth2:listToken")
-  @GetMapping()
+  @GetMapping("/token")
   String token() {
     return prefix + "/token";
   }
 
   @RequiresPermissions("sys:oauth2:listclient")
-  @GetMapping()
+  @GetMapping("/client")
   String client() {
     return prefix + "/client";
   }
