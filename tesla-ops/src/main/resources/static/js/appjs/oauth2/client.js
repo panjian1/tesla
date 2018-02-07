@@ -99,10 +99,10 @@ function reLoad() {
 function add() {
 	layer.open({
 		type : 2,
-		title : '添加路由',
+		title : '添加Oauth2客户端',
 		maxmin : true,
 		shadeClose : true,
-		area : [ '1300px', '700px' ],
+		area : [ '1100px', '500px' ],
 		content : prefix + '/add'
 	});
 }
@@ -131,15 +131,15 @@ function remove(id) {
 function edit(id) {
 	layer.open({
 		type : 2,
-		title : '路由修改',
+		title : '修改Oauth2客户端',
 		maxmin : true,
 		shadeClose : true,
-		area : [ '1300px', '700px' ],
+		area : [ '800px', '400px' ],
 		content : prefix + '/edit/' + id
 	});
 }
 function batchRemove() {
-	var rows = $('#routeTable').bootstrapTable('getSelections'); // 返回所有选择的行，当没有选择的记录时，返回一个空数组
+	var rows = $('#oauth2Table').bootstrapTable('getSelections'); // 返回所有选择的行，当没有选择的记录时，返回一个空数组
 	if (rows.length == 0) {
 		layer.msg("请选择要删除的数据");
 		return;
