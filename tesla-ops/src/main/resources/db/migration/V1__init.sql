@@ -310,7 +310,6 @@ CREATE TABLE `oauth_client_details` (
   `redirect_uri` varchar(255) DEFAULT NULL,
   `access_token_validity` int(11) DEFAULT '-1',
   `refresh_token_validity` int(11) DEFAULT '-1',
-  `description` varchar(4096) DEFAULT NULL,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `trusted` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`client_id`)

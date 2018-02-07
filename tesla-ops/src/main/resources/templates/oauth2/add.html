@@ -29,6 +29,13 @@
 								</div>
 							</div>
 							<div class="form-group">
+								<label class="col-sm-2 control-label" for="redirectUri">授权成功重定向URL</label>
+								<div class="col-sm-10">
+									<input class="form-control" id="redirectUri" name="redirectUri"
+										type="text" placeholder="redirectUri" />
+								</div>
+							</div>
+							<div class="form-group">
 								<label for="scope" class="col-sm-2 control-label">权限范围</label>
 								<div class="col-sm-4">
 									<select id="scope" name="scope" class="form-control"
@@ -57,7 +64,7 @@
 								</div>
 								<label class="col-sm-2 control-label" for="refreshTokenValidity">RefreshToken有效时长</label>
 								<div class="col-sm-4">
-									<input id="toPath" name="refreshTokenValidity"
+									<input id="refreshTokenValidity" name="refreshTokenValidity"
 										class="form-control" type="text"
 										placeholder="refreshTokenValidity" />
 								</div>
@@ -85,12 +92,6 @@
 		</div>
 	</div>
 	<div th:include="include::footer"></div>
-	<script>
-		$(document).ready(function() {
-			$('#scope').multiselect();
-			$('#grantTypes').multiselect();
-		});
-	</script>
 	<script type="text/javascript" src="/js/appjs/oauth2/add.js"></script>
 </body>
 </html>
