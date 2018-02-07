@@ -31,7 +31,7 @@ function load() {
 								},
 								{
 									field : 'clientId',
-									title : '客户端序号'
+									title : 'Id'
 								},
 								{
 									field : 'name',
@@ -55,15 +55,24 @@ function load() {
 								},
 								{
 									field : 'accessTokenValidity',
-									title : 'AccessToken有效时长'
+									title : 'Access有效时长',
+									resetWidth : 100
 								},
 								{
 									field : 'refreshTokenValidity',
-									title : 'RefreshToken有效时长'
+									title : 'Refresh有效时长',
+									resetWidth : 100
 								},
 								{
 									field : 'trusted',
-									title : '是否信任'
+									title : '信任',
+									formatter : function(value, row, index) {
+										if (value) {
+											return "是";
+										} else {
+											return "否"
+										}
+									}
 								},
 								{
 									title : '操作',
