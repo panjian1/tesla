@@ -3400,6 +3400,9 @@ nav.page-tabs .page-tabs-content {
     overflow: hidden;
 }
 /* TABLES */
+.table {
+	table-layout:fixed;
+}
 .table-bordered {
     border: 1px solid #EBEBEB;
 }

@@ -55,11 +55,11 @@ function load() {
 								},
 								{
 									field : 'accessTokenValidity',
-									title : 'Access有效时长'
+									title : 'AccessToken有效时长'
 								},
 								{
 									field : 'refreshTokenValidity',
-									title : 'Refresh有效时长'
+									title : 'RefreshToken有效时长'
 								},
 								{
 									field : 'trusted',
