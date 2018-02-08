@@ -82,10 +82,10 @@ function load() {
 										var e = '<a class="btn btn-primary btn-sm '
 												+ s_edit_h
 												+ '" href="#" mce_href="#" title="编辑" onclick="edit(\''
-												+ row.routeId
+												+ row.clientId
 												+ '\')"><i class="fa fa-edit"></i></a> ';
 										var d = '<a class="btn btn-warning btn-sm" href="#" title="删除"  mce_href="#" onclick="remove(\''
-												+ row.routeId
+												+ row.clientId
 												+ '\')"><i class="fa fa-remove"></i></a> ';
 										return e + d;
 									}
@@ -134,7 +134,7 @@ function edit(id) {
 		title : '修改Oauth2客户端',
 		maxmin : true,
 		shadeClose : true,
-		area : [ '800px', '400px' ],
+		area : [ '1100px', '500px' ],
 		content : prefix + '/edit/' + id
 	});
 }

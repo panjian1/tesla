@@ -32,8 +32,8 @@
 									<div class="col-sm-4">
 										<select id="rpc" name="rpc" th:value="${route.rpc}"
 											class="form-control">
-											<option value="0" th:if="${route.rpc ==false}">否</option>
-											<option value="1" th:if="${route.rpc ==true}">是</option>
+											<option value="0" th:selected="${route.rpc ==false}">否</option>
+											<option value="1" th:selected="${route.rpc ==true}">是</option>
 										</select>
 									</div>
 								</div>
