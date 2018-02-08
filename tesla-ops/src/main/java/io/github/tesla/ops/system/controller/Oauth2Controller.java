@@ -140,5 +140,16 @@ public class Oauth2Controller {
   }
 
 
+  @RequiresPermissions("sys:oauth2:batchRemove")
+  @Log("批量清除Token")
+  @PostMapping("/batchRevoke")
+  @ResponseBody
+  CommonResponse bachRevoke(@RequestParam("ids[]") String[] ids) {
+    int r = oauth2Service.batchremove(ids);
+    if (r > 0) {
+      return CommonResponse.ok();
+    }
+    return CommonResponse.error();
+  }
 
 }

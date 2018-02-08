@@ -124,7 +124,7 @@ INSERT INTO `sys_menu` VALUES ('34', '28', '删除', '', 'filter:route:remove', 
 
 
 INSERT INTO `sys_menu` VALUES ('36', '35', '客户端管理', 'sys/oauth2/client', 'sys:oauth2:listclient', '1', 'fa fa-th-list', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('37', '35', '令牌监控', 'sys/oauth2/token', 'sys:oauth2:listTokenr', '1', 'fa fa-user', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('37', '35', '令牌监控', 'sys/oauth2/token', 'sys:oauth2:listToken', '1', 'fa fa-user', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 
 INSERT INTO `sys_menu` VALUES ('38', '36', '新增', '', 'sys:oauth2:add', '2', '', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 INSERT INTO `sys_menu` VALUES ('39', '36', '批量删除', '', 'sys:oauth2:batchRemove', '2','', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');

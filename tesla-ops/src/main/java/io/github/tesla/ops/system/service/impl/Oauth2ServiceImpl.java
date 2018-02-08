@@ -86,8 +86,11 @@ public class Oauth2ServiceImpl implements Oauth2Service {
   }
 
   @Override
-  public int invokeToken(String tokenId) {
-    return oauth2Dao.deleteAccessToken(tokenId);
+  public int invokeToken(String[] tokenIds) {
+    for (String tokenId : tokenIds) {
+      oauth2Dao.deleteAccessToken(tokenId);
+    }
+    return CommonResponse.SUCCESS;
   }
 
 

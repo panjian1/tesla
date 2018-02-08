@@ -42,6 +42,6 @@ public interface Oauth2Service {
   PageDO<AccessToken> queryTokenList(Query query);
 
 
-  int invokeToken(String tokenId);
+  int invokeToken(String[] tokenIds);
 
 }
