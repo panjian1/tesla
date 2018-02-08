@@ -149,7 +149,7 @@ function batchRemove() {
 	}, function() {
 		var ids = new Array();
 		$.each(rows, function(i, row) {
-			ids[i] = row['roleId'];
+			ids[i] = row['clientId'];
 		});
 		console.log(ids);
 		$.ajax({

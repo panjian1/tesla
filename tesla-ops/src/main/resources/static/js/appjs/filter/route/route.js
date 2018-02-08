@@ -162,7 +162,7 @@ function batchRemove() {
 	}, function() {
 		var ids = new Array();
 		$.each(rows, function(i, row) {
-			ids[i] = row['roleId'];
+			ids[i] = row['routeId'];
 		});
 		console.log(ids);
 		$.ajax({
