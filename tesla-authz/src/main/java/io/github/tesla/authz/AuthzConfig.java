@@ -28,8 +28,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
@@ -148,16 +146,10 @@ public class AuthzConfig {
 
   /*** otlu oauth2 call back url **/
   @Configuration
-  protected static class WebMvcAutoconfig extends WebMvcConfigurerAdapter
-      implements InitializingBean {
+  protected static class WebMvcAutoconfig implements InitializingBean {
 
     @Autowired
     private SpringTemplateEngine springtemplateEngine;
-
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-      registry.addViewController("/oauth/default.html").setViewName("/oauth/default");
-    }
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -166,10 +158,12 @@ public class AuthzConfig {
       resolver.setSuffix(".html");
       resolver.setTemplateMode("HTML5");
       resolver.setCharacterEncoding("UTF-8");
-      resolver.setCacheable(true);
+      resolver.setCacheable(false);
       springtemplateEngine.addTemplateResolver(resolver);
     }
 
 
   };
+
+
 }

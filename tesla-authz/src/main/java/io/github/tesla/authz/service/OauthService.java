@@ -49,7 +49,7 @@ public class OauthService {
   }
 
   private String currentUsername() {
-    return (String) SecurityUtils.getSubject().getPrincipal();
+    return SecurityUtils.getSubject().getPrincipals().getRealmNames().iterator().next();
   }
 
 

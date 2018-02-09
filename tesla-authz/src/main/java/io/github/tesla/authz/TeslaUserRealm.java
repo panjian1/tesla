@@ -73,14 +73,13 @@ public class TeslaUserRealm extends AuthorizingRealm {
     String password = user.password();
     int status = user.status();
     if (password == null) {
-      throw new UnknownAccountException("No account found for user [" + username + "]");
+      throw new UnknownAccountException("No account found for " + username);
     }
     if (!password.equals(new String((char[]) token.getCredentials()))) {
-      throw new IncorrectCredentialsException(
-          "Password or account is not right for user [" + username + "]");
+      throw new IncorrectCredentialsException("Password is not right for " + username);
     }
     if (status == 0) {
-      throw new LockedAccountException("account is locked for user [" + username + "]");
+      throw new LockedAccountException("account is locked for user " + username);
     }
     SimpleAuthenticationInfo info =
         new SimpleAuthenticationInfo(userId, password.toCharArray(), username);

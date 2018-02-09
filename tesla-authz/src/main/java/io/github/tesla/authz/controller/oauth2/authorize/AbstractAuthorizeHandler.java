@@ -1,10 +1,15 @@
 package io.github.tesla.authz.controller.oauth2.authorize;
 
 
-import static io.github.tesla.authz.controller.oauth2.Constants.*;
+import static io.github.tesla.authz.controller.oauth2.Constants.OAUTH_APPROVAL_VIEW;
+import static io.github.tesla.authz.controller.oauth2.Constants.OAUTH_LOGIN_VIEW;
+import static io.github.tesla.authz.controller.oauth2.Constants.REQUEST_PASSWORD;
+import static io.github.tesla.authz.controller.oauth2.Constants.REQUEST_USERNAME;
+import static io.github.tesla.authz.controller.oauth2.Constants.REQUEST_USER_OAUTH_APPROVAL;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +29,7 @@ import io.github.tesla.authz.controller.oauth2.OAuthAuthxRequest;
 import io.github.tesla.authz.controller.oauth2.OAuthHandler;
 import io.github.tesla.authz.controller.oauth2.WebUtils;
 import io.github.tesla.authz.controller.oauth2.validator.AbstractClientDetailsValidator;
+import io.github.tesla.authz.utils.MD5Utils;
 
 
 public abstract class AbstractAuthorizeHandler extends OAuthHandler {
@@ -135,8 +141,9 @@ public abstract class AbstractAuthorizeHandler extends OAuthHandler {
       } catch (Exception ex) {
         LOG.debug("Login failed, back to login page too", ex);
         final HttpServletRequest request = oauthRequest.request();
-        request.setAttribute("oauth_login_error", true);
-        request.getRequestDispatcher(OAUTH_LOGIN_VIEW).forward(request, response);
+        request.setAttribute("oauth_login_error", ex.getMessage());
+        RequestDispatcher dispatcher = request.getRequestDispatcher(OAUTH_LOGIN_VIEW);
+        dispatcher.forward(request, response);
         return true;
       }
     }
@@ -146,7 +153,8 @@ public abstract class AbstractAuthorizeHandler extends OAuthHandler {
   private UsernamePasswordToken createUsernamePasswordToken() {
     final HttpServletRequest request = oauthRequest.request();
     final String username = request.getParameter(REQUEST_USERNAME);
-    final String password = request.getParameter(REQUEST_PASSWORD);
+    String password = request.getParameter(REQUEST_PASSWORD);
+    password = MD5Utils.encrypt(username, password);
     return new UsernamePasswordToken(username, password);
   }
 
