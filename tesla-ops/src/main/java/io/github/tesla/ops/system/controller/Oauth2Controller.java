@@ -144,8 +144,8 @@ public class Oauth2Controller {
   @Log("批量清除Token")
   @PostMapping("/batchRevoke")
   @ResponseBody
-  CommonResponse bachRevoke(@RequestParam("ids[]") String[] ids) {
-    int r = oauth2Service.batchremove(ids);
+  CommonResponse bachRevoke(@RequestParam("ids[]") String[] tokenIds) {
+    int r = oauth2Service.revokeToken(tokenIds);
     if (r > 0) {
       return CommonResponse.ok();
     }

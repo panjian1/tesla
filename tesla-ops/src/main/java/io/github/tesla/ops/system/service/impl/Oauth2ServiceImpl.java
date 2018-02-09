@@ -86,7 +86,7 @@ public class Oauth2ServiceImpl implements Oauth2Service {
   }
 
   @Override
-  public int invokeToken(String[] tokenIds) {
+  public int revokeToken(String[] tokenIds) {
     for (String tokenId : tokenIds) {
       oauth2Dao.deleteAccessToken(tokenId);
     }

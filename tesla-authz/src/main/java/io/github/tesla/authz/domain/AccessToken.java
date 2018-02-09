@@ -157,6 +157,96 @@ public class AccessToken implements Serializable {
     return new AccessToken().username(username).clientId(clientId).tokenType(tokenType);
   }
 
+  public String getTokenId() {
+    return tokenId;
+  }
+
+
+  public void setTokenId(String tokenId) {
+    this.tokenId = tokenId;
+  }
+
+
+  public String getUsername() {
+    return username;
+  }
+
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+
+  public String getClientId() {
+    return clientId;
+  }
+
+
+  public void setClientId(String clientId) {
+    this.clientId = clientId;
+  }
+
+
+  public String getAuthenticationId() {
+    return authenticationId;
+  }
+
+
+  public void setAuthenticationId(String authenticationId) {
+    this.authenticationId = authenticationId;
+  }
+
+
+  public String getRefreshToken() {
+    return refreshToken;
+  }
+
+
+  public void setRefreshToken(String refreshToken) {
+    this.refreshToken = refreshToken;
+  }
+
+
+  public String getTokenType() {
+    return tokenType;
+  }
+
+
+  public void setTokenType(String tokenType) {
+    this.tokenType = tokenType;
+  }
+
+
+  public int getTokenExpiredSeconds() {
+    return tokenExpiredSeconds;
+  }
+
+
+  public void setTokenExpiredSeconds(int tokenExpiredSeconds) {
+    this.tokenExpiredSeconds = tokenExpiredSeconds;
+  }
+
+
+  public int getRefreshTokenExpiredSeconds() {
+    return refreshTokenExpiredSeconds;
+  }
+
+
+  public void setRefreshTokenExpiredSeconds(int refreshTokenExpiredSeconds) {
+    this.refreshTokenExpiredSeconds = refreshTokenExpiredSeconds;
+  }
+
+
+  public Date getCreateTime() {
+    return createTime;
+  }
+
+
+  public void setCreateTime(Date createTime) {
+    this.createTime = createTime;
+  }
+
+
   @Override
   public String toString() {
     return "AccessToken [tokenId=" + tokenId + ", username=" + username + ", clientId=" + clientId

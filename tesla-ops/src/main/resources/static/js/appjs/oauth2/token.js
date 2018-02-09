@@ -72,7 +72,7 @@ function batchRemove() {
 			data : {
 				"ids" : ids
 			},
-			url : prefix + '"/batchRevoke"',
+			url : prefix + '/batchRevoke',
 			success : function(r) {
 				if (r.code == 0) {
 					layer.msg(r.msg);
