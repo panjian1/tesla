@@ -49,10 +49,8 @@
 				<form id="signupForm" action="/oauth/authorize" method="post">
 					<h3 class="text-center">用户登录</h3>
 					<p class="m-t-md text-center">欢迎登录网关后台管理系统</p>
-					<input type="text" name="username" class="form-control uname"
-						value="admin" /> 
-				    <input type="password" name="password"
-						class="form-control pword m-b" value="admin" />
+					<input type="text" name="username" class="form-control uname" value="admin" /> 
+				    <input type="password" name="password" class="form-control pword m-b" value="admin" />
 					<input type="hidden" name="client_id" th:value="${#httpServletRequest.getParameter('client_id')}" />
 					<input type="hidden" name="scope" th:value="${#httpServletRequest.getParameter('scope')}" /> 
 					<input type="hidden" name="response_type" th:value="${#httpServletRequest.getParameter('response_type')}" />
@@ -73,7 +71,6 @@
 							</a>
 						</div>
 					</div>
-
 				</form>
 			</div>
 		</div>
