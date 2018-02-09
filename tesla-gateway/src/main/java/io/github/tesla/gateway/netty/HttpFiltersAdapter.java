@@ -16,7 +16,7 @@ package io.github.tesla.gateway.netty;
 import java.net.InetSocketAddress;
 
 import io.github.tesla.gateway.config.SpringContextHolder;
-import io.github.tesla.gateway.routerules.RoutingCacheComponent;
+import io.github.tesla.gateway.routerules.FilterRouteCacheComponent;
 import io.github.tesla.rule.domain.RouteDO;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpHeaderNames;
@@ -32,12 +32,12 @@ public class HttpFiltersAdapter {
 
   protected final HttpRequest originalRequest;
   protected final ChannelHandlerContext ctx;
-  private final RoutingCacheComponent routeCaceh;
+  private final FilterRouteCacheComponent routeCaceh;
 
   public HttpFiltersAdapter(HttpRequest originalRequest, ChannelHandlerContext ctx) {
     this.originalRequest = originalRequest;
     this.ctx = ctx;
-    this.routeCaceh = SpringContextHolder.getBean(RoutingCacheComponent.class);
+    this.routeCaceh = SpringContextHolder.getBean(FilterRouteCacheComponent.class);
   }
 
   public HttpFiltersAdapter(HttpRequest originalRequest) {

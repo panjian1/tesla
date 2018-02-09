@@ -42,9 +42,9 @@ import io.github.tesla.rule.domain.RpcDO;
  * @version RouteCacheComponent.java, v 0.0.1 2018年1月26日 上午11:25:08 liushiming
  */
 @Component
-public class RoutingCacheComponent {
+public class FilterRouteCacheComponent {
 
-  private static final Logger logger = LoggerFactory.getLogger(RoutingCacheComponent.class);
+  private static final Logger logger = LoggerFactory.getLogger(FilterRouteCacheComponent.class);
 
   private static final PathMatcher pathMatcher = new AntPathMatcher();
 

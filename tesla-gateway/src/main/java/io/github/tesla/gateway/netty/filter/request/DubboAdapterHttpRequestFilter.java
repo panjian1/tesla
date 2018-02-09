@@ -15,7 +15,7 @@ package io.github.tesla.gateway.netty.filter.request;
 
 import io.github.tesla.gateway.config.SpringContextHolder;
 import io.github.tesla.gateway.protocol.dubbo.DynamicDubboClient;
-import io.github.tesla.gateway.routerules.RoutingCacheComponent;
+import io.github.tesla.gateway.routerules.FilterRouteCacheComponent;
 import io.github.tesla.rule.domain.RpcDO;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -38,8 +38,8 @@ public class DubboAdapterHttpRequestFilter extends HttpRequestFilter {
   private final DynamicDubboClient dubboClient =
       SpringContextHolder.getBean(DynamicDubboClient.class);
 
-  private final RoutingCacheComponent routeRuleCache =
-      SpringContextHolder.getBean(RoutingCacheComponent.class);
+  private final FilterRouteCacheComponent routeRuleCache =
+      SpringContextHolder.getBean(FilterRouteCacheComponent.class);
 
 
   public static HttpRequestFilter newFilter() {
