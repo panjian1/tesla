@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 
 import io.github.tesla.gateway.netty.ActivityTracker;
+import io.github.tesla.gateway.netty.ChannelThreadLocal;
 import io.github.tesla.gateway.netty.HttpFiltersAdapter;
 import io.github.tesla.gateway.netty.transmit.ConnectionState;
 import io.github.tesla.gateway.netty.transmit.DefaultHttpProxyServer;
@@ -87,6 +88,7 @@ public class ClientToProxyConnection extends ProxyConnection<HttpRequest> {
   @Override
   public ConnectionState readHTTPInitial(HttpRequest httpRequest) {
     LOG.debug("Received raw request: {}", httpRequest);
+    ChannelThreadLocal.set(channel);
     if (httpRequest.decoderResult().isFailure()) {
       LOG.debug("Could not parse request from client. Decoder result: {}",
           httpRequest.decoderResult().toString());
@@ -96,7 +98,11 @@ public class ClientToProxyConnection extends ProxyConnection<HttpRequest> {
       respondWithShortCircuitResponse(response);
       return DISCONNECT_REQUESTED;
     }
-    return doReadHTTPInitial(httpRequest);
+    try {
+      return doReadHTTPInitial(httpRequest);
+    } finally {
+      ChannelThreadLocal.unset();
+    }
   }
 
 
@@ -440,6 +446,7 @@ public class ClientToProxyConnection extends ProxyConnection<HttpRequest> {
       }
     } finally {
       disconnect();
+      ChannelThreadLocal.unset();
     }
   }
 
