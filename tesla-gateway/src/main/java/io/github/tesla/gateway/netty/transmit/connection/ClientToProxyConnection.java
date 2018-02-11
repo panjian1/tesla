@@ -8,12 +8,13 @@ import static io.github.tesla.gateway.netty.transmit.ConnectionState.NEGOTIATING
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.WeakHashMap;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
@@ -62,9 +63,8 @@ public class ClientToProxyConnection extends ProxyConnection<HttpRequest> {
       HttpHeaderNames.TRANSFER_ENCODING.toString().toLowerCase(Locale.US);
   private static final Pattern HTTP_SCHEME =
       Pattern.compile("^http://.*", Pattern.CASE_INSENSITIVE);
-  private final Map<String, ProxyToServerConnection> serverConnectionsByHostAndPort =
-      new ConcurrentHashMap<String, ProxyToServerConnection>();
-
+  private static final Map<String, ProxyToServerConnection> serverConnectionsByHostAndPort =
+      Collections.synchronizedMap(new WeakHashMap<String, ProxyToServerConnection>());
   private final AtomicInteger numberOfCurrentlyConnectingServers = new AtomicInteger(0);
   private final AtomicInteger numberOfCurrentlyConnectedServers = new AtomicInteger(0);
   private final AtomicInteger numberOfReusedServerConnections = new AtomicInteger(0);
