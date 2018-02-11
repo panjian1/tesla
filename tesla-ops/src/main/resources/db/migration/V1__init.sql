@@ -330,5 +330,12 @@ CREATE TABLE `oauth_code` (
   UNIQUE KEY `code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `gateway_filterrule`;
 
+CREATE TABLE `gateway_filterrule` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `filter_type` varchar(20) DEFAULT NULL,
+  `rule` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
  

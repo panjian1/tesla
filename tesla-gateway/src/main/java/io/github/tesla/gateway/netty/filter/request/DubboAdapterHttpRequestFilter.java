@@ -16,6 +16,7 @@ package io.github.tesla.gateway.netty.filter.request;
 import io.github.tesla.gateway.config.SpringContextHolder;
 import io.github.tesla.gateway.protocol.dubbo.DynamicDubboClient;
 import io.github.tesla.gateway.routerules.FilterRouteCacheComponent;
+import io.github.tesla.rule.RequestFilterType;
 import io.github.tesla.rule.domain.RpcDO;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -69,7 +70,7 @@ public class DubboAdapterHttpRequestFilter extends HttpRequestFilter {
 
   @Override
   public int filterOrder() {
-    return RequestFilterOrder.DUBBO.getFilterOrder();
+    return RequestFilterType.DUBBO.getFilterOrder();
   }
 
 }

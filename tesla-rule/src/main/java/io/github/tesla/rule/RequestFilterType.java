@@ -11,25 +11,25 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package io.github.tesla.gateway.netty.filter.request;
+package io.github.tesla.rule;
 
 /**
  * @author liushiming
  * @version FilterOrder.java, v 0.0.1 2018年1月26日 下午4:07:44 liushiming
  */
-public enum RequestFilterOrder {
+public enum RequestFilterType {
 
 
   /**
    * 各种限制
    */
-  URLPARAM(1), // URL参数黑名单参数拦截
-  COOKIE(2), // Cookie黑名单拦截
-  UA(3), // User-Agent黑名单拦截
-  BLACKURL(4), // URL路径黑名单拦截
-  BLACKIP(5), // IP黑名单
-  SCANNER(6), // 扫描
-  RATELIMIT(7), // 限流
+  URLParamHttpRequestFilter(1), // URL参数黑名单参数拦截
+  BlackCookieHttpRequestFilter(2), // Cookie黑名单拦截
+  BlackUaHttpRequestFilter(3), // User-Agent黑名单拦截
+  BlackURLHttpRequestFilter(4), // URL路径黑名单拦截
+  BlackIpHttpRequesFilter(5), // IP黑名单
+  SecurityScannerHttpRequestFilter(6), // 扫描
+  RateLimitHttpRequestFilter(7), // 限流
 
 
 
@@ -40,7 +40,7 @@ public enum RequestFilterOrder {
   DUBBO(101);
   private int filterOrder;
 
-  RequestFilterOrder(int filteOrder) {
+  RequestFilterType(int filteOrder) {
     this.filterOrder = filteOrder;
   }
 

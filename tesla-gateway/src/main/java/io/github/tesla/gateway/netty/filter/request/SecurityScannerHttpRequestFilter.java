@@ -16,6 +16,7 @@ package io.github.tesla.gateway.netty.filter.request;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.github.tesla.rule.RequestFilterType;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
@@ -26,11 +27,11 @@ import io.netty.handler.codec.http.HttpResponseStatus;
  * @author liushiming
  * @version ScannerHttpRequestFilter.java, v 0.0.1 2018年1月26日 下午4:00:15 liushiming
  */
-public class ScannerHttpRequestFilter extends HttpRequestFilter {
+public class SecurityScannerHttpRequestFilter extends HttpRequestFilter {
 
 
   public static HttpRequestFilter newFilter() {
-    return new ScannerHttpRequestFilter();
+    return new SecurityScannerHttpRequestFilter();
   }
 
   @Override
@@ -74,7 +75,7 @@ public class ScannerHttpRequestFilter extends HttpRequestFilter {
 
   @Override
   public int filterOrder() {
-    return RequestFilterOrder.SCANNER.getFilterOrder();
+    return RequestFilterType.SecurityScannerHttpRequestFilter.getFilterOrder();
   }
 
 }

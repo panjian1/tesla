@@ -13,7 +13,7 @@ import io.github.tesla.gateway.netty.filter.request.DubboAdapterHttpRequestFilte
 import io.github.tesla.gateway.netty.filter.request.GrpcAdapterHttpRequestFilter;
 import io.github.tesla.gateway.netty.filter.request.HttpRequestFilter;
 import io.github.tesla.gateway.netty.filter.request.RateLimitHttpRequestFilter;
-import io.github.tesla.gateway.netty.filter.request.ScannerHttpRequestFilter;
+import io.github.tesla.gateway.netty.filter.request.SecurityScannerHttpRequestFilter;
 import io.github.tesla.gateway.netty.filter.request.URLParamHttpRequestFilter;
 import io.github.tesla.gateway.netty.filter.request.BlackUaHttpRequestFilter;
 import io.github.tesla.gateway.routerules.GroovyFilterComponent;
@@ -32,7 +32,7 @@ public class HttpRequestFilterChain {
     filters.add(BlackIpHttpRequesFilter.newFilter());
     filters.add(BlackCookieHttpRequestFilter.newFilter());
     filters.add(RateLimitHttpRequestFilter.newFilter());
-    filters.add(ScannerHttpRequestFilter.newFilter());
+    filters.add(SecurityScannerHttpRequestFilter.newFilter());
     filters.add(BlackUaHttpRequestFilter.newFilter());
     filters.add(BlackURLHttpRequestFilter.newFilter());
     filters.add(URLParamHttpRequestFilter.newFilter());

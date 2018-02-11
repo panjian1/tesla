@@ -18,7 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.github.tesla.gateway.netty.filter.FilterUtil;
-
+import io.github.tesla.rule.RequestFilterType;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
@@ -55,7 +55,7 @@ public class BlackIpHttpRequesFilter extends HttpRequestFilter {
 
   @Override
   public int filterOrder() {
-    return RequestFilterOrder.BLACKIP.getFilterOrder();
+    return RequestFilterType.BlackIpHttpRequesFilter.getFilterOrder();
   }
 
 
