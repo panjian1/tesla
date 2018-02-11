@@ -63,7 +63,7 @@ public class ClientToProxyConnection extends ProxyConnection<HttpRequest> {
       HttpHeaderNames.TRANSFER_ENCODING.toString().toLowerCase(Locale.US);
   private static final Pattern HTTP_SCHEME =
       Pattern.compile("^http://.*", Pattern.CASE_INSENSITIVE);
-  private static final Map<String, ProxyToServerConnection> serverConnectionsByHostAndPort =
+  private final Map<String, ProxyToServerConnection> serverConnectionsByHostAndPort =
       Collections.synchronizedMap(new WeakHashMap<String, ProxyToServerConnection>());
   private final AtomicInteger numberOfCurrentlyConnectingServers = new AtomicInteger(0);
   private final AtomicInteger numberOfCurrentlyConnectedServers = new AtomicInteger(0);
