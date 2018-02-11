@@ -25,6 +25,8 @@ public class FilterRuleDO implements Serializable {
 
   private static final long serialVersionUID = 8473084736935164540L;
 
+  private Long id;
+
   private RequestFilterType filterType;
 
   private String rule;
@@ -53,6 +55,14 @@ public class FilterRuleDO implements Serializable {
 
   public void setRule(String rule) {
     this.rule = rule;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
 
