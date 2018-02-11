@@ -48,4 +48,14 @@ public enum RequestFilterType {
     return filterOrder;
   }
 
+  public static RequestFilterType fromTypeName(String typeName) {
+    for (RequestFilterType type : RequestFilterType.values()) {
+      if (type.name().equals(typeName)) {
+        return type;
+      }
+    }
+    return null;
+  }
+
+
 }
