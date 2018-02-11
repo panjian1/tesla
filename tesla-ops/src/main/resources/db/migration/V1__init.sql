@@ -317,7 +317,7 @@ CREATE TABLE `oauth_client_details` (
 
 INSERT INTO `oauth_client_details` (`client_id`, `client_secret`, `client_name`, `scope`, `grant_types`, `redirect_uri`, `access_token_validity`, `refresh_token_validity`, `create_time`, `trusted`)
 VALUES
-	('test','test','Test Client','read,write','authorization_code,password,refresh_token,client_credentials','http://localhost:8080/oauth/oauth2.html',-1,-1,'2018-02-03 03:52:00',0);
+	('test','test','Test Client','read,write','authorization_code,password,refresh_token,client_credentials','http://localhost:8080/oauth/default_redirect_url',-1,-1,'2018-02-03 03:52:00',0);
 
 
 DROP TABLE IF EXISTS `oauth_code`;
