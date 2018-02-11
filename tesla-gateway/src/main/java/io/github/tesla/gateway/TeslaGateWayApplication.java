@@ -23,7 +23,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.validation.ValidationAutoConfiguration;
 
 import io.github.tesla.gateway.netty.HttpFiltersSourceAdapter;
-import io.github.tesla.gateway.netty.transmit.DefaultHttpProxyServer;
+import io.github.tesla.gateway.netty.HttpProxyServer;
 
 /**
  * @author liushiming
@@ -43,8 +43,7 @@ public class TeslaGateWayApplication implements CommandLineRunner {
 
   @Override
   public void run(String... arg0) throws Exception {
-    DefaultHttpProxyServer.bootstrap().withPort(httpPort)
-        .withFiltersSource(new HttpFiltersSourceAdapter())//
+    HttpProxyServer.bootstrap().withPort(httpPort).withFiltersSource(new HttpFiltersSourceAdapter())//
         .withAllowRequestToOriginServer(true)//
         .start();
   }

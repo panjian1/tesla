@@ -1,5 +1,7 @@
 package   io.github.tesla.gateway.netty.transmit;
 
+import io.github.tesla.gateway.netty.transmit.support.ServerGroup;
+
 /**
  * Configuration object for the proxy's thread pools. Controls the number of acceptor and worker
  * threads in the Netty {@link io.netty.channel.EventLoopGroup} used by the proxy.

@@ -6,12 +6,11 @@ import static io.github.tesla.gateway.netty.transmit.ConnectionState.DISCONNECTE
 import static io.github.tesla.gateway.netty.transmit.ConnectionState.NEGOTIATING_CONNECT;
 
 import io.github.tesla.gateway.netty.HttpFiltersAdapter;
+import io.github.tesla.gateway.netty.HttpProxyServer;
 import io.github.tesla.gateway.netty.transmit.ConnectionState;
-import io.github.tesla.gateway.netty.transmit.DefaultHttpProxyServer;
 import io.github.tesla.gateway.netty.transmit.flow.ConnectionFlowStep;
 import io.github.tesla.gateway.netty.transmit.support.ProxyConnectionLogger;
 import io.github.tesla.gateway.utils.ProxyUtils;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -40,15 +39,14 @@ public abstract class ProxyConnection<I extends HttpObject>
     extends SimpleChannelInboundHandler<Object> {
   public final ProxyConnectionLogger LOG = new ProxyConnectionLogger(this);
 
-  public final DefaultHttpProxyServer proxyServer;
-
+  public final HttpProxyServer proxyServer;
   public volatile ChannelHandlerContext ctx;
   public volatile Channel channel;
   private volatile ConnectionState currentState;
   private volatile boolean tunneling = false;
   public volatile long lastReadTime = 0;
 
-  public ProxyConnection(ConnectionState initialState, DefaultHttpProxyServer proxyServer) {
+  public ProxyConnection(ConnectionState initialState, HttpProxyServer proxyServer) {
     become(initialState);
     this.proxyServer = proxyServer;
   }

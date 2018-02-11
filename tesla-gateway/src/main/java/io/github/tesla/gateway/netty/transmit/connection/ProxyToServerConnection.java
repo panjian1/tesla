@@ -14,15 +14,15 @@ import java.util.concurrent.RejectedExecutionException;
 import javax.net.ssl.SSLProtocolException;
 
 import com.google.common.net.HostAndPort;
+
 import io.github.tesla.gateway.netty.ActivityTracker;
 import io.github.tesla.gateway.netty.HttpFiltersAdapter;
+import io.github.tesla.gateway.netty.HttpProxyServer;
 import io.github.tesla.gateway.netty.transmit.ConnectionState;
-import io.github.tesla.gateway.netty.transmit.DefaultHttpProxyServer;
 import io.github.tesla.gateway.netty.transmit.flow.ConnectionFlow;
 import io.github.tesla.gateway.netty.transmit.flow.ConnectionFlowStep;
 import io.github.tesla.gateway.netty.transmit.flow.FullFlowContext;
 import io.github.tesla.gateway.utils.ProxyUtils;
-
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -67,7 +67,7 @@ public class ProxyToServerConnection extends ProxyConnection<HttpResponse> {
   private volatile HttpResponse currentHttpResponse;
   private volatile GlobalTrafficShapingHandler trafficHandler;
 
-  public static ProxyToServerConnection create(DefaultHttpProxyServer proxyServer,
+  public static ProxyToServerConnection create(HttpProxyServer proxyServer,
       ClientToProxyConnection clientConnection, String serverHostAndPort,
       HttpFiltersAdapter initialFilters, HttpRequest initialHttpRequest,
       GlobalTrafficShapingHandler globalTrafficShapingHandler) throws UnknownHostException {
@@ -75,7 +75,7 @@ public class ProxyToServerConnection extends ProxyConnection<HttpResponse> {
         initialFilters, globalTrafficShapingHandler);
   }
 
-  private ProxyToServerConnection(DefaultHttpProxyServer proxyServer,
+  private ProxyToServerConnection(HttpProxyServer proxyServer,
       ClientToProxyConnection clientConnection, String serverHostAndPort,
       HttpFiltersAdapter initialFilters, GlobalTrafficShapingHandler globalTrafficShapingHandler)
       throws UnknownHostException {
@@ -428,7 +428,7 @@ public class ProxyToServerConnection extends ProxyConnection<HttpResponse> {
     }
   }
 
-  public static InetSocketAddress addressFor(String hostAndPort, DefaultHttpProxyServer proxyServer)
+  public static InetSocketAddress addressFor(String hostAndPort, HttpProxyServer proxyServer)
       throws UnknownHostException {
     HostAndPort parsedHostAndPort;
     try {
