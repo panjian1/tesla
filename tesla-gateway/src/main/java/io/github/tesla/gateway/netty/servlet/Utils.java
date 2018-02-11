@@ -28,11 +28,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.cookie.Cookie;
 import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
-
-import static io.netty.handler.codec.http.HttpHeaders.Names.COOKIE;
 
 
 public final class Utils {
@@ -95,7 +94,7 @@ public final class Utils {
   }
 
   public static Collection<Cookie> getCookies(String name, HttpRequest request) {
-    String cookieString = request.headers().get(COOKIE);
+    String cookieString = request.headers().get(HttpHeaderNames.COOKIE);
     if (cookieString != null) {
       List<Cookie> foundCookie = new ArrayList<>();
       Set<Cookie> cookies = ServerCookieDecoder.STRICT.decode(cookieString);
