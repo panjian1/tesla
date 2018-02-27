@@ -5,6 +5,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+
+import io.github.tesla.gateway.cache.GroovyFilterCacheComponent;
 import io.github.tesla.gateway.config.SpringContextHolder;
 import io.github.tesla.gateway.netty.filter.request.BlackIpHttpRequesFilter;
 import io.github.tesla.gateway.netty.filter.request.BlackURLHttpRequestFilter;
@@ -16,8 +18,6 @@ import io.github.tesla.gateway.netty.filter.request.RateLimitHttpRequestFilter;
 import io.github.tesla.gateway.netty.filter.request.SecurityScannerHttpRequestFilter;
 import io.github.tesla.gateway.netty.filter.request.URLParamHttpRequestFilter;
 import io.github.tesla.gateway.netty.filter.request.BlackUaHttpRequestFilter;
-import io.github.tesla.gateway.routerules.GroovyFilterComponent;
-
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
@@ -41,8 +41,8 @@ public class HttpRequestFilterChain {
   }
 
   public static HttpRequestFilterChain requestFilterChain() {
-    GroovyFilterComponent filterComponent =
-        SpringContextHolder.getBean(GroovyFilterComponent.class);
+    GroovyFilterCacheComponent filterComponent =
+        SpringContextHolder.getBean(GroovyFilterCacheComponent.class);
     if (filterComponent.requestChanged()) {
       List<String> groovyFilters = filterComponent.loadRequestGroovyCode();
       for (String groovyFilter : groovyFilters) {

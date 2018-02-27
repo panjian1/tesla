@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 
+import io.github.tesla.gateway.cache.FilterRuleCacheComponent;
 import io.github.tesla.gateway.config.SpringContextHolder;
 import io.github.tesla.gateway.netty.filter.FilterUtil;
-import io.github.tesla.gateway.routerules.FilterRuleCacheComponent;
 import io.github.tesla.rule.FilterTypeEnum;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;

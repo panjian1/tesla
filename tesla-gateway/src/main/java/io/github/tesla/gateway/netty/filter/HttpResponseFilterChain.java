@@ -5,11 +5,11 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+
+import io.github.tesla.gateway.cache.GroovyFilterCacheComponent;
 import io.github.tesla.gateway.config.SpringContextHolder;
 import io.github.tesla.gateway.netty.filter.response.ClickjackHttpResponseFilter;
 import io.github.tesla.gateway.netty.filter.response.HttpResponseFilter;
-import io.github.tesla.gateway.routerules.GroovyFilterComponent;
-
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 
@@ -24,8 +24,8 @@ public class HttpResponseFilterChain {
   }
 
   public static HttpResponseFilterChain responseFilterChain() {
-    GroovyFilterComponent filterComponent =
-        SpringContextHolder.getBean(GroovyFilterComponent.class);
+    GroovyFilterCacheComponent filterComponent =
+        SpringContextHolder.getBean(GroovyFilterCacheComponent.class);
     if (filterComponent.responseChanged()) {
       List<String> groovyFilters = filterComponent.loadResponseGroovyCode();
       for (String groovyFilter : groovyFilters) {

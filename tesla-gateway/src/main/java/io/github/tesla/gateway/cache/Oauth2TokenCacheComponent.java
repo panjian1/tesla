@@ -11,13 +11,13 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package io.github.tesla.gateway.routerules;
+package io.github.tesla.gateway.cache;
 
 /**
  * @author liushiming
  * @version Oauth2TokenComponent.java, v 0.0.1 2018年2月10日 下午6:27:39 liushiming
  */
-public class Oauth2TokenComponent {
+public class Oauth2TokenCacheComponent {
 
 
   public Boolean checkAccessToken(String accessToken) {

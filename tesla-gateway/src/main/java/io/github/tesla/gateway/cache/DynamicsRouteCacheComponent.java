@@ -11,7 +11,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package io.github.tesla.gateway.routerules;
+package io.github.tesla.gateway.cache;
 
 import java.util.List;
 import java.util.Set;
@@ -42,9 +42,9 @@ import io.github.tesla.rule.domain.RpcDO;
  * @version RouteCacheComponent.java, v 0.0.1 2018年1月26日 上午11:25:08 liushiming
  */
 @Component
-public class FilterRouteCacheComponent {
+public class DynamicsRouteCacheComponent {
 
-  private static final Logger logger = LoggerFactory.getLogger(FilterRouteCacheComponent.class);
+  private static final Logger logger = LoggerFactory.getLogger(DynamicsRouteCacheComponent.class);
 
   private static final PathMatcher pathMatcher = new AntPathMatcher();
 
