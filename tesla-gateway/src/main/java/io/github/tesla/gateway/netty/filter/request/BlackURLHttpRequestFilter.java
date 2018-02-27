@@ -14,8 +14,6 @@
 package io.github.tesla.gateway.netty.filter.request;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import io.github.tesla.rule.FilterTypeEnum;
 import io.netty.channel.ChannelHandlerContext;
@@ -44,11 +42,10 @@ public class BlackURLHttpRequestFilter extends HttpRequestFilter {
       if (index > -1) {
         url = url.substring(0, index);
       }
-      List<Pattern> patterns = super.getRule(this);
-      for (Pattern pat : patterns) {
-        Matcher matcher = pat.matcher(url);
-        if (matcher.find()) {
-          super.writeFilterLog(url, BlackIpHttpRequesFilter.class, pat.toString());
+      List<String> patterns = super.getRule(this);
+      for (String pattern : patterns) {
+        if (pathMatcher.match(pattern, url)) {
+          super.writeFilterLog(url, BlackIpHttpRequesFilter.class, pattern);
           return super.createResponse(HttpResponseStatus.FORBIDDEN, originalRequest);
         }
       }

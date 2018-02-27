@@ -15,29 +15,82 @@ package io.github.tesla.gateway.routerules;
 
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
+import java.util.concurrent.TimeUnit;
+
+import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import io.github.tesla.gateway.netty.filter.request.HttpRequestFilter;
 import io.github.tesla.rule.FilterTypeEnum;
 import io.github.tesla.rule.dao.FilterRuleDao;
+import io.github.tesla.rule.domain.FilterRuleDO;
 
 /**
  * @author liushiming
  * @version FilterRuleCacheComponent.java, v 0.0.1 2018年1月29日 下午6:08:08 liushiming
  */
+@Component
 public class FilterRuleCacheComponent {
-
 
   @Autowired
   private FilterRuleDao rilterRuleDao;
 
+  private static final Map<FilterTypeEnum, List<String>> FILTER_RULE_CACHE =
+      Maps.newConcurrentMap();
 
-  public List<Pattern> getFilterRuleByClass(HttpRequestFilter filter) {
+  private boolean running = true;
+
+  private final long INTERVAL = 30000; // 30 seconds
+
+  private final Thread checkerThread = new Thread("TeslaFilterPoller") {
+    public void run() {
+      while (running) {
+        try {
+          List<FilterRuleDO> filterRuleDOs = rilterRuleDao.list(Maps.newHashMap());
+          FILTER_RULE_CACHE.clear();
+          for (FilterRuleDO ruleDO : filterRuleDOs) {
+            FilterTypeEnum type = ruleDO.getFilterType();
+            String rule = ruleDO.getRule();
+            List<String> rules = FILTER_RULE_CACHE.get(type);
+            if (rules == null) {
+              rules = Lists.newLinkedList();
+              FILTER_RULE_CACHE.put(type, rules);
+            }
+            rules.add(rule);
+          }
+        } catch (Throwable e) {
+          e.printStackTrace();
+        }
+        try {
+          TimeUnit.SECONDS.sleep(INTERVAL);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+          running = false;
+        }
+      }
+
+    }
+  };
+
+  @PostConstruct
+  public void init() {
+    checkerThread.setDaemon(true);
+    checkerThread.start();
+  }
+
+
+  public List<String> getFilterRule(HttpRequestFilter filter) {
     FilterTypeEnum type = filter.filterType();
-    rilterRuleDao.getByFilterType(type);
-    return null;
+    List<String> patterns = FILTER_RULE_CACHE.get(type);
+    if (patterns == null) {
+      patterns = Lists.newArrayList();
+    }
+    return patterns;
   }
 
 

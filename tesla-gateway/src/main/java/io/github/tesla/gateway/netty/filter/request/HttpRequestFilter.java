@@ -1,10 +1,11 @@
 package io.github.tesla.gateway.netty.filter.request;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
 
 import io.github.tesla.gateway.config.SpringContextHolder;
 import io.github.tesla.gateway.netty.filter.FilterUtil;
@@ -25,16 +26,17 @@ public abstract class HttpRequestFilter {
 
   private static final Logger logger = LoggerFactory.getLogger("ProxyFilterLog");
 
+  protected static final PathMatcher pathMatcher = new AntPathMatcher();
 
   public abstract HttpResponse doFilter(HttpRequest originalRequest, HttpObject httpObject,
       ChannelHandlerContext channelHandlerContext);
 
   public abstract FilterTypeEnum filterType();
 
-  protected List<Pattern> getRule(HttpRequestFilter filterClazz) {
+  protected List<String> getRule(HttpRequestFilter filterClazz) {
     FilterRuleCacheComponent ruleCache =
         SpringContextHolder.getBean(FilterRuleCacheComponent.class);
-    return ruleCache.getFilterRuleByClass(filterClazz);
+    return ruleCache.getFilterRule(filterClazz);
   }
 
   protected HttpResponse createResponse(HttpResponseStatus httpResponseStatus,
