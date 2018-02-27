@@ -51,9 +51,9 @@ public class FilterRuleCacheComponent {
 
   private boolean running = true;
 
-  private final long INTERVAL = 30000; // 30 seconds
+  private final long INTERVAL = 60000; // 60 seconds
 
-  private final Thread checkerThread = new Thread("TeslaFilterPoller") {
+  private final Thread checkerThread = new Thread("FilterRuleCachePoller") {
     public void run() {
       while (running) {
         try {

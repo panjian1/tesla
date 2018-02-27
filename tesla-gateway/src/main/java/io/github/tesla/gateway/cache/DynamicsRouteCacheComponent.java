@@ -14,22 +14,17 @@
 package io.github.tesla.gateway.cache;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-import com.google.common.cache.RemovalListener;
-import com.google.common.cache.RemovalNotification;
 import com.google.common.collect.Maps;
 
 import io.github.tesla.rule.dao.RouteDao;
@@ -44,13 +39,11 @@ import io.github.tesla.rule.domain.RpcDO;
 @Component
 public class DynamicsRouteCacheComponent {
 
-  private static final Logger logger = LoggerFactory.getLogger(DynamicsRouteCacheComponent.class);
-
   private static final PathMatcher pathMatcher = new AntPathMatcher();
 
-  private LoadingCache<String, RouteDO> ROUTE_CACHE;
+  private static final Map<String, RouteDO> ROUTE_CACHE = Maps.newConcurrentMap();
 
-  private LoadingCache<Long, RpcDO> RPC_CACHE;
+  private static final Map<Long, RpcDO> RPC_CACHE = Maps.newConcurrentMap();
 
   @Autowired
   private RouteDao routeDao;
@@ -58,78 +51,52 @@ public class DynamicsRouteCacheComponent {
   @Autowired
   private RpcDao rpcDao;
 
+  private boolean running = true;
+
+  private final long INTERVAL = 60000; // 60 seconds
+
+  private final Thread checkerThread = new Thread("DynamicsRouteCachePoller") {
+    public void run() {
+      while (running) {
+        try {
+          ROUTE_CACHE.clear();
+          RPC_CACHE.clear();
+          // load all route
+          List<RouteDO> routes = routeDao.list(Maps.newHashMap());
+          for (RouteDO route : routes) {
+            RouteDO routeCopy = route.copy();
+            String path = routeCopy.getFromPath();
+            ROUTE_CACHE.put(path, routeCopy);
+          }
+          // load all rpc
+          List<RpcDO> rpcs = rpcDao.list(Maps.newHashMap());
+          for (RpcDO rpc : rpcs) {
+            RpcDO rpcCopy = rpc.copy();
+            RPC_CACHE.put(rpcCopy.getRouteId(), rpcCopy);
+          }
+        } catch (Throwable e) {
+          e.printStackTrace();
+        }
+        try {
+          TimeUnit.SECONDS.sleep(INTERVAL);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+          running = false;
+        }
+      }
+
+    }
+  };
+
   @PostConstruct
   public void init() {
-    initRouteCache();
-    initRpcCache();
-    // load all route
-    List<RouteDO> routes = routeDao.list(Maps.newHashMap());
-    for (RouteDO route : routes) {
-      RouteDO routeCopy = route.copy();
-      String path = routeCopy.getFromPath();
-      ROUTE_CACHE.put(path, routeCopy);
-    }
-    // load all rpc
-    List<RpcDO> rpcs = rpcDao.list(Maps.newHashMap());
-    for (RpcDO rpc : rpcs) {
-      // 这里防止mybatis一些持久化状态的问题，拷贝出一份来安全点
-      RpcDO rpcCopy = rpc.copy();
-      RPC_CACHE.put(rpcCopy.getRouteId(), rpcCopy);
-    }
+    checkerThread.setDaemon(true);
+    checkerThread.start();
   }
 
-  private void initRpcCache() {
-    RPC_CACHE = CacheBuilder.newBuilder() //
-        .concurrencyLevel(8) //
-        .initialCapacity(10) //
-        .maximumSize(1000) //
-        .recordStats() //
-        .removalListener(new RemovalListener<Long, RpcDO>() {
-
-          @Override
-          public void onRemoval(RemovalNotification<Long, RpcDO> notification) {
-            logger
-                .info("remove key:" + notification.getKey() + ",value:" + notification.getValue());
-          }
-        }) //
-        .build(new CacheLoader<Long, RpcDO>() {
-
-          @Override
-          public RpcDO load(Long key) throws Exception {
-            // 这里防止mybatis一些持久化状态的问题，拷贝出一份来安全点
-            RpcDO rpcCopy = rpcDao.get(key);
-            return rpcCopy;
-          }
-
-        });
-  }
-
-  private void initRouteCache() {
-    ROUTE_CACHE = CacheBuilder.newBuilder() //
-        .concurrencyLevel(8) //
-        .initialCapacity(10) //
-        .maximumSize(1000) //
-        .recordStats() //
-        .removalListener(new RemovalListener<String, RouteDO>() {
-
-          @Override
-          public void onRemoval(RemovalNotification<String, RouteDO> notification) {
-            logger
-                .info("remove key:" + notification.getKey() + ",value:" + notification.getValue());
-          }
-        }) //
-        .build(new CacheLoader<String, RouteDO>() {
-
-          @Override
-          public RouteDO load(String key) throws Exception {
-            return routeDao.load(key);
-          }
-
-        });
-  }
 
   public RouteDO getRoute(String actorPath) {
-    Set<String> allRoutePath = ROUTE_CACHE.asMap().keySet();
+    Set<String> allRoutePath = ROUTE_CACHE.keySet();
     for (String path : allRoutePath) {
       if (path.equals(actorPath) || pathMatcher.match(path, actorPath)) {
         try {
@@ -156,10 +123,5 @@ public class DynamicsRouteCacheComponent {
     return null;
   }
 
-
-  public void expire() {
-    ROUTE_CACHE.invalidateAll();
-    RPC_CACHE.invalidateAll();
-  }
 
 }
