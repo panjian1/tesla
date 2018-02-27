@@ -5,7 +5,7 @@
 
 	<select id="get" resultType="io.github.tesla.rule.domain.FilterRuleDO">
 		select
-		`id`,`filter_type`,`rule`
+		`id`,`filter_type`,`rule`,`url` 
 		from
 		gateway_filterrule
 		id = #{value}
@@ -14,7 +14,7 @@
 
 	<select id="getByFilterType" resultType="io.github.tesla.rule.domain.FilterRuleDO">
 		select
-		`id`,`filter_type`,`rule`
+		`id`,`filter_type`,`rule`,`url` 
 		from gateway_filterrule
 		where filter_type =
 		#{filterType.name()}
@@ -22,7 +22,7 @@
 
 	<select id="list" resultType="io.github.tesla.rule.domain.FilterRuleDO">
 		select
-		`id`,`filter_type`,`rule`
+		`id`,`filter_type`,`rule`,`url` 
 		from gateway_filterrule
 		<where>
 			<if test="id != null and id != ''"> and id = #{id} </if>
@@ -59,6 +59,7 @@
 		(
 		`filter_type`,
 		`rule`,
+	    `url`,
 		`gmt_create`,
 		`gmt_modified`
 		)
@@ -66,6 +67,7 @@
 		(
 		#{filterType.name()},
 		#{rule},
+		#{url},
 		sysdate(),
 		sysdate()
 		)
@@ -76,6 +78,7 @@
 		<set>
 			<if test="filterType != null and filterType != ''"> and filter_type = #{filterType.name()} </if>
 			<if test="rule != null and rule != ''"> and rule = #{rule} </if>
+			<if test="url != null and url != ''"> and url = #{url} </if>
 			`gmt_modified`=sysdate()
 		</set>
 		where id = #{id}

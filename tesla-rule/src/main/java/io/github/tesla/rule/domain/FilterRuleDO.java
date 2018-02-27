@@ -31,6 +31,8 @@ public class FilterRuleDO implements Serializable {
 
   private String rule;
 
+  private String url;
+
   public FilterTypeEnum getFilterType() {
     return filterType;
   }
@@ -65,6 +67,12 @@ public class FilterRuleDO implements Serializable {
     this.id = id;
   }
 
+  public String getUrl() {
+    return url;
+  }
 
+  public void setUrl(String url) {
+    this.url = url;
+  }
 
 }

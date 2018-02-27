@@ -13,6 +13,8 @@
  */
 package io.github.tesla.gateway.netty.filter.request;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -20,12 +22,15 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Function;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalNotification;
+import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.RateLimiter;
+
 import io.github.tesla.gateway.config.SpringContextHolder;
 import io.github.tesla.gateway.routerules.FilterRuleCacheComponent;
 import io.github.tesla.rule.FilterTypeEnum;
@@ -58,10 +63,20 @@ public class RateLimitHttpRequestFilter extends HttpRequestFilter {
         }).build(new CacheLoader<String, RateLimiter>() {
           @Override
           public RateLimiter load(String key) throws Exception {
-            Map<String, Double> limiter = ruleCache.getRateLimit(RateLimitHttpRequestFilter.this);
-            Double limitValue = limiter.get(key);
+            Map<String, List<String>> limiter =
+                ruleCache.getUrlFilterRule(RateLimitHttpRequestFilter.this);
+            List<String> limitValue = limiter.get(key);
+            Double limitValueMax =
+                Collections.max(Lists.transform(limitValue, new Function<String, Double>() {
+
+                  @Override
+                  public Double apply(String input) {
+                    return Double.valueOf(input);
+                  }
+
+                }));
             if (limitValue != null) {
-              RateLimiter rateLimiter = RateLimiter.create(limitValue);
+              RateLimiter rateLimiter = RateLimiter.create(limitValueMax);
               return rateLimiter;
             } else {
               return null;

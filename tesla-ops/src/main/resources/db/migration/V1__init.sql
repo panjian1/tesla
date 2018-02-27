@@ -336,6 +336,7 @@ CREATE TABLE `gateway_filterrule` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `filter_type` varchar(20) DEFAULT NULL,
   `rule` varchar(20) DEFAULT NULL,
+  `url` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
  

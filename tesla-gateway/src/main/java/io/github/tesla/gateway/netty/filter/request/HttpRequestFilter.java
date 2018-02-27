@@ -36,7 +36,7 @@ public abstract class HttpRequestFilter {
   protected List<String> getRule(HttpRequestFilter filterClazz) {
     FilterRuleCacheComponent ruleCache =
         SpringContextHolder.getBean(FilterRuleCacheComponent.class);
-    return ruleCache.getFilterRule(filterClazz);
+    return ruleCache.getPubicFilterRule(filterClazz);
   }
 
   protected HttpResponse createResponse(HttpResponseStatus httpResponseStatus,

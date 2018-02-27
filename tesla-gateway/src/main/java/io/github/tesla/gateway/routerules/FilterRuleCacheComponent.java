@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,7 +41,12 @@ public class FilterRuleCacheComponent {
   @Autowired
   private FilterRuleDao rilterRuleDao;
 
-  private static final Map<FilterTypeEnum, List<String>> FILTER_RULE_CACHE =
+  // 针对所有url的过滤规则
+  private static final Map<FilterTypeEnum, List<String>> COMMUNITY_RULE_CACHE =
+      Maps.newConcurrentMap();
+
+  // 针对特定url的过滤规则
+  private static final Map<FilterTypeEnum, Map<String, List<String>>> URL_RULE_CACHE =
       Maps.newConcurrentMap();
 
   private boolean running = true;
@@ -52,16 +58,32 @@ public class FilterRuleCacheComponent {
       while (running) {
         try {
           List<FilterRuleDO> filterRuleDOs = rilterRuleDao.list(Maps.newHashMap());
-          FILTER_RULE_CACHE.clear();
+          COMMUNITY_RULE_CACHE.clear();
+          URL_RULE_CACHE.clear();
           for (FilterRuleDO ruleDO : filterRuleDOs) {
             FilterTypeEnum type = ruleDO.getFilterType();
             String rule = ruleDO.getRule();
-            List<String> rules = FILTER_RULE_CACHE.get(type);
-            if (rules == null) {
-              rules = Lists.newLinkedList();
-              FILTER_RULE_CACHE.put(type, rules);
+            String url = ruleDO.getUrl();
+            if (StringUtils.isEmpty(url)) {
+              List<String> rules = COMMUNITY_RULE_CACHE.get(type);
+              if (rules == null) {
+                rules = Lists.newLinkedList();
+                COMMUNITY_RULE_CACHE.put(type, rules);
+              }
+              rules.add(rule);
+            } else {
+              Map<String, List<String>> maprules = URL_RULE_CACHE.get(type);
+              if (maprules == null) {
+                maprules = Maps.newConcurrentMap();
+                URL_RULE_CACHE.put(type, maprules);
+              }
+              List<String> rules = maprules.get(url);
+              if (rules == null) {
+                rules = Lists.newLinkedList();
+                maprules.put(url, rules);
+              }
+              rules.add(rule);
             }
-            rules.add(rule);
           }
         } catch (Throwable e) {
           e.printStackTrace();
@@ -84,9 +106,9 @@ public class FilterRuleCacheComponent {
   }
 
 
-  public List<String> getFilterRule(HttpRequestFilter filter) {
+  public List<String> getPubicFilterRule(HttpRequestFilter filter) {
     FilterTypeEnum type = filter.filterType();
-    List<String> patterns = FILTER_RULE_CACHE.get(type);
+    List<String> patterns = COMMUNITY_RULE_CACHE.get(type);
     if (patterns == null) {
       patterns = Lists.newArrayList();
     }
@@ -94,7 +116,12 @@ public class FilterRuleCacheComponent {
   }
 
 
-  public Map<String, Double> getRateLimit(HttpRequestFilter filter) {
-    return null;
+  public Map<String, List<String>> getUrlFilterRule(HttpRequestFilter filter) {
+    FilterTypeEnum type = filter.filterType();
+    Map<String, List<String>> patterns = URL_RULE_CACHE.get(type);
+    if (patterns == null) {
+      patterns = Maps.newConcurrentMap();
+    }
+    return patterns;
   }
 }
