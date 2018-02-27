@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import io.github.tesla.rule.RequestFilterType;
+import io.github.tesla.rule.FilterTypeEnum;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
@@ -54,7 +54,7 @@ public class URLParamHttpRequestFilter extends HttpRequestFilter {
           for (String arg : args) {
             String[] kv = arg.split("=");
             if (kv.length == 2) {
-              List<Pattern> patterns = super.getRule(this.getClass());
+              List<Pattern> patterns = super.getRule(this);
               for (Pattern pat : patterns) {
                 String param = kv[1].toLowerCase();
                 Matcher matcher = pat.matcher(param);
@@ -72,8 +72,8 @@ public class URLParamHttpRequestFilter extends HttpRequestFilter {
   }
 
   @Override
-  public int filterOrder() {
-    return RequestFilterType.URLParamHttpRequestFilter.getFilterOrder();
+  public FilterTypeEnum filterType() {
+    return FilterTypeEnum.URLParamHttpRequestFilter;
   }
 
 }

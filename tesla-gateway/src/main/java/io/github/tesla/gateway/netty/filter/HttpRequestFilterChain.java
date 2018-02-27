@@ -57,7 +57,7 @@ public class HttpRequestFilterChain {
       Collections.sort(filters, new Comparator<HttpRequestFilter>() {
         @Override
         public int compare(HttpRequestFilter o1, HttpRequestFilter o2) {
-          return o1.filterOrder() - o2.filterOrder();
+          return o1.filterType().order() - o2.filterType().order();
         }
       });
     }

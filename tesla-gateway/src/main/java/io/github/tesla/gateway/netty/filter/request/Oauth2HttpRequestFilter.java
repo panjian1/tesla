@@ -19,6 +19,7 @@ import org.apache.oltu.oauth2.rs.request.OAuthAccessResourceRequest;
 import io.github.tesla.gateway.config.SpringContextHolder;
 import io.github.tesla.gateway.netty.servlet.NettyHttpServletRequest;
 import io.github.tesla.gateway.routerules.Oauth2TokenComponent;
+import io.github.tesla.rule.FilterTypeEnum;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
@@ -61,8 +62,8 @@ public class Oauth2HttpRequestFilter extends HttpRequestFilter {
   }
 
   @Override
-  public int filterOrder() {
-    return 0;
+  public FilterTypeEnum filterType() {
+    return FilterTypeEnum.Oauth2HttpRequestFilter;
   }
 
 }

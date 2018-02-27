@@ -18,7 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.github.tesla.gateway.netty.filter.FilterUtil;
-import io.github.tesla.rule.RequestFilterType;
+import io.github.tesla.rule.FilterTypeEnum;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
@@ -40,7 +40,7 @@ public class BlackUaHttpRequestFilter extends HttpRequestFilter {
       ChannelHandlerContext channelHandlerContext) {
     if (httpObject instanceof HttpRequest) {
       List<String> headerValues = FilterUtil.getHeaderValues(originalRequest, "User-Agent");
-      List<Pattern> patterns = super.getRule(this.getClass());
+      List<Pattern> patterns = super.getRule(this);
       if (headerValues.size() > 0 && headerValues.get(0) != null) {
         for (Pattern pat : patterns) {
           Matcher matcher = pat.matcher(headerValues.get(0));
@@ -56,8 +56,8 @@ public class BlackUaHttpRequestFilter extends HttpRequestFilter {
   }
 
   @Override
-  public int filterOrder() {
-    return RequestFilterType.BlackUaHttpRequestFilter.getFilterOrder();
+  public FilterTypeEnum filterType() {
+    return FilterTypeEnum.BlackUaHttpRequestFilter;
   }
 
 }

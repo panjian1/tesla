@@ -17,12 +17,13 @@ package io.github.tesla.rule;
  * @author liushiming
  * @version FilterOrder.java, v 0.0.1 2018年1月26日 下午4:07:44 liushiming
  */
-public enum RequestFilterType {
+public enum FilterTypeEnum {
 
 
   /**
    * 各种限制
    */
+  Oauth2HttpRequestFilter(0),// oauth2
   URLParamHttpRequestFilter(1), // URL参数黑名单参数拦截
   BlackCookieHttpRequestFilter(2), // Cookie黑名单拦截
   BlackUaHttpRequestFilter(3), // User-Agent黑名单拦截
@@ -40,16 +41,16 @@ public enum RequestFilterType {
   DUBBO(101);
   private int filterOrder;
 
-  RequestFilterType(int filteOrder) {
+  FilterTypeEnum(int filteOrder) {
     this.filterOrder = filteOrder;
   }
 
-  public int getFilterOrder() {
+  public int order() {
     return filterOrder;
   }
 
-  public static RequestFilterType fromTypeName(String typeName) {
-    for (RequestFilterType type : RequestFilterType.values()) {
+  public static FilterTypeEnum fromTypeName(String typeName) {
+    for (FilterTypeEnum type : FilterTypeEnum.values()) {
       if (type.name().equals(typeName)) {
         return type;
       }

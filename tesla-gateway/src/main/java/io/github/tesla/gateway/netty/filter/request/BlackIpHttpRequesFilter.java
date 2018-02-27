@@ -18,7 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.github.tesla.gateway.netty.filter.FilterUtil;
-import io.github.tesla.rule.RequestFilterType;
+import io.github.tesla.rule.FilterTypeEnum;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
@@ -41,7 +41,7 @@ public class BlackIpHttpRequesFilter extends HttpRequestFilter {
     if (httpObject instanceof HttpRequest) {
       HttpRequest httpRequest = (HttpRequest) httpObject;
       String realIp = FilterUtil.getRealIp(httpRequest, channelHandlerContext);
-      List<Pattern> patterns = super.getRule(this.getClass());
+      List<Pattern> patterns = super.getRule(this);
       for (Pattern pat : patterns) {
         Matcher matcher = pat.matcher(realIp);
         if (matcher.find()) {
@@ -54,8 +54,8 @@ public class BlackIpHttpRequesFilter extends HttpRequestFilter {
   }
 
   @Override
-  public int filterOrder() {
-    return RequestFilterType.BlackIpHttpRequesFilter.getFilterOrder();
+  public FilterTypeEnum filterType() {
+    return FilterTypeEnum.BlackIpHttpRequesFilter;
   }
 
 

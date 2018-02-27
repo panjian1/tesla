@@ -18,7 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.github.tesla.gateway.netty.filter.FilterUtil;
-import io.github.tesla.rule.RequestFilterType;
+import io.github.tesla.rule.FilterTypeEnum;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
@@ -41,7 +41,7 @@ public class BlackCookieHttpRequestFilter extends HttpRequestFilter {
     if (httpObject instanceof HttpRequest) {
       HttpRequest httpRequest = (HttpRequest) httpObject;
       List<String> headerValues = FilterUtil.getHeaderValues(httpRequest, "Cookie");
-      List<Pattern> patterns = super.getRule(this.getClass());
+      List<Pattern> patterns = super.getRule(this);
       if (headerValues.size() > 0 && headerValues.get(0) != null) {
         String[] cookies = headerValues.get(0).split(";");
         for (String cookie : cookies) {
@@ -59,8 +59,9 @@ public class BlackCookieHttpRequestFilter extends HttpRequestFilter {
   }
 
   @Override
-  public int filterOrder() {
-    return RequestFilterType.BlackCookieHttpRequestFilter.getFilterOrder();
+  public FilterTypeEnum filterType() {
+    return FilterTypeEnum.BlackCookieHttpRequestFilter;
   }
+
 
 }

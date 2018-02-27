@@ -17,6 +17,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import io.github.tesla.gateway.netty.filter.request.HttpRequestFilter;
+import io.github.tesla.rule.FilterTypeEnum;
+import io.github.tesla.rule.dao.FilterRuleDao;
+
 /**
  * @author liushiming
  * @version FilterRuleCacheComponent.java, v 0.0.1 2018年1月29日 下午6:08:08 liushiming
@@ -24,13 +30,18 @@ import java.util.regex.Pattern;
 public class FilterRuleCacheComponent {
 
 
+  @Autowired
+  private FilterRuleDao rilterRuleDao;
 
-  public List<Pattern> getFilterRuleByClass(Class<?> filterClazz) {
+
+  public List<Pattern> getFilterRuleByClass(HttpRequestFilter filter) {
+    FilterTypeEnum type = filter.filterType();
+    rilterRuleDao.getByFilterType(type);
     return null;
   }
 
 
-  public Map<String, Double> getRateLimit(Class<?> filterClazz) {
+  public Map<String, Double> getRateLimit(HttpRequestFilter filter) {
     return null;
   }
 }

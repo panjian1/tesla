@@ -28,7 +28,7 @@ import com.google.common.cache.RemovalNotification;
 import com.google.common.util.concurrent.RateLimiter;
 import io.github.tesla.gateway.config.SpringContextHolder;
 import io.github.tesla.gateway.routerules.FilterRuleCacheComponent;
-import io.github.tesla.rule.RequestFilterType;
+import io.github.tesla.rule.FilterTypeEnum;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
@@ -58,7 +58,7 @@ public class RateLimitHttpRequestFilter extends HttpRequestFilter {
         }).build(new CacheLoader<String, RateLimiter>() {
           @Override
           public RateLimiter load(String key) throws Exception {
-            Map<String, Double> limiter = ruleCache.getRateLimit(RateLimitHttpRequestFilter.class);
+            Map<String, Double> limiter = ruleCache.getRateLimit(RateLimitHttpRequestFilter.this);
             Double limitValue = limiter.get(key);
             if (limitValue != null) {
               RateLimiter rateLimiter = RateLimiter.create(limitValue);
@@ -101,8 +101,8 @@ public class RateLimitHttpRequestFilter extends HttpRequestFilter {
   }
 
   @Override
-  public int filterOrder() {
-    return RequestFilterType.RateLimitHttpRequestFilter.getFilterOrder();
+  public FilterTypeEnum filterType() {
+    return FilterTypeEnum.RateLimitHttpRequestFilter;
   }
 
 }

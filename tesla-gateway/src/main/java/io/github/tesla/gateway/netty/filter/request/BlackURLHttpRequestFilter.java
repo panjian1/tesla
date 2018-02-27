@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import io.github.tesla.rule.RequestFilterType;
+import io.github.tesla.rule.FilterTypeEnum;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
@@ -44,7 +44,7 @@ public class BlackURLHttpRequestFilter extends HttpRequestFilter {
       if (index > -1) {
         url = url.substring(0, index);
       }
-      List<Pattern> patterns = super.getRule(this.getClass());
+      List<Pattern> patterns = super.getRule(this);
       for (Pattern pat : patterns) {
         Matcher matcher = pat.matcher(url);
         if (matcher.find()) {
@@ -57,8 +57,8 @@ public class BlackURLHttpRequestFilter extends HttpRequestFilter {
   }
 
   @Override
-  public int filterOrder() {
-    return RequestFilterType.BlackURLHttpRequestFilter.getFilterOrder();
+  public FilterTypeEnum filterType() {
+    return FilterTypeEnum.BlackURLHttpRequestFilter;
   }
 
 }

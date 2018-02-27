@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import io.github.tesla.gateway.config.SpringContextHolder;
 import io.github.tesla.gateway.netty.filter.FilterUtil;
 import io.github.tesla.gateway.routerules.FilterRuleCacheComponent;
-
+import io.github.tesla.rule.FilterTypeEnum;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
@@ -29,9 +29,9 @@ public abstract class HttpRequestFilter {
   public abstract HttpResponse doFilter(HttpRequest originalRequest, HttpObject httpObject,
       ChannelHandlerContext channelHandlerContext);
 
-  public abstract int filterOrder();
+  public abstract FilterTypeEnum filterType();
 
-  protected List<Pattern> getRule(Class<?> filterClazz) {
+  protected List<Pattern> getRule(HttpRequestFilter filterClazz) {
     FilterRuleCacheComponent ruleCache =
         SpringContextHolder.getBean(FilterRuleCacheComponent.class);
     return ruleCache.getFilterRuleByClass(filterClazz);
