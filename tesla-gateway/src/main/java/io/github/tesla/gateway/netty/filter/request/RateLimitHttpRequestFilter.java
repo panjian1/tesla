@@ -19,15 +19,10 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Function;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.cache.RemovalListener;
-import com.google.common.cache.RemovalNotification;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.RateLimiter;
 
@@ -47,7 +42,6 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 public class RateLimitHttpRequestFilter extends HttpRequestFilter {
 
   private LoadingCache<String, RateLimiter> loadingCache;
-  private static final Logger logger = LoggerFactory.getLogger(RateLimitHttpRequestFilter.class);
 
   private final FilterRuleCacheComponent ruleCache =
       SpringContextHolder.getBean(FilterRuleCacheComponent.class);
@@ -55,12 +49,7 @@ public class RateLimitHttpRequestFilter extends HttpRequestFilter {
 
   private RateLimitHttpRequestFilter() {
     loadingCache = CacheBuilder.newBuilder().maximumSize(1000).expireAfterWrite(2, TimeUnit.SECONDS)
-        .removalListener(new RemovalListener<String, RateLimiter>() {
-          @Override
-          public void onRemoval(RemovalNotification<String, RateLimiter> notification) {
-            logger.debug("key:{} remove from cache", notification.getKey());
-          }
-        }).build(new CacheLoader<String, RateLimiter>() {
+        .build(new CacheLoader<String, RateLimiter>() {
           @Override
           public RateLimiter load(String key) throws Exception {
             Map<String, List<String>> limiter =
@@ -102,9 +91,10 @@ public class RateLimitHttpRequestFilter extends HttpRequestFilter {
       }
       RateLimiter rateLimiter = null;
       try {
-        rateLimiter = (RateLimiter) loadingCache.get(url);
+        rateLimiter = loadingCache.get(url);
       } catch (ExecutionException e) {
-      }
+        e.printStackTrace();
+      } ;
       // 如果1秒钟没有获取令牌，说明被限制了
       if (rateLimiter != null && !rateLimiter.tryAcquire(1000, TimeUnit.MILLISECONDS)) {
         super.writeFilterLog(Double.toString(rateLimiter.getRate()), this.getClass(),
