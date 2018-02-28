@@ -15,6 +15,7 @@ package io.github.tesla.gateway.cache;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,63 +47,80 @@ public class FilterRuleCacheComponent extends AbstractScheduleCache {
   private static final Map<FilterTypeEnum, Map<String, List<String>>> URL_RULE_CACHE =
       Maps.newConcurrentMap();
 
+  private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+
   public FilterRuleCacheComponent() {
     super();
   }
 
   @Override
   protected void doCache() {
-    COMMUNITY_RULE_CACHE.clear();
-    URL_RULE_CACHE.clear();
-    List<FilterRuleDO> filterRuleDOs = rilterRuleDao.list(Maps.newHashMap());
-    for (FilterRuleDO ruleDO : filterRuleDOs) {
-      FilterTypeEnum type = ruleDO.getFilterType();
-      String rule = ruleDO.getRule();
-      String url = ruleDO.getUrl();
-      if (StringUtils.isEmpty(url)) {
-        List<String> rules = COMMUNITY_RULE_CACHE.get(type);
-        if (rules == null) {
-          rules = Lists.newLinkedList();
-          COMMUNITY_RULE_CACHE.put(type, rules);
+    try {
+      readWriteLock.writeLock().lock();
+      COMMUNITY_RULE_CACHE.clear();
+      URL_RULE_CACHE.clear();
+      List<FilterRuleDO> filterRuleDOs = rilterRuleDao.list(Maps.newHashMap());
+      for (FilterRuleDO ruleDO : filterRuleDOs) {
+        FilterTypeEnum type = ruleDO.getFilterType();
+        String rule = ruleDO.getRule();
+        String url = ruleDO.getUrl();
+        if (StringUtils.isEmpty(url)) {
+          List<String> rules = COMMUNITY_RULE_CACHE.get(type);
+          if (rules == null) {
+            rules = Lists.newLinkedList();
+            COMMUNITY_RULE_CACHE.put(type, rules);
+          }
+          rules.add(rule);
+        } else {
+          Map<String, List<String>> maprules = URL_RULE_CACHE.get(type);
+          if (maprules == null) {
+            maprules = Maps.newConcurrentMap();
+            URL_RULE_CACHE.put(type, maprules);
+          }
+          List<String> rules = maprules.get(url);
+          if (rules == null) {
+            rules = Lists.newLinkedList();
+            maprules.put(url, rules);
+          }
+          rules.add(rule);
         }
-        rules.add(rule);
-      } else {
-        Map<String, List<String>> maprules = URL_RULE_CACHE.get(type);
-        if (maprules == null) {
-          maprules = Maps.newConcurrentMap();
-          URL_RULE_CACHE.put(type, maprules);
-        }
-        List<String> rules = maprules.get(url);
-        if (rules == null) {
-          rules = Lists.newLinkedList();
-          maprules.put(url, rules);
-        }
-        rules.add(rule);
       }
+    } finally {
+      readWriteLock.writeLock().unlock();
     }
   }
 
 
 
   public List<String> getPubicFilterRule(HttpRequestFilter filter) {
-    FilterTypeEnum type = filter.filterType();
-    List<String> patterns = COMMUNITY_RULE_CACHE.get(type);
-    if (patterns == null) {
-      patterns = Lists.newArrayList();
+    try {
+      readWriteLock.readLock().lock();
+      FilterTypeEnum type = filter.filterType();
+      List<String> patterns = COMMUNITY_RULE_CACHE.get(type);
+      if (patterns == null) {
+        patterns = Lists.newArrayList();
+      }
+      return patterns;
+    } finally {
+      readWriteLock.readLock().unlock();
     }
-    return patterns;
+
   }
 
 
   public Map<String, List<String>> getUrlFilterRule(HttpRequestFilter filter) {
-    FilterTypeEnum type = filter.filterType();
-    Map<String, List<String>> patterns = URL_RULE_CACHE.get(type);
-    if (patterns == null) {
-      patterns = Maps.newConcurrentMap();
+    try {
+      readWriteLock.readLock().lock();
+      FilterTypeEnum type = filter.filterType();
+      Map<String, List<String>> patterns = URL_RULE_CACHE.get(type);
+      if (patterns == null) {
+        patterns = Maps.newConcurrentMap();
+      }
+      return patterns;
+    } finally {
+      readWriteLock.readLock().unlock();
     }
-    return patterns;
+
   }
-
-
 
 }
