@@ -16,6 +16,7 @@ package io.github.tesla.gateway.cache;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,6 +43,8 @@ public class DynamicsRouteCacheComponent extends AbstractScheduleCache {
 
   private static final Map<Long, RpcDO> RPC_CACHE = Maps.newConcurrentMap();
 
+  private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+
   @Autowired
   private RouteDao routeDao;
 
@@ -54,36 +57,46 @@ public class DynamicsRouteCacheComponent extends AbstractScheduleCache {
 
   @Override
   protected void doCache() {
-    // clear data
-    ROUTE_CACHE.clear();
-    RPC_CACHE.clear();
-    // cache all data
-    List<RouteDO> routes = routeDao.list(Maps.newHashMap());
-    for (RouteDO route : routes) {
-      RouteDO routeCopy = route.copy();
-      String path = routeCopy.getFromPath();
-      ROUTE_CACHE.put(path, routeCopy);
-    }
-    List<RpcDO> rpcs = rpcDao.list(Maps.newHashMap());
-    for (RpcDO rpc : rpcs) {
-      RpcDO rpcCopy = rpc.copy();
-      RPC_CACHE.put(rpcCopy.getRouteId(), rpcCopy);
+    try {
+      readWriteLock.writeLock().lock();
+      // clear data
+      ROUTE_CACHE.clear();
+      RPC_CACHE.clear();
+      // cache all data
+      List<RouteDO> routes = routeDao.list(Maps.newHashMap());
+      for (RouteDO route : routes) {
+        RouteDO routeCopy = route.copy();
+        String path = routeCopy.getFromPath();
+        ROUTE_CACHE.put(path, routeCopy);
+      }
+      List<RpcDO> rpcs = rpcDao.list(Maps.newHashMap());
+      for (RpcDO rpc : rpcs) {
+        RpcDO rpcCopy = rpc.copy();
+        RPC_CACHE.put(rpcCopy.getRouteId(), rpcCopy);
+      }
+    } finally {
+      readWriteLock.writeLock().unlock();
     }
   }
 
 
   public RouteDO getRoute(String actorPath) {
-    Set<String> allRoutePath = ROUTE_CACHE.keySet();
-    for (String path : allRoutePath) {
-      if (path.equals(actorPath) || pathMatcher.match(path, actorPath)) {
-        try {
-          return ROUTE_CACHE.get(path);
-        } catch (Throwable e) {
-          return null;
+    try {
+      readWriteLock.readLock().lock();
+      Set<String> allRoutePath = ROUTE_CACHE.keySet();
+      for (String path : allRoutePath) {
+        if (path.equals(actorPath) || pathMatcher.match(path, actorPath)) {
+          try {
+            return ROUTE_CACHE.get(path);
+          } catch (Throwable e) {
+            return null;
+          }
         }
       }
+      return null;
+    } finally {
+      readWriteLock.readLock().unlock();
     }
-    return null;
 
   }
 
@@ -92,9 +105,12 @@ public class DynamicsRouteCacheComponent extends AbstractScheduleCache {
     if (route != null) {
       Long routeId = route.getId();
       try {
+        readWriteLock.readLock().lock();
         return RPC_CACHE.get(routeId);
       } catch (Throwable e) {
         return null;
+      } finally {
+        readWriteLock.readLock().unlock();
       }
     }
     return null;
