@@ -34,7 +34,7 @@ public class GroovyFilterCacheComponent extends AbstractScheduleCache {
 
 
   @Override
-  protected void doPoller() {
+  protected void doCache() {
     // TODO Auto-generated method stub
 
   }

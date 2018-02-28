@@ -51,7 +51,7 @@ public class FilterRuleCacheComponent extends AbstractScheduleCache {
   }
 
   @Override
-  protected void doPoller() {
+  protected void doCache() {
     COMMUNITY_RULE_CACHE.clear();
     URL_RULE_CACHE.clear();
     List<FilterRuleDO> filterRuleDOs = rilterRuleDao.list(Maps.newHashMap());

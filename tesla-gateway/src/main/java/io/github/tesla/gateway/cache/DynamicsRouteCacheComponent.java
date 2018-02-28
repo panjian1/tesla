@@ -53,7 +53,7 @@ public class DynamicsRouteCacheComponent extends AbstractScheduleCache {
   }
 
   @Override
-  protected void doPoller() {
+  protected void doCache() {
     // clear data
     ROUTE_CACHE.clear();
     RPC_CACHE.clear();

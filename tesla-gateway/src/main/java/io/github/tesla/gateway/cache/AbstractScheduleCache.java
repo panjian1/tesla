@@ -39,7 +39,7 @@ public abstract class AbstractScheduleCache {
       @Override
       public void run() {
         try {
-          doPoller();
+          doCache();
         } catch (Throwable e) {
           LOGGER.error(e.getMessage(), e);
         }
@@ -48,7 +48,7 @@ public abstract class AbstractScheduleCache {
     }, 0, INTERVAL, TimeUnit.SECONDS);
   }
 
-  protected abstract void doPoller();
+  protected abstract void doCache();
 
   private static class NamedThreadFactory implements ThreadFactory {
     private static final AtomicInteger POOL_SEQ = new AtomicInteger(1);
