@@ -62,7 +62,7 @@ public abstract class AbstractScheduleCache {
     private final ThreadGroup mGroup;
 
     public NamedThreadFactory() {
-      this("TeslaSchedulePoller_" + POOL_SEQ.getAndIncrement(), true);
+      this("TeslaScheduleCache-" + POOL_SEQ.getAndIncrement(), true);
     }
 
     public NamedThreadFactory(String prefix, boolean daemon) {
