@@ -15,9 +15,6 @@ package io.github.tesla.gateway.cache;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +33,7 @@ import io.github.tesla.rule.domain.FilterRuleDO;
  * @version FilterRuleCacheComponent.java, v 0.0.1 2018年1月29日 下午6:08:08 liushiming
  */
 @Component
-public class FilterRuleCacheComponent {
+public class FilterRuleCacheComponent extends AbstractScheduleCache {
 
   @Autowired
   private FilterRuleDao rilterRuleDao;
@@ -49,61 +46,42 @@ public class FilterRuleCacheComponent {
   private static final Map<FilterTypeEnum, Map<String, List<String>>> URL_RULE_CACHE =
       Maps.newConcurrentMap();
 
-  private boolean running = true;
-
-  private final long INTERVAL = 60000; // 60 seconds
-
-  private final Thread checkerThread = new Thread("FilterRuleCachePoller") {
-    public void run() {
-      while (running) {
-        try {
-          List<FilterRuleDO> filterRuleDOs = rilterRuleDao.list(Maps.newHashMap());
-          COMMUNITY_RULE_CACHE.clear();
-          URL_RULE_CACHE.clear();
-          for (FilterRuleDO ruleDO : filterRuleDOs) {
-            FilterTypeEnum type = ruleDO.getFilterType();
-            String rule = ruleDO.getRule();
-            String url = ruleDO.getUrl();
-            if (StringUtils.isEmpty(url)) {
-              List<String> rules = COMMUNITY_RULE_CACHE.get(type);
-              if (rules == null) {
-                rules = Lists.newLinkedList();
-                COMMUNITY_RULE_CACHE.put(type, rules);
-              }
-              rules.add(rule);
-            } else {
-              Map<String, List<String>> maprules = URL_RULE_CACHE.get(type);
-              if (maprules == null) {
-                maprules = Maps.newConcurrentMap();
-                URL_RULE_CACHE.put(type, maprules);
-              }
-              List<String> rules = maprules.get(url);
-              if (rules == null) {
-                rules = Lists.newLinkedList();
-                maprules.put(url, rules);
-              }
-              rules.add(rule);
-            }
-          }
-        } catch (Throwable e) {
-          e.printStackTrace();
-        }
-        try {
-          TimeUnit.SECONDS.sleep(INTERVAL);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-          running = false;
-        }
-      }
-
-    }
-  };
-
-  @PostConstruct
-  public void init() {
-    checkerThread.setDaemon(true);
-    checkerThread.start();
+  public FilterRuleCacheComponent() {
+    super();
   }
+
+  @Override
+  protected void doPoller() {
+    COMMUNITY_RULE_CACHE.clear();
+    URL_RULE_CACHE.clear();
+    List<FilterRuleDO> filterRuleDOs = rilterRuleDao.list(Maps.newHashMap());
+    for (FilterRuleDO ruleDO : filterRuleDOs) {
+      FilterTypeEnum type = ruleDO.getFilterType();
+      String rule = ruleDO.getRule();
+      String url = ruleDO.getUrl();
+      if (StringUtils.isEmpty(url)) {
+        List<String> rules = COMMUNITY_RULE_CACHE.get(type);
+        if (rules == null) {
+          rules = Lists.newLinkedList();
+          COMMUNITY_RULE_CACHE.put(type, rules);
+        }
+        rules.add(rule);
+      } else {
+        Map<String, List<String>> maprules = URL_RULE_CACHE.get(type);
+        if (maprules == null) {
+          maprules = Maps.newConcurrentMap();
+          URL_RULE_CACHE.put(type, maprules);
+        }
+        List<String> rules = maprules.get(url);
+        if (rules == null) {
+          rules = Lists.newLinkedList();
+          maprules.put(url, rules);
+        }
+        rules.add(rule);
+      }
+    }
+  }
+
 
 
   public List<String> getPubicFilterRule(HttpRequestFilter filter) {
@@ -124,4 +102,7 @@ public class FilterRuleCacheComponent {
     }
     return patterns;
   }
+
+
+
 }

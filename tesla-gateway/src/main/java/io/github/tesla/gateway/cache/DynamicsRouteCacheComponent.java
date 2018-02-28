@@ -16,9 +16,6 @@ package io.github.tesla.gateway.cache;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
-
-import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,7 +34,7 @@ import io.github.tesla.rule.domain.RpcDO;
  * @version RouteCacheComponent.java, v 0.0.1 2018年1月26日 上午11:25:08 liushiming
  */
 @Component
-public class DynamicsRouteCacheComponent {
+public class DynamicsRouteCacheComponent extends AbstractScheduleCache {
 
   private static final PathMatcher pathMatcher = new AntPathMatcher();
 
@@ -51,47 +48,27 @@ public class DynamicsRouteCacheComponent {
   @Autowired
   private RpcDao rpcDao;
 
-  private boolean running = true;
+  public DynamicsRouteCacheComponent() {
+    super();
+  }
 
-  private final long INTERVAL = 60000; // 60 seconds
-
-  private final Thread checkerThread = new Thread("DynamicsRouteCachePoller") {
-    public void run() {
-      while (running) {
-        try {
-          ROUTE_CACHE.clear();
-          RPC_CACHE.clear();
-          // load all route
-          List<RouteDO> routes = routeDao.list(Maps.newHashMap());
-          for (RouteDO route : routes) {
-            RouteDO routeCopy = route.copy();
-            String path = routeCopy.getFromPath();
-            ROUTE_CACHE.put(path, routeCopy);
-          }
-          // load all rpc
-          List<RpcDO> rpcs = rpcDao.list(Maps.newHashMap());
-          for (RpcDO rpc : rpcs) {
-            RpcDO rpcCopy = rpc.copy();
-            RPC_CACHE.put(rpcCopy.getRouteId(), rpcCopy);
-          }
-        } catch (Throwable e) {
-          e.printStackTrace();
-        }
-        try {
-          TimeUnit.SECONDS.sleep(INTERVAL);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-          running = false;
-        }
-      }
-
+  @Override
+  protected void doPoller() {
+    // clear data
+    ROUTE_CACHE.clear();
+    RPC_CACHE.clear();
+    // cache all data
+    List<RouteDO> routes = routeDao.list(Maps.newHashMap());
+    for (RouteDO route : routes) {
+      RouteDO routeCopy = route.copy();
+      String path = routeCopy.getFromPath();
+      ROUTE_CACHE.put(path, routeCopy);
     }
-  };
-
-  @PostConstruct
-  public void init() {
-    checkerThread.setDaemon(true);
-    checkerThread.start();
+    List<RpcDO> rpcs = rpcDao.list(Maps.newHashMap());
+    for (RpcDO rpc : rpcs) {
+      RpcDO rpcCopy = rpc.copy();
+      RPC_CACHE.put(rpcCopy.getRouteId(), rpcCopy);
+    }
   }
 
 
@@ -122,6 +99,7 @@ public class DynamicsRouteCacheComponent {
     }
     return null;
   }
+
 
 
 }

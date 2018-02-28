@@ -25,12 +25,19 @@ import com.google.common.collect.Lists;
  * @version FilterCacheComponent.java, v 0.0.1 2018年1月26日 下午4:42:26 liushiming
  */
 @Component
-public class GroovyFilterCacheComponent {
+public class GroovyFilterCacheComponent extends AbstractScheduleCache {
 
 
   private AtomicBoolean requestChanged = new AtomicBoolean(true);
 
   private AtomicBoolean responseChanged = new AtomicBoolean(true);
+
+
+  @Override
+  protected void doPoller() {
+    // TODO Auto-generated method stub
+
+  }
 
   public Boolean requestChanged() {
     return requestChanged.get();
@@ -48,4 +55,6 @@ public class GroovyFilterCacheComponent {
   public List<String> loadResponseGroovyCode() {
     return Lists.newArrayList();
   }
+
+
 }
