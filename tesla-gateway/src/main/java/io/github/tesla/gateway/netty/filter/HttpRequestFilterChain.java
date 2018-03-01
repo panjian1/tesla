@@ -44,7 +44,7 @@ public class HttpRequestFilterChain {
     GroovyFilterCacheComponent filterComponent =
         SpringContextHolder.getBean(GroovyFilterCacheComponent.class);
     if (filterComponent.requestChanged()) {
-      List<String> groovyFilters = filterComponent.loadRequestGroovyCode();
+      List<String> groovyFilters = filterComponent.getRequestGroovyCode();
       for (String groovyFilter : groovyFilters) {
         Class<?> clazz = GroovyCompiler.compile(groovyFilter);
         try {

@@ -27,7 +27,7 @@ public class HttpResponseFilterChain {
     GroovyFilterCacheComponent filterComponent =
         SpringContextHolder.getBean(GroovyFilterCacheComponent.class);
     if (filterComponent.responseChanged()) {
-      List<String> groovyFilters = filterComponent.loadResponseGroovyCode();
+      List<String> groovyFilters = filterComponent.getResponseGroovyCode();
       for (String groovyFilter : groovyFilters) {
         Class<?> clazz = GroovyCompiler.compile(groovyFilter);
         try {

@@ -48,11 +48,11 @@ public class GroovyFilterCacheComponent extends AbstractScheduleCache {
   }
 
 
-  public List<String> loadRequestGroovyCode() {
+  public List<String> getRequestGroovyCode() {
     return Lists.newArrayList();
   }
 
-  public List<String> loadResponseGroovyCode() {
+  public List<String> getResponseGroovyCode() {
     return Lists.newArrayList();
   }
 
