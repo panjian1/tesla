@@ -1,5 +1,6 @@
 package io.github.tesla.gateway.netty.filter.response;
 
+import io.github.tesla.rule.ResponseFilterTypeEnum;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 
@@ -23,7 +24,7 @@ public class ClickjackHttpResponseFilter extends HttpResponseFilter {
   }
 
   @Override
-  public int filterOrder() {
-    return ResponseFilterOrder.CLICKJACK.getFilterOrder();
+  public ResponseFilterTypeEnum filterType() {
+    return ResponseFilterTypeEnum.CLICKJACK;
   }
 }

@@ -16,7 +16,7 @@ package io.github.tesla.gateway.netty.filter.request;
 import java.net.URLDecoder;
 import java.util.List;
 
-import io.github.tesla.rule.FilterTypeEnum;
+import io.github.tesla.rule.RequestFilterTypeEnum;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
@@ -69,8 +69,8 @@ public class URLParamHttpRequestFilter extends HttpRequestFilter {
   }
 
   @Override
-  public FilterTypeEnum filterType() {
-    return FilterTypeEnum.URLParamHttpRequestFilter;
+  public RequestFilterTypeEnum filterType() {
+    return RequestFilterTypeEnum.URLParamHttpRequestFilter;
   }
 
 }

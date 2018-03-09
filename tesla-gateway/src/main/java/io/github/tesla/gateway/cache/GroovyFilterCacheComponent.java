@@ -14,11 +14,12 @@
 package io.github.tesla.gateway.cache;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 /**
  * @author liushiming
@@ -28,33 +29,26 @@ import com.google.common.collect.Lists;
 public class GroovyFilterCacheComponent extends AbstractScheduleCache {
 
 
-  private AtomicBoolean requestChanged = new AtomicBoolean(true);
-
-  private AtomicBoolean responseChanged = new AtomicBoolean(true);
-
 
   @Override
   protected void doCache() {
-    // TODO Auto-generated method stub
 
   }
 
-  public Boolean requestChanged() {
-    return requestChanged.get();
+  public Map<String, String> getRequestGroovyCode() {
+    return Maps.newConcurrentMap();
   }
 
-  public Boolean responseChanged() {
-    return responseChanged.get();
+  public Map<String, String> getResponseGroovyCode() {
+    return Maps.newConcurrentMap();
   }
 
-
-  public List<String> getRequestGroovyCode() {
+  public List<String> getRequestDeleteKey() {
     return Lists.newArrayList();
   }
 
-  public List<String> getResponseGroovyCode() {
+  public List<String> getResponseDeleteKey() {
     return Lists.newArrayList();
   }
-
 
 }

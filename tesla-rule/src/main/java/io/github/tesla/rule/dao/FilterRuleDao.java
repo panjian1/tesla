@@ -19,7 +19,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import io.github.tesla.rule.FilterTypeEnum;
+import io.github.tesla.rule.RequestFilterTypeEnum;
 import io.github.tesla.rule.domain.FilterRuleDO;
 
 /**
@@ -31,7 +31,7 @@ public interface FilterRuleDao {
 
   FilterRuleDO get(Long ruleId);
 
-  List<FilterRuleDO> getByFilterType(@Param("filterType") FilterTypeEnum type);
+  List<FilterRuleDO> getByFilterType(@Param("filterType") RequestFilterTypeEnum type);
 
   List<FilterRuleDO> list(Map<String, Object> map);
 

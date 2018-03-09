@@ -2,64 +2,76 @@ package io.github.tesla.gateway.netty.filter;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import io.github.tesla.gateway.cache.GroovyFilterCacheComponent;
 import io.github.tesla.gateway.config.SpringContextHolder;
+import io.github.tesla.gateway.netty.filter.request.BlackCookieHttpRequestFilter;
 import io.github.tesla.gateway.netty.filter.request.BlackIpHttpRequesFilter;
 import io.github.tesla.gateway.netty.filter.request.BlackURLHttpRequestFilter;
-import io.github.tesla.gateway.netty.filter.request.BlackCookieHttpRequestFilter;
+import io.github.tesla.gateway.netty.filter.request.BlackUaHttpRequestFilter;
 import io.github.tesla.gateway.netty.filter.request.DubboAdapterHttpRequestFilter;
 import io.github.tesla.gateway.netty.filter.request.GrpcAdapterHttpRequestFilter;
 import io.github.tesla.gateway.netty.filter.request.HttpRequestFilter;
 import io.github.tesla.gateway.netty.filter.request.RateLimitHttpRequestFilter;
 import io.github.tesla.gateway.netty.filter.request.SecurityScannerHttpRequestFilter;
 import io.github.tesla.gateway.netty.filter.request.URLParamHttpRequestFilter;
-import io.github.tesla.gateway.netty.filter.request.BlackUaHttpRequestFilter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 
 public class HttpRequestFilterChain {
-  public static List<HttpRequestFilter> filters = Lists.newLinkedList();
-
-  private static HttpRequestFilterChain filterChain = new HttpRequestFilterChain();
+  public static final Map<String, HttpRequestFilter> filters = Maps.newTreeMap();
+  private static final HttpRequestFilterChain filterChain = new HttpRequestFilterChain();
 
   static {
-    filters.add(BlackIpHttpRequesFilter.newFilter());
-    filters.add(BlackCookieHttpRequestFilter.newFilter());
-    filters.add(RateLimitHttpRequestFilter.newFilter());
-    filters.add(SecurityScannerHttpRequestFilter.newFilter());
-    filters.add(BlackUaHttpRequestFilter.newFilter());
-    filters.add(BlackURLHttpRequestFilter.newFilter());
-    filters.add(URLParamHttpRequestFilter.newFilter());
-    filters.add(DubboAdapterHttpRequestFilter.newFilter());
-    filters.add(GrpcAdapterHttpRequestFilter.newFilter());
+    HttpRequestFilter blackIpHttpRequesFilter = BlackIpHttpRequesFilter.newFilter();
+    filters.put(blackIpHttpRequesFilter.filterType().name(), blackIpHttpRequesFilter);
+    HttpRequestFilter blackCookieHttpRequestFilter = BlackCookieHttpRequestFilter.newFilter();
+    filters.put(blackCookieHttpRequestFilter.filterType().name(), blackCookieHttpRequestFilter);
+    HttpRequestFilter rateLimitHttpRequestFilter = RateLimitHttpRequestFilter.newFilter();
+    filters.put(rateLimitHttpRequestFilter.filterType().name(), rateLimitHttpRequestFilter);
+    HttpRequestFilter securityScannerHttpRequestFilter =
+        SecurityScannerHttpRequestFilter.newFilter();
+    filters.put(securityScannerHttpRequestFilter.filterType().name(),
+        securityScannerHttpRequestFilter);
+    HttpRequestFilter blackUaHttpRequestFilter = BlackUaHttpRequestFilter.newFilter();
+    filters.put(blackUaHttpRequestFilter.filterType().name(), blackUaHttpRequestFilter);
+    HttpRequestFilter blackURLHttpRequestFilter = BlackURLHttpRequestFilter.newFilter();
+    filters.put(blackURLHttpRequestFilter.filterType().name(), blackURLHttpRequestFilter);
+    HttpRequestFilter uRLParamHttpRequestFilter = URLParamHttpRequestFilter.newFilter();
+    filters.put(uRLParamHttpRequestFilter.filterType().name(), uRLParamHttpRequestFilter);
+    HttpRequestFilter dubboAdapterHttpRequestFilter = DubboAdapterHttpRequestFilter.newFilter();
+    filters.put(dubboAdapterHttpRequestFilter.filterType().name(), dubboAdapterHttpRequestFilter);
+    HttpRequestFilter grpcAdapterHttpRequestFilter = GrpcAdapterHttpRequestFilter.newFilter();
+    filters.put(grpcAdapterHttpRequestFilter.filterType().name(), grpcAdapterHttpRequestFilter);
   }
 
   public static HttpRequestFilterChain requestFilterChain() {
     GroovyFilterCacheComponent filterComponent =
         SpringContextHolder.getBean(GroovyFilterCacheComponent.class);
-    if (filterComponent.requestChanged()) {
-      List<String> groovyFilters = filterComponent.getRequestGroovyCode();
-      for (String groovyFilter : groovyFilters) {
-        Class<?> clazz = GroovyCompiler.compile(groovyFilter);
-        try {
-          HttpRequestFilter requestFilter = (HttpRequestFilter) clazz.newInstance();
-          filters.add(requestFilter);
-        } catch (Throwable e) {
-          e.printStackTrace();
-        }
+    Map<String, String> groovyFilters = filterComponent.getRequestGroovyCode();
+    for (Map.Entry<String, String> entry : groovyFilters.entrySet()) {
+      String name = entry.getKey();
+      String filter = entry.getValue();
+      Class<?> clazz = GroovyCompiler.compile(filter);
+      try {
+        HttpRequestFilter requestFilter = (HttpRequestFilter) clazz.newInstance();
+        filters.put(name, requestFilter);
+      } catch (Throwable e) {
+        e.printStackTrace();
       }
-      Collections.sort(filters, new Comparator<HttpRequestFilter>() {
-        @Override
-        public int compare(HttpRequestFilter o1, HttpRequestFilter o2) {
-          return o1.filterType().order() - o2.filterType().order();
-        }
-      });
+    }
+    List<String> keys = filterComponent.getRequestDeleteKey();
+    for (String key : keys) {
+      filters.remove(key);
     }
     return filterChain;
   }
@@ -67,7 +79,15 @@ public class HttpRequestFilterChain {
 
   public HttpResponse doFilter(HttpRequest originalRequest, HttpObject httpObject,
       ChannelHandlerContext channelHandlerContext) {
-    for (HttpRequestFilter filter : filters) {
+    List<Map.Entry<String, HttpRequestFilter>> list = Lists.newArrayList(filters.entrySet());
+    Collections.sort(list, new Comparator<Map.Entry<String, HttpRequestFilter>>() {
+      public int compare(Entry<String, HttpRequestFilter> o1, Entry<String, HttpRequestFilter> o2) {
+        return o1.getValue().filterType().order() - o2.getValue().filterType().order();
+      }
+
+    });
+    for (Iterator<Map.Entry<String, HttpRequestFilter>> it = list.iterator(); it.hasNext();) {
+      HttpRequestFilter filter = it.next().getValue();
       HttpResponse response = filter.doFilter(originalRequest, httpObject, channelHandlerContext);
       // 如果一个filter有返回值，将会中断下一个filter，这里需要注意filter的顺序，默认grpc->dubbo
       if (response != null) {

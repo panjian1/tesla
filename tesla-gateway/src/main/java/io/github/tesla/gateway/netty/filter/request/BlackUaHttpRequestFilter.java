@@ -16,7 +16,7 @@ package io.github.tesla.gateway.netty.filter.request;
 import java.util.List;
 
 import io.github.tesla.gateway.netty.filter.FilterUtil;
-import io.github.tesla.rule.FilterTypeEnum;
+import io.github.tesla.rule.RequestFilterTypeEnum;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
@@ -53,8 +53,8 @@ public class BlackUaHttpRequestFilter extends HttpRequestFilter {
   }
 
   @Override
-  public FilterTypeEnum filterType() {
-    return FilterTypeEnum.BlackUaHttpRequestFilter;
+  public RequestFilterTypeEnum filterType() {
+    return RequestFilterTypeEnum.BlackUaHttpRequestFilter;
   }
 
 }

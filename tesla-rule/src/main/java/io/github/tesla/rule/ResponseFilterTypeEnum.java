@@ -11,13 +11,13 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package io.github.tesla.gateway.netty.filter.response;
+package io.github.tesla.rule;
 
 /**
  * @author liushiming
  * @version ResponseFilterOrder.java, v 0.0.1 2018年1月26日 下午4:58:38 liushiming
  */
-public enum ResponseFilterOrder {
+public enum ResponseFilterTypeEnum {
 
 
   /**
@@ -28,11 +28,20 @@ public enum ResponseFilterOrder {
 
   private int filterOrder;
 
-  ResponseFilterOrder(int filteOrder) {
+  ResponseFilterTypeEnum(int filteOrder) {
     this.filterOrder = filteOrder;
   }
 
-  public int getFilterOrder() {
+  public int order() {
     return filterOrder;
+  }
+
+  public static ResponseFilterTypeEnum fromTypeName(String typeName) {
+    for (ResponseFilterTypeEnum type : ResponseFilterTypeEnum.values()) {
+      if (type.name().equals(typeName)) {
+        return type;
+      }
+    }
+    return null;
   }
 }

@@ -15,7 +15,7 @@ package io.github.tesla.rule.domain;
 
 import java.io.Serializable;
 
-import io.github.tesla.rule.FilterTypeEnum;
+import io.github.tesla.rule.RequestFilterTypeEnum;
 
 /**
  * @author liushiming
@@ -27,22 +27,22 @@ public class FilterRuleDO implements Serializable {
 
   private Long id;
 
-  private FilterTypeEnum filterType;
+  private RequestFilterTypeEnum filterType;
 
   private String rule;
 
   private String url;
 
-  public FilterTypeEnum getFilterType() {
+  public RequestFilterTypeEnum getFilterType() {
     return filterType;
   }
 
-  public void setFilterType(FilterTypeEnum filterType) {
+  public void setFilterType(RequestFilterTypeEnum filterType) {
     this.filterType = filterType;
   }
 
   public void setFilterType(String filterType) {
-    FilterTypeEnum type = FilterTypeEnum.fromTypeName(filterType);
+    RequestFilterTypeEnum type = RequestFilterTypeEnum.fromTypeName(filterType);
     if (type != null) {
       this.filterType = type;
     } else {

@@ -17,7 +17,7 @@ package io.github.tesla.rule;
  * @author liushiming
  * @version FilterOrder.java, v 0.0.1 2018年1月26日 下午4:07:44 liushiming
  */
-public enum FilterTypeEnum {
+public enum RequestFilterTypeEnum {
 
 
   /**
@@ -41,7 +41,7 @@ public enum FilterTypeEnum {
   DUBBO(101);
   private int filterOrder;
 
-  FilterTypeEnum(int filteOrder) {
+  RequestFilterTypeEnum(int filteOrder) {
     this.filterOrder = filteOrder;
   }
 
@@ -49,8 +49,8 @@ public enum FilterTypeEnum {
     return filterOrder;
   }
 
-  public static FilterTypeEnum fromTypeName(String typeName) {
-    for (FilterTypeEnum type : FilterTypeEnum.values()) {
+  public static RequestFilterTypeEnum fromTypeName(String typeName) {
+    for (RequestFilterTypeEnum type : RequestFilterTypeEnum.values()) {
       if (type.name().equals(typeName)) {
         return type;
       }
