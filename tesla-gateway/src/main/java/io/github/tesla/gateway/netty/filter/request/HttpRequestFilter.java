@@ -33,6 +33,10 @@ public abstract class HttpRequestFilter {
 
   public abstract RequestFilterTypeEnum filterType();
 
+  public String filterName() {
+    return filterType().name();
+  }
+
   protected List<String> getRule(HttpRequestFilter filterClazz) {
     FilterRuleCacheComponent ruleCache =
         SpringContextHolder.getBean(FilterRuleCacheComponent.class);

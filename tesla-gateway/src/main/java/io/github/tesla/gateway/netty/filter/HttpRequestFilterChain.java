@@ -33,25 +33,25 @@ public class HttpRequestFilterChain {
 
   static {
     HttpRequestFilter blackIpHttpRequesFilter = BlackIpHttpRequesFilter.newFilter();
-    filters.put(blackIpHttpRequesFilter.filterType().name(), blackIpHttpRequesFilter);
+    filters.put(blackIpHttpRequesFilter.filterName(), blackIpHttpRequesFilter);
     HttpRequestFilter blackCookieHttpRequestFilter = BlackCookieHttpRequestFilter.newFilter();
-    filters.put(blackCookieHttpRequestFilter.filterType().name(), blackCookieHttpRequestFilter);
+    filters.put(blackCookieHttpRequestFilter.filterName(), blackCookieHttpRequestFilter);
     HttpRequestFilter rateLimitHttpRequestFilter = RateLimitHttpRequestFilter.newFilter();
-    filters.put(rateLimitHttpRequestFilter.filterType().name(), rateLimitHttpRequestFilter);
+    filters.put(rateLimitHttpRequestFilter.filterName(), rateLimitHttpRequestFilter);
     HttpRequestFilter securityScannerHttpRequestFilter =
         SecurityScannerHttpRequestFilter.newFilter();
-    filters.put(securityScannerHttpRequestFilter.filterType().name(),
+    filters.put(securityScannerHttpRequestFilter.filterName(),
         securityScannerHttpRequestFilter);
     HttpRequestFilter blackUaHttpRequestFilter = BlackUaHttpRequestFilter.newFilter();
-    filters.put(blackUaHttpRequestFilter.filterType().name(), blackUaHttpRequestFilter);
+    filters.put(blackUaHttpRequestFilter.filterName(), blackUaHttpRequestFilter);
     HttpRequestFilter blackURLHttpRequestFilter = BlackURLHttpRequestFilter.newFilter();
-    filters.put(blackURLHttpRequestFilter.filterType().name(), blackURLHttpRequestFilter);
+    filters.put(blackURLHttpRequestFilter.filterName(), blackURLHttpRequestFilter);
     HttpRequestFilter uRLParamHttpRequestFilter = URLParamHttpRequestFilter.newFilter();
-    filters.put(uRLParamHttpRequestFilter.filterType().name(), uRLParamHttpRequestFilter);
+    filters.put(uRLParamHttpRequestFilter.filterName(), uRLParamHttpRequestFilter);
     HttpRequestFilter dubboAdapterHttpRequestFilter = DubboAdapterHttpRequestFilter.newFilter();
-    filters.put(dubboAdapterHttpRequestFilter.filterType().name(), dubboAdapterHttpRequestFilter);
+    filters.put(dubboAdapterHttpRequestFilter.filterName(), dubboAdapterHttpRequestFilter);
     HttpRequestFilter grpcAdapterHttpRequestFilter = GrpcAdapterHttpRequestFilter.newFilter();
-    filters.put(grpcAdapterHttpRequestFilter.filterType().name(), grpcAdapterHttpRequestFilter);
+    filters.put(grpcAdapterHttpRequestFilter.filterName(), grpcAdapterHttpRequestFilter);
   }
 
   public static HttpRequestFilterChain requestFilterChain() {
