@@ -335,14 +335,12 @@ DROP TABLE IF EXISTS `gateway_filterrule`;
 CREATE TABLE `gateway_filterrule` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `filter_type` varchar(100) DEFAULT NULL,
-  `rule` varchar(200) DEFAULT NULL,
+  `rule` varchar(1000) DEFAULT NULL,
   `url` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
 INSERT INTO `gateway_filterrule` (`id`, `filter_type`, `rule`, `url`)
 VALUES
-	(1,'BlackCookieHttpRequestFilter','\\.\\./\n\\:\\$\n\\$\\{\nselect.+(from|limit)\n(?:(union(.*?)select))\nhaving|rongjitest\nsleep\\((\\s*)(\\d*)(\\s*)\\)\nbenchmark\\((.*)\\,(.*)\\)\nbase64_decode\\(\n(?:from\\W+information_schema\\W)\n(?:(?:current_)user|datab',NULL),
-	(2,'URLParamHttpRequestFilter','\\.\\./\n\\:\\$\n\\$\\{\nselect.+(from|limit)\n(?:(union(.*?)select))\nhaving|rongjitest\nsleep\\((\\s*)(\\d*)(\\s*)\\)\nbenchmark\\((.*)\\,(.*)\\)\nbase64_decode\\(\n(?:from\\W+information_schema\\W)\n(?:(?:current_)user|datab',NULL);
- 
+	(1,'BlackCookieHttpRequestFilter','\\.\\./\n\\:\\$\n\\$\\{\nselect.+(from|limit)\n(?:(union(.*?)select))\nhaving|rongjitest\nsleep\\((\\s*)(\\d*)(\\s*)\\)\nbenchmark\\((.*)\\,(.*)\\)\nbase64_decode\\(\n(?:from\\W+information_schema\\W)\n(?:(?:current_)user|database|schema|connection_id)\\s*\\(\n(?:etc\\/\\W*passwd)\ninto(\\s+)+(?:dump|out)file\\s*\ngroup\\s+by.+\\(\nxwork.methodaccessor\n(?:define|eval|file_get_contents|include|require|require_once|shell_exec|phpinfo|system|passthru|preg_\\w+|execute|echo|print|print_r|var_dump|(fp)open|alert|showmodaldialog)\\(\nxwork\\.methodaccessor\n(gopher|doc|php|glob|file|phar|zlib|ftp|ldap|dict|ogg|data)\\:\\/\njava\\.lang\n\\$_(get|post|cookie|files|session|env|phplib|globals|server)\\[\n',NULL),
+	(2,'URLParamHttpRequestFilter','\\.\\./\n\\:\\$\n\\$\\{\nselect.+(from|limit)\n(?:(union(.*?)select))\nhaving|rongjitest\nsleep\\((\\s*)(\\d*)(\\s*)\\)\nbenchmark\\((.*)\\,(.*)\\)\nbase64_decode\\(\n(?:from\\W+information_schema\\W)\n(?:(?:current_)user|database|schema|connection_id)\\s*\\(\n(?:etc\\/\\W*passwd)\ninto(\\s+)+(?:dump|out)file\\s*\ngroup\\s+by.+\\(\nxwork.methodaccessor\n(?:define|eval|file_get_contents|include|require|require_once|shell_exec|phpinfo|system|passthru|preg_\\w+|execute|echo|print|print_r|var_dump|(fp)open|alert|showmodaldialog)\\(\nxwork\\.MethodAccessor\n(gopher|doc|php|glob|file|phar|zlib|ftp|ldap|dict|ogg|data)\\:\\/\njava\\.lang\n\\$_(get|post|cookie|files|session|env|phplib|globals|server)\\[\n\\<(iframe|script|body|img|layer|div|meta|style|base|object|input)\n(onmouseover|onerror|onload)\\=\n',NULL);
