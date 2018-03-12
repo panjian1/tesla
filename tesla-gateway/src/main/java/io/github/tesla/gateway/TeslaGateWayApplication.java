@@ -27,7 +27,7 @@ import io.github.tesla.gateway.netty.HttpProxyServer;
 
 /**
  * @author liushiming
- * @version SalukiGateWayApplication.java, v 0.0.1 2018年1月24日 下午4:37:37 liushiming
+ * @version TeslaGateWayApplication.java, v 0.0.1 2018年1月24日 下午4:37:37 liushiming
  */
 @MapperScan(basePackages = {"io.github.tesla.rule"}, annotationClass = Mapper.class)
 @SpringBootApplication(
