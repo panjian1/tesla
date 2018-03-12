@@ -16,8 +16,8 @@ import io.github.tesla.gateway.netty.filter.request.BlackCookieHttpRequestFilter
 import io.github.tesla.gateway.netty.filter.request.BlackIpHttpRequesFilter;
 import io.github.tesla.gateway.netty.filter.request.BlackURLHttpRequestFilter;
 import io.github.tesla.gateway.netty.filter.request.BlackUaHttpRequestFilter;
-import io.github.tesla.gateway.netty.filter.request.DubboAdapterHttpRequestFilter;
-import io.github.tesla.gateway.netty.filter.request.GrpcAdapterHttpRequestFilter;
+import io.github.tesla.gateway.netty.filter.request.DubboTransformHttpRequestFilter;
+import io.github.tesla.gateway.netty.filter.request.GrpcTransformHttpRequestFilter;
 import io.github.tesla.gateway.netty.filter.request.HttpRequestFilter;
 import io.github.tesla.gateway.netty.filter.request.RateLimitHttpRequestFilter;
 import io.github.tesla.gateway.netty.filter.request.SecurityScannerHttpRequestFilter;
@@ -48,9 +48,9 @@ public class HttpRequestFilterChain {
     filters.put(blackURLHttpRequestFilter.filterName(), blackURLHttpRequestFilter);
     HttpRequestFilter uRLParamHttpRequestFilter = URLParamHttpRequestFilter.newFilter();
     filters.put(uRLParamHttpRequestFilter.filterName(), uRLParamHttpRequestFilter);
-    HttpRequestFilter dubboAdapterHttpRequestFilter = DubboAdapterHttpRequestFilter.newFilter();
+    HttpRequestFilter dubboAdapterHttpRequestFilter = DubboTransformHttpRequestFilter.newFilter();
     filters.put(dubboAdapterHttpRequestFilter.filterName(), dubboAdapterHttpRequestFilter);
-    HttpRequestFilter grpcAdapterHttpRequestFilter = GrpcAdapterHttpRequestFilter.newFilter();
+    HttpRequestFilter grpcAdapterHttpRequestFilter = GrpcTransformHttpRequestFilter.newFilter();
     filters.put(grpcAdapterHttpRequestFilter.filterName(), grpcAdapterHttpRequestFilter);
   }
 

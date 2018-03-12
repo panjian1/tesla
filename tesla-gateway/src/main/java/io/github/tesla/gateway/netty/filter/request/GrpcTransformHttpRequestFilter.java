@@ -34,7 +34,7 @@ import io.netty.util.CharsetUtil;
  * @author liushiming
  * @version GrpcAdapterHttpRequestFilter.java, v 0.0.1 2018年1月26日 下午4:06:35 liushiming
  */
-public class GrpcAdapterHttpRequestFilter extends HttpRequestFilter {
+public class GrpcTransformHttpRequestFilter extends HttpRequestFilter {
 
   private final DynamicGrpcClient grpcClient = SpringContextHolder.getBean(DynamicGrpcClient.class);
 
@@ -42,7 +42,7 @@ public class GrpcAdapterHttpRequestFilter extends HttpRequestFilter {
       SpringContextHolder.getBean(DynamicsRouteCacheComponent.class);
 
   public static HttpRequestFilter newFilter() {
-    return new GrpcAdapterHttpRequestFilter();
+    return new GrpcTransformHttpRequestFilter();
   }
 
   @Override

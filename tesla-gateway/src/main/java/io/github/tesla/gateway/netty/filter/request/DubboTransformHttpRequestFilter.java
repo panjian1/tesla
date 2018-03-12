@@ -32,9 +32,9 @@ import io.netty.util.CharsetUtil;
 
 /**
  * @author liushiming
- * @version DubboAdapterHttpRequestFilter.java, v 0.0.1 2018年1月26日 下午4:07:13 liushiming
+ * @version DubboTransformHttpRequestFilter.java, v 0.0.1 2018年1月26日 下午4:07:13 liushiming
  */
-public class DubboAdapterHttpRequestFilter extends HttpRequestFilter {
+public class DubboTransformHttpRequestFilter extends HttpRequestFilter {
 
   private final DynamicDubboClient dubboClient =
       SpringContextHolder.getBean(DynamicDubboClient.class);
@@ -44,7 +44,7 @@ public class DubboAdapterHttpRequestFilter extends HttpRequestFilter {
 
 
   public static HttpRequestFilter newFilter() {
-    return new DubboAdapterHttpRequestFilter();
+    return new DubboTransformHttpRequestFilter();
   }
 
   @Override

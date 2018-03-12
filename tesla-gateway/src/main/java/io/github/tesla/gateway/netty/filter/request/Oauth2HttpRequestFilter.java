@@ -37,7 +37,7 @@ public class Oauth2HttpRequestFilter extends HttpRequestFilter {
       SpringContextHolder.getBean(Oauth2TokenCacheComponent.class);
 
   public static HttpRequestFilter newFilter() {
-    return new GrpcAdapterHttpRequestFilter();
+    return new GrpcTransformHttpRequestFilter();
   }
 
   @Override
