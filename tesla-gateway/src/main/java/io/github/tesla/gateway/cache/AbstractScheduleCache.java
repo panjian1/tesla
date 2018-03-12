@@ -19,6 +19,8 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +35,8 @@ public abstract class AbstractScheduleCache {
   private static final ScheduledExecutorService SCHEDULE_EXCUTOR =
       Executors.newScheduledThreadPool(cpu, new NamedThreadFactory());
 
-  public AbstractScheduleCache() {
+  @PostConstruct
+  public void doSchedule() {
     SCHEDULE_EXCUTOR.scheduleAtFixedRate(new Runnable() {
 
       @Override

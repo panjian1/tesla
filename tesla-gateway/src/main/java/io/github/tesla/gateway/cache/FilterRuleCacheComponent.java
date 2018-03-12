@@ -27,7 +27,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import io.github.tesla.gateway.netty.filter.request.HttpRequestFilter;
-import io.github.tesla.rule.RequestFilterTypeEnum;
 import io.github.tesla.rule.dao.FilterRuleDao;
 import io.github.tesla.rule.domain.FilterRuleDO;
 
@@ -42,11 +41,10 @@ public class FilterRuleCacheComponent extends AbstractScheduleCache {
   private FilterRuleDao rilterRuleDao;
 
   // 针对所有url的过滤规则
-  private static final Map<RequestFilterTypeEnum, List<String>> COMMUNITY_RULE_CACHE =
-      Maps.newConcurrentMap();
+  private static final Map<String, List<String>> COMMUNITY_RULE_CACHE = Maps.newConcurrentMap();
 
   // 针对特定url的过滤规则
-  private static final Map<RequestFilterTypeEnum, Map<String, List<String>>> URL_RULE_CACHE =
+  private static final Map<String, Map<String, List<String>>> URL_RULE_CACHE =
       Maps.newConcurrentMap();
 
   private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
@@ -55,9 +53,6 @@ public class FilterRuleCacheComponent extends AbstractScheduleCache {
 
   private static final String LINE_SEPARATOR_WINDOWS = "\r\n";
 
-  public FilterRuleCacheComponent() {
-    super();
-  }
 
   @Override
   protected void doCache() {
@@ -67,7 +62,7 @@ public class FilterRuleCacheComponent extends AbstractScheduleCache {
       URL_RULE_CACHE.clear();
       List<FilterRuleDO> filterRuleDOs = rilterRuleDao.list(Maps.newHashMap());
       for (FilterRuleDO ruleDO : filterRuleDOs) {
-        RequestFilterTypeEnum type = ruleDO.getFilterType();
+        String type = ruleDO.getFilterType().name();
         String rule = ruleDO.getRule();
         String url = ruleDO.getUrl();
         if (StringUtils.isEmpty(url)) {
@@ -117,7 +112,7 @@ public class FilterRuleCacheComponent extends AbstractScheduleCache {
   public List<Pattern> getPubicFilterRule(HttpRequestFilter filter) {
     try {
       readWriteLock.readLock().lock();
-      RequestFilterTypeEnum type = filter.filterType();
+      String type = filter.filterType().name();
       List<String> patterns = COMMUNITY_RULE_CACHE.get(type);
       List<Pattern> compilePatterns = Lists.newArrayList();
       if (patterns != null) {
@@ -141,7 +136,7 @@ public class FilterRuleCacheComponent extends AbstractScheduleCache {
   public Map<String, List<String>> getUrlFilterRule(HttpRequestFilter filter) {
     try {
       readWriteLock.readLock().lock();
-      RequestFilterTypeEnum type = filter.filterType();
+      String type = filter.filterType().name();
       Map<String, List<String>> patterns = URL_RULE_CACHE.get(type);
       if (patterns == null) {
         patterns = Maps.newConcurrentMap();

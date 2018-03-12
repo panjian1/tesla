@@ -51,9 +51,6 @@ public class DynamicsRouteCacheComponent extends AbstractScheduleCache {
   @Autowired
   private RpcDao rpcDao;
 
-  public DynamicsRouteCacheComponent() {
-    super();
-  }
 
   @Override
   protected void doCache() {
