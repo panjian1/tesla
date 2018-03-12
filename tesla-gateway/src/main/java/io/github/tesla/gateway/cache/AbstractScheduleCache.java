@@ -31,9 +31,9 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractScheduleCache {
   private static final Logger LOGGER = LoggerFactory.getLogger(AbstractScheduleCache.class);
   private static final int cpu = Runtime.getRuntime().availableProcessors();
-  private static final long INTERVAL = 60;
   private static final ScheduledExecutorService SCHEDULE_EXCUTOR =
       Executors.newScheduledThreadPool(cpu, new NamedThreadFactory());
+  private long INTERVAL = 60;
 
   @PostConstruct
   public void doSchedule() {
