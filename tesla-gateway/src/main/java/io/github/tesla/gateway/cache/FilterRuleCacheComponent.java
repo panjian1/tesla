@@ -16,6 +16,7 @@ package io.github.tesla.gateway.cache;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,15 +93,23 @@ public class FilterRuleCacheComponent extends AbstractScheduleCache {
 
 
 
-  public List<String> getPubicFilterRule(HttpRequestFilter filter) {
+  public List<Pattern> getPubicFilterRule(HttpRequestFilter filter) {
     try {
       readWriteLock.readLock().lock();
       RequestFilterTypeEnum type = filter.filterType();
       List<String> patterns = COMMUNITY_RULE_CACHE.get(type);
-      if (patterns == null) {
-        patterns = Lists.newArrayList();
+      List<Pattern> compilePatterns = Lists.newArrayList();
+      if (patterns != null) {
+        for (String pattern : patterns) {
+          try {
+            Pattern compilePattern = Pattern.compile(pattern);
+            compilePatterns.add(compilePattern);
+          } catch (Throwable e) {
+            e.printStackTrace();
+          }
+        }
       }
-      return patterns;
+      return compilePatterns;
     } finally {
       readWriteLock.readLock().unlock();
     }
@@ -122,8 +131,7 @@ public class FilterRuleCacheComponent extends AbstractScheduleCache {
     }
 
   }
-  
-  
-  
+
+
 
 }

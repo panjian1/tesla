@@ -15,6 +15,8 @@ package io.github.tesla.gateway.netty.filter.request;
 
 import java.net.URLDecoder;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.github.tesla.rule.RequestFilterTypeEnum;
 import io.netty.channel.ChannelHandlerContext;
@@ -52,11 +54,12 @@ public class URLParamHttpRequestFilter extends HttpRequestFilter {
           for (String arg : args) {
             String[] kv = arg.split("=");
             if (kv.length == 2) {
-              List<String> patterns = super.getRule(this);
-              for (String pattern : patterns) {
+              List<Pattern> patterns = super.getRule(this);
+              for (Pattern pattern : patterns) {
                 String param = kv[1].toLowerCase();
-                if (pathMatcher.match(pattern, param)) {
-                  super.writeFilterLog(param, this.getClass(), pattern);
+                Matcher matcher = pattern.matcher(param);
+                if (matcher.find()) {
+                  super.writeFilterLog(param, this.getClass(), pattern.pattern());
                   return super.createResponse(HttpResponseStatus.FORBIDDEN, originalRequest);
                 }
               }

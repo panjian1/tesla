@@ -14,6 +14,8 @@
 package io.github.tesla.gateway.netty.filter.request;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.github.tesla.gateway.netty.filter.FilterUtil;
 import io.github.tesla.rule.RequestFilterTypeEnum;
@@ -24,8 +26,31 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
- * @author liushiming
- * @version CookieHttpRequestFilter.java, v 0.0.1 2018年1月26日 下午3:56:53 liushiming
+ *
+ * <pre>
+../
+:$
+${
+select.+(from|limit)
+(?:(union(.*?)select))
+having|rongjitest
+sleep((s*)(d*)(s*))
+benchmark((.*),(.*))
+base64_decode(
+(?:fromW+information_schemaW)
+(?:(?:current_)user|database|schema|connection_id)s*(
+(?:etc/W*passwd)
+into(s+)+(?:dump|out)files*
+groups+by.+(
+xwork.methodaccessor
+(?:define|eval|file_get_contents|include|require|require_once|shell_exec|phpinfo|system|passthru|preg_w+|execute|echo|print|print_r|var_dump|(fp)open|alert|showmodaldialog)(
+xwork.methodaccessor
+(gopher|doc|php|glob|file|phar|zlib|ftp|ldap|dict|ogg|data):/
+java.lang
+$_(get|post|cookie|files|session|env|phplib|globals|server)[
+ * </pre>
+ *
+ *
  */
 public class BlackCookieHttpRequestFilter extends HttpRequestFilter {
 
@@ -39,13 +64,14 @@ public class BlackCookieHttpRequestFilter extends HttpRequestFilter {
     if (httpObject instanceof HttpRequest) {
       HttpRequest httpRequest = (HttpRequest) httpObject;
       List<String> headerValues = FilterUtil.getHeaderValues(httpRequest, "Cookie");
-      List<String> patterns = super.getRule(this);
+      List<Pattern> patterns = super.getRule(this);
       if (headerValues.size() > 0 && headerValues.get(0) != null) {
         String[] cookies = headerValues.get(0).split(";");
         for (String cookie : cookies) {
-          for (String pattern : patterns) {
-            if (pathMatcher.match(pattern, cookie.toLowerCase())) {
-              super.writeFilterLog(cookie, BlackIpHttpRequesFilter.class, pattern);
+          for (Pattern pattern : patterns) {
+            Matcher matcher = pattern.matcher(cookie.toLowerCase());
+            if (matcher.find()) {
+              super.writeFilterLog(cookie, BlackIpHttpRequesFilter.class, pattern.pattern());
               return super.createResponse(HttpResponseStatus.FORBIDDEN, originalRequest);
             }
           }
@@ -58,6 +84,12 @@ public class BlackCookieHttpRequestFilter extends HttpRequestFilter {
   @Override
   public RequestFilterTypeEnum filterType() {
     return RequestFilterTypeEnum.BlackCookieHttpRequestFilter;
+  }
+
+  public static void main(String[] args) {
+    Boolean pattern1 = pathMatcher.match("select*+(from|limit)", "select * from");
+
+    System.out.println(pattern1);
   }
 
 

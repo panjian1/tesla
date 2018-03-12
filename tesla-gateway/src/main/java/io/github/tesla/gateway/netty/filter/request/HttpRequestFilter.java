@@ -1,6 +1,7 @@
 package io.github.tesla.gateway.netty.filter.request;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,7 @@ public abstract class HttpRequestFilter {
     return filterType().name();
   }
 
-  protected List<String> getRule(HttpRequestFilter filterClazz) {
+  protected List<Pattern> getRule(HttpRequestFilter filterClazz) {
     FilterRuleCacheComponent ruleCache =
         SpringContextHolder.getBean(FilterRuleCacheComponent.class);
     return ruleCache.getPubicFilterRule(filterClazz);

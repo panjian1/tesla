@@ -14,6 +14,8 @@
 package io.github.tesla.gateway.netty.filter.request;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.github.tesla.gateway.netty.filter.FilterUtil;
 import io.github.tesla.rule.RequestFilterTypeEnum;
@@ -38,12 +40,13 @@ public class BlackUaHttpRequestFilter extends HttpRequestFilter {
       ChannelHandlerContext channelHandlerContext) {
     if (httpObject instanceof HttpRequest) {
       List<String> headerValues = FilterUtil.getHeaderValues(originalRequest, "User-Agent");
-      List<String> patterns = super.getRule(this);
+      List<Pattern> patterns = super.getRule(this);
       if (headerValues.size() > 0 && headerValues.get(0) != null) {
-        for (String pattern : patterns) {
-          if (pathMatcher.match(pattern, headerValues.get(0))) {
+        for (Pattern pattern : patterns) {
+          Matcher matcher = pattern.matcher(headerValues.get(0));
+          if (matcher.find()) {
             super.writeFilterLog(headerValues.toString(), BlackIpHttpRequesFilter.class,
-                pattern.toString());
+                pattern.pattern());
             return super.createResponse(HttpResponseStatus.FORBIDDEN, originalRequest);
           }
         }
