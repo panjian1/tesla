@@ -334,9 +334,15 @@ DROP TABLE IF EXISTS `gateway_filterrule`;
 
 CREATE TABLE `gateway_filterrule` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `filter_type` varchar(20) DEFAULT NULL,
-  `rule` varchar(20) DEFAULT NULL,
-  `url` varchar(20) DEFAULT NULL,
+  `filter_type` varchar(100) DEFAULT NULL,
+  `rule` varchar(200) DEFAULT NULL,
+  `url` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+INSERT INTO `gateway_filterrule` (`id`, `filter_type`, `rule`, `url`)
+VALUES
+	(1,'BlackCookieHttpRequestFilter','\\.\\./\n\\:\\$\n\\$\\{\nselect.+(from|limit)\n(?:(union(.*?)select))\nhaving|rongjitest\nsleep\\((\\s*)(\\d*)(\\s*)\\)\nbenchmark\\((.*)\\,(.*)\\)\nbase64_decode\\(\n(?:from\\W+information_schema\\W)\n(?:(?:current_)user|datab',NULL),
+	(2,'URLParamHttpRequestFilter','\\.\\./\n\\:\\$\n\\$\\{\nselect.+(from|limit)\n(?:(union(.*?)select))\nhaving|rongjitest\nsleep\\((\\s*)(\\d*)(\\s*)\\)\nbenchmark\\((.*)\\,(.*)\\)\nbase64_decode\\(\n(?:from\\W+information_schema\\W)\n(?:(?:current_)user|datab',NULL);
  

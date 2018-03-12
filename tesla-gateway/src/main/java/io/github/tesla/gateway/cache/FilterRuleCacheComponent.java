@@ -13,6 +13,7 @@
  */
 package io.github.tesla.gateway.cache;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -50,6 +51,10 @@ public class FilterRuleCacheComponent extends AbstractScheduleCache {
 
   private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
+  private static final String LINE_SEPARATOR_UNIX = "\n";
+
+  private static final String LINE_SEPARATOR_WINDOWS = "\r\n";
+
   public FilterRuleCacheComponent() {
     super();
   }
@@ -71,7 +76,15 @@ public class FilterRuleCacheComponent extends AbstractScheduleCache {
             rules = Lists.newLinkedList();
             COMMUNITY_RULE_CACHE.put(type, rules);
           }
-          rules.add(rule);
+          if (StringUtils.contains(rule, LINE_SEPARATOR_UNIX)) {
+            String[] rulesSplits = StringUtils.split(rule, LINE_SEPARATOR_UNIX);
+            rules.addAll(Arrays.asList(rulesSplits));
+          } else if (StringUtils.contains(rule, LINE_SEPARATOR_WINDOWS)) {
+            String[] rulesSplits = StringUtils.split(rule, LINE_SEPARATOR_UNIX);
+            rules.addAll(Arrays.asList(rulesSplits));
+          } else {
+            rules.add(rule);
+          }
         } else {
           Map<String, List<String>> maprules = URL_RULE_CACHE.get(type);
           if (maprules == null) {
@@ -83,7 +96,15 @@ public class FilterRuleCacheComponent extends AbstractScheduleCache {
             rules = Lists.newLinkedList();
             maprules.put(url, rules);
           }
-          rules.add(rule);
+          if (StringUtils.contains(rule, LINE_SEPARATOR_UNIX)) {
+            String[] rulesSplits = StringUtils.split(rule, LINE_SEPARATOR_UNIX);
+            rules.addAll(Arrays.asList(rulesSplits));
+          } else if (StringUtils.contains(rule, LINE_SEPARATOR_WINDOWS)) {
+            String[] rulesSplits = StringUtils.split(rule, LINE_SEPARATOR_UNIX);
+            rules.addAll(Arrays.asList(rulesSplits));
+          } else {
+            rules.add(rule);
+          }
         }
       }
     } finally {

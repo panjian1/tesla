@@ -86,11 +86,4 @@ public class BlackCookieHttpRequestFilter extends HttpRequestFilter {
     return RequestFilterTypeEnum.BlackCookieHttpRequestFilter;
   }
 
-  public static void main(String[] args) {
-    Boolean pattern1 = pathMatcher.match("select*+(from|limit)", "select * from");
-
-    System.out.println(pattern1);
-  }
-
-
 }
