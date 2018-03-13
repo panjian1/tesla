@@ -44,7 +44,12 @@ public class FilterUtil {
   public static String getRealIp(HttpRequest httpRequest,
       ChannelHandlerContext channelHandlerContext) {
     List<String> headerValues = getHeaderValues(httpRequest, "X-Real-IP");
-    return headerValues.get(0);
+    if (headerValues.size() > 0) {
+      return headerValues.get(0);
+    } else {
+      return null;
+    }
+
   }
 
 

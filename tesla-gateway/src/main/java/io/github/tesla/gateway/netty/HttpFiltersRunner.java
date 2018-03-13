@@ -35,7 +35,7 @@ public class HttpFiltersRunner extends HttpFiltersAdapter {
           HttpRequestFilterChain.requestFilterChain().doFilter(originalRequest, httpObject, ctx);
     } catch (Exception e) {
       httpResponse = createResponse(HttpResponseStatus.BAD_GATEWAY, originalRequest);
-      logger.error("client's request failed", e.getCause());
+      logger.error("client's request failed", e);
     }
     return httpResponse;
   }

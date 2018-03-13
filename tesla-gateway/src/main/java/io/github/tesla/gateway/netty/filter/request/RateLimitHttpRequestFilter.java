@@ -16,7 +16,6 @@ package io.github.tesla.gateway.netty.filter.request;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import com.google.common.base.Function;
@@ -54,16 +53,16 @@ public class RateLimitHttpRequestFilter extends HttpRequestFilter {
             Map<String, List<String>> limiter =
                 ruleCache.getUrlFilterRule(RateLimitHttpRequestFilter.this);
             List<String> limitValue = limiter.get(key);
-            Double limitValueMax =
-                Collections.max(Lists.transform(limitValue, new Function<String, Double>() {
-
-                  @Override
-                  public Double apply(String input) {
-                    return Double.valueOf(input);
-                  }
-
-                }));
             if (limitValue != null) {
+              Double limitValueMax =
+                  Collections.max(Lists.transform(limitValue, new Function<String, Double>() {
+
+                    @Override
+                    public Double apply(String input) {
+                      return Double.valueOf(input);
+                    }
+
+                  }));
               RateLimiter rateLimiter = RateLimiter.create(limitValueMax);
               return rateLimiter;
             } else {
@@ -91,9 +90,8 @@ public class RateLimitHttpRequestFilter extends HttpRequestFilter {
       RateLimiter rateLimiter = null;
       try {
         rateLimiter = loadingCache.get(url);
-      } catch (ExecutionException e) {
-        e.printStackTrace();
-      } ;
+      } catch (Throwable e) {
+      }
       // 如果1秒钟没有获取令牌，说明被限制了
       if (rateLimiter != null && !rateLimiter.tryAcquire(1000, TimeUnit.MILLISECONDS)) {
         super.writeFilterLog(Double.toString(rateLimiter.getRate()), this.getClass(),

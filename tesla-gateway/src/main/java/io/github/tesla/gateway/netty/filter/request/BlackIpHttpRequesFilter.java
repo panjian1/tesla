@@ -26,7 +26,7 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
- *ip黑名单过滤
+ * ip黑名单过滤
  */
 public class BlackIpHttpRequesFilter extends HttpRequestFilter {
 
@@ -40,12 +40,14 @@ public class BlackIpHttpRequesFilter extends HttpRequestFilter {
     if (httpObject instanceof HttpRequest) {
       HttpRequest httpRequest = (HttpRequest) httpObject;
       String realIp = FilterUtil.getRealIp(httpRequest, channelHandlerContext);
-      List<Pattern> patterns = super.getRule(this);
-      for (Pattern pattern : patterns) {
-        Matcher matcher = pattern.matcher(realIp.toLowerCase());
-        if (matcher.find()) {
-          super.writeFilterLog(realIp, BlackIpHttpRequesFilter.class, pattern.pattern());
-          return super.createResponse(HttpResponseStatus.FORBIDDEN, originalRequest);
+      if (realIp != null) {
+        List<Pattern> patterns = super.getRule(this);
+        for (Pattern pattern : patterns) {
+          Matcher matcher = pattern.matcher(realIp.toLowerCase());
+          if (matcher.find()) {
+            super.writeFilterLog(realIp, BlackIpHttpRequesFilter.class, pattern.pattern());
+            return super.createResponse(HttpResponseStatus.FORBIDDEN, originalRequest);
+          }
         }
       }
     }
