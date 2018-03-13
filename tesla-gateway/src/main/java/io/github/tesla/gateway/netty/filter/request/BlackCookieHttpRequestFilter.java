@@ -26,31 +26,7 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
- *
- * <pre>
-../
-:$
-${
-select.+(from|limit)
-(?:(union(.*?)select))
-having|rongjitest
-sleep((s*)(d*)(s*))
-benchmark((.*),(.*))
-base64_decode(
-(?:fromW+information_schemaW)
-(?:(?:current_)user|database|schema|connection_id)s*(
-(?:etc/W*passwd)
-into(s+)+(?:dump|out)files*
-groups+by.+(
-xwork.methodaccessor
-(?:define|eval|file_get_contents|include|require|require_once|shell_exec|phpinfo|system|passthru|preg_w+|execute|echo|print|print_r|var_dump|(fp)open|alert|showmodaldialog)(
-xwork.methodaccessor
-(gopher|doc|php|glob|file|phar|zlib|ftp|ldap|dict|ogg|data):/
-java.lang
-$_(get|post|cookie|files|session|env|phplib|globals|server)[
- * </pre>
- *
- *
+ * cooki黑名单过滤
  */
 public class BlackCookieHttpRequestFilter extends HttpRequestFilter {
 

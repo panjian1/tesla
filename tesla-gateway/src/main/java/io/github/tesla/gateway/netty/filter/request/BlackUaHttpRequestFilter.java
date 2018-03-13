@@ -26,8 +26,7 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
- * @author liushiming
- * @version UaHttpRequestFilter.java, v 0.0.1 2018年1月26日 下午4:00:28 liushiming
+ *user-agent黑名单过滤
  */
 public class BlackUaHttpRequestFilter extends HttpRequestFilter {
 

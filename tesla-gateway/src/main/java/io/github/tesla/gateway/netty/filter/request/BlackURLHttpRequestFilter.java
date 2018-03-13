@@ -25,8 +25,7 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
- * @author liushiming
- * @version WriteURLHttpRequestFilter.java, v 0.0.1 2018年1月26日 下午4:09:50 liushiming
+ * url黑名单过滤
  */
 public class BlackURLHttpRequestFilter extends HttpRequestFilter {
 

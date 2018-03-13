@@ -31,8 +31,7 @@ import io.netty.handler.codec.http.HttpVersion;
 import io.netty.util.CharsetUtil;
 
 /**
- * @author liushiming
- * @version GrpcAdapterHttpRequestFilter.java, v 0.0.1 2018年1月26日 下午4:06:35 liushiming
+ *gRpc协议转换
  */
 public class GrpcTransformHttpRequestFilter extends HttpRequestFilter {
 

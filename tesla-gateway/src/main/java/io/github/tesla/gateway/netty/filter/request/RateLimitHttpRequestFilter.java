@@ -36,8 +36,7 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
- * @author liushiming
- * @version RateLimiterHttpRequestFilter.java, v 0.0.1 2018年1月26日 下午3:56:15 liushiming
+ * 限流
  */
 public class RateLimitHttpRequestFilter extends HttpRequestFilter {
 

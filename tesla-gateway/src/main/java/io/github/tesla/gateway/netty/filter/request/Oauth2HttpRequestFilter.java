@@ -27,8 +27,7 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
- * @author liushiming
- * @version Oauth2HttpRequestFilter.java, v 0.0.1 2018年2月10日 下午6:12:20 liushiming
+ * oauth2验证
  */
 public class Oauth2HttpRequestFilter extends HttpRequestFilter {
 

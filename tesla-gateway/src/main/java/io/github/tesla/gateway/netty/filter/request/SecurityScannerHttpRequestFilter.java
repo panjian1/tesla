@@ -24,8 +24,7 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
- * @author liushiming
- * @version ScannerHttpRequestFilter.java, v 0.0.1 2018年1月26日 下午4:00:15 liushiming
+ * 安全扫描限制
  */
 public class SecurityScannerHttpRequestFilter extends HttpRequestFilter {
 
