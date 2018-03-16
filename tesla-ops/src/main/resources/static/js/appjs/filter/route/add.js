@@ -29,6 +29,7 @@ function save() {
 	});
 }
 function validateRule() {
+	var icon = "<i class='fa fa-times-circle'></i> ";
 	$("#routeForm").validate({
 		rules : {
 			fromPath : {
@@ -89,7 +90,7 @@ function validateRule() {
 		},
 		messages : {
 			fromPath : {
-				required : "请输入路由路径！"
+				required : icon + "请输入路由路径！"
 			},
 			serviceName : {
 				required : "请输入服务名！"

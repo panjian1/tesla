@@ -50,7 +50,6 @@ $(document).ready(function(){
         onNext: function(tab, navigation, index) {
         	var $valid = $('.wizard-card form').valid();
         	if(!$valid) {
-        		$validator.focusInvalid();
         		return false;
         	}
         },
