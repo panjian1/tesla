@@ -1,8 +1,8 @@
-$().ready(function() {
+$(document).ready(function() {
 	validateRule();
 });
 $.validator.setDefaults({
-	submitHandler : function() {
+	submitHandler : function(form) {
 		save();
 	}
 });
@@ -29,62 +29,56 @@ function save() {
 	});
 }
 function validateRule() {
-	var icon = "<i class='fa fa-times-circle'></i> ";
 	$("#routeForm").validate({
 		rules : {
-			path : {
+			fromPath : {
 				required : true
 			},
 			serviceName : {
 				required : {
 					depends : function(value, element) {
-						var isGrpc = $('#grpc').val();
-						var isDubbo = $('#dubbo').val();
-						return isGrpc == 1 || isDubbo == 1;
+						var isRpc = $('#rpc').val();
+						return isRpc == 1;
 					}
 				}
 			},
 			methodName : {
 				required : {
 					depends : function(value, element) {
-						var isGrpc = $('#grpc').val();
-						var isDubbo = $('#dubbo').val();
-						return isGrpc == 1 || isDubbo == 1;
+						var isRpc = $('#rpc').val();
+						return isRpc == 1;
 					}
 				}
 			},
 			serviceGroup : {
 				required : {
 					depends : function(value, element) {
-						var isGrpc = $('#grpc').val();
-						var isDubbo = $('#dubbo').val();
-						return isGrpc == 1 || isDubbo == 1;
+						var isRpc = $('#rpc').val();
+						return isRpc == 1;
 					}
 				}
 			},
 			serviceVersion : {
 				required : {
 					depends : function(value, element) {
-						var isGrpc = $('#grpc').val();
-						var isDubbo = $('#dubbo').val();
-						return isGrpc == 1 || isDubbo == 1;
+						var isRpc = $('#rpc').val();
+						return isRpc == 1;
 					}
 				}
 			},
 			zipFile : {
 				required : {
 					depends : function(value, element) {
-						var isGrpc = $('#grpc').val();
-						return isGrpc == 1;
+						var isRpc = $('#rpc').val();
+						return isRpc == 1;
 					}
 				}
 			},
 			serviceFileName : {
 				required : {
 					depends : function(value, element) {
-						var isGrpc = $('#grpc').val();
-						var isDubbo = $('#dubbo').val();
-						if (isGrpc == 1) {
+						var isRpc = $('#rpc').val();
+						if (isRpc == 1) {
 							return $('#zipFile').val() != null;
 						} else {
 							return false;
@@ -94,26 +88,26 @@ function validateRule() {
 			}
 		},
 		messages : {
-			path : {
-				required : icon + "请输入路由路径！"
+			fromPath : {
+				required : "请输入路由路径！"
 			},
 			serviceName : {
-				required : icon + "请输入服务名！"
+				required : "请输入服务名！"
 			},
 			methodName : {
-				required : icon + "请输入方法名！"
+				required : "请输入方法名！"
 			},
 			serviceGroup : {
-				required : icon + "请输入组别！"
+				required : "请输入组别！"
 			},
 			serviceVersion : {
-				required : icon + "请输入版本！"
+				required : "请输入版本！"
 			},
 			zipFile : {
-				required : icon + "请上传proto目录文件！"
+				required : "请上传proto目录文件！"
 			},
 			serviceFileName : {
-				required : icon + "上传proto目录文件，需要指定目录中的服务定义文件名！"
+				required : "上传proto目录文件，需要指定目录中的服务定义文件名！"
 			}
 		}
 	})

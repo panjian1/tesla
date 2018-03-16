@@ -102,7 +102,7 @@ function add() {
 		title : '添加Oauth2客户端',
 		maxmin : true,
 		shadeClose : true,
-		area : [ '1100px', '500px' ],
+		area : [ '1300px', '700px' ],
 		content : prefix + '/add'
 	});
 }
@@ -134,7 +134,7 @@ function edit(id) {
 		title : '修改Oauth2客户端',
 		maxmin : true,
 		shadeClose : true,
-		area : [ '1100px', '500px' ],
+		area : [ '1300px', '700px' ],
 		content : prefix + '/edit/' + id
 	});
 }
