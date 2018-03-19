@@ -312,7 +312,7 @@ public class ProxyToServerConnection extends ProxyConnection<HttpResponse> {
 
   private void initializeConnectionFlow() {
     this.connectionFlow =
-        new ConnectionFlow(clientConnection, this, connectLock).then(ConnectChannel);
+        new ConnectionFlow(clientConnection, this, connectLock).then(connectChannel);
     if (ProxyUtils.isCONNECT(initialRequest)) {
       connectionFlow.then(serverConnection.StartTunneling)
           .then(clientConnection.RespondCONNECTSuccessful).then(clientConnection.StartTunneling);
@@ -320,7 +320,7 @@ public class ProxyToServerConnection extends ProxyConnection<HttpResponse> {
   }
 
 
-  private ConnectionFlowStep ConnectChannel = new ConnectionFlowStep(this, CONNECTING) {
+  private ConnectionFlowStep connectChannel = new ConnectionFlowStep(this, CONNECTING) {
     @Override
     public boolean shouldExecuteOnEventLoop() {
       return false;
