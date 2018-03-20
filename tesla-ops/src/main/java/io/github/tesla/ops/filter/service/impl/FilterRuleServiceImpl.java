@@ -19,7 +19,10 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import io.github.tesla.filter.dao.FilterRuleDao;
+import io.github.tesla.filter.domain.FilterRouteDO;
+import io.github.tesla.filter.domain.FilterRpcDO;
 import io.github.tesla.filter.domain.FilterRuleDO;
+import io.github.tesla.ops.filter.dto.FilterRouteDto;
 import io.github.tesla.ops.filter.service.FilterRuleService;
 import io.github.tesla.ops.system.domain.PageDO;
 import io.github.tesla.ops.utils.Query;
@@ -44,9 +47,9 @@ public class FilterRuleServiceImpl implements FilterRuleService {
   }
 
   @Override
-  public FilterRuleDO get(Long routeId) {
-    // TODO Auto-generated method stub
-    return null;
+  public FilterRuleDO get(Long ruleId) {
+    FilterRuleDO rule = ruleDao.get(ruleId);
+    return routeDto;
   }
 
   @Override
