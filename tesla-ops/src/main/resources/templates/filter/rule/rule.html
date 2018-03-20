@@ -9,11 +9,11 @@
 			<div class="ibox">
 				<div class="ibox-body">
 					<div id="exampleToolbar" role="group">
-						<button shiro:hasPermission="filter:route:add" type="button"
+						<button shiro:hasPermission="filter:rule:add" type="button"
 							class="btn btn-primary" onclick="add()">
 							<i class="fa fa-plus" aria-hidden="true"></i>添加
 						</button>
-						<button shiro:hasPermission="filter:route:batchRemove"
+						<button shiro:hasPermission="filter:rule:batchRemove"
 							type="button" class="btn btn-danger" onclick="batchRemove()">
 							<i class="fa fa-trash" aria-hidden="true"></i>删除
 						</button>
@@ -29,12 +29,12 @@
 				var s_remove_h = 'hidden';
 			</script>
 		</div>
-		<div shiro:hasPermission="filter:route:edit">
+		<div shiro:hasPermission="filter:rule:edit">
 			<script type="text/javascript">
 				s_edit_h = '';
 			</script>
 		</div>
-		<div shiro:hasPermission="filter:route:remove">
+		<div shiro:hasPermission="filter:rule:remove">
 			<script type="text/javascript">
 				var s_remove_h = '';
 			</script>
