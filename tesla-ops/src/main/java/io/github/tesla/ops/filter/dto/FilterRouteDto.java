@@ -15,8 +15,8 @@ package io.github.tesla.ops.filter.dto;
 
 import java.io.Serializable;
 
-import io.github.tesla.rule.domain.FilterRouteDO;
-import io.github.tesla.rule.domain.FilterRpcDO;
+import io.github.tesla.filter.domain.FilterRouteDO;
+import io.github.tesla.filter.domain.FilterRpcDO;
 
 /**
  * @author liushiming

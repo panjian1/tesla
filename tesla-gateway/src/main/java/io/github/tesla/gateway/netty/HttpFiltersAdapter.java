@@ -17,7 +17,7 @@ import java.net.InetSocketAddress;
 
 import io.github.tesla.gateway.cache.DynamicsRouteCacheComponent;
 import io.github.tesla.gateway.config.SpringContextHolder;
-import io.github.tesla.rule.domain.FilterRouteDO;
+import io.github.tesla.filter.domain.FilterRouteDO;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpObject;

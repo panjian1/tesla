@@ -27,7 +27,7 @@ import com.google.common.util.concurrent.RateLimiter;
 
 import io.github.tesla.gateway.cache.FilterRuleCacheComponent;
 import io.github.tesla.gateway.config.SpringContextHolder;
-import io.github.tesla.rule.RequestFilterTypeEnum;
+import io.github.tesla.filter.RequestFilterTypeEnum;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;

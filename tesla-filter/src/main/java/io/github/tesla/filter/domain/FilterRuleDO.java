@@ -11,11 +11,11 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package io.github.tesla.rule.domain;
+package io.github.tesla.filter.domain;
 
 import java.io.Serializable;
 
-import io.github.tesla.rule.RequestFilterTypeEnum;
+import io.github.tesla.filter.RequestFilterTypeEnum;
 
 /**
  * @author liushiming

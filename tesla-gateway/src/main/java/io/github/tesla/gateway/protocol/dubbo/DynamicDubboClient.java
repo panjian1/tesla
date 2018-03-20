@@ -28,7 +28,7 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 
 import io.github.tesla.gateway.protocol.RpcDynamicClient;
-import io.github.tesla.rule.domain.FilterRpcDO;
+import io.github.tesla.filter.domain.FilterRpcDO;
 
 /**
  * @author liushiming

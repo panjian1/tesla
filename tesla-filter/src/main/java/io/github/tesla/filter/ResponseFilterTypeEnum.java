@@ -11,37 +11,24 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package io.github.tesla.rule;
+package io.github.tesla.filter;
 
 /**
  * @author liushiming
- * @version FilterOrder.java, v 0.0.1 2018年1月26日 下午4:07:44 liushiming
+ * @version ResponseFilterOrder.java, v 0.0.1 2018年1月26日 下午4:58:38 liushiming
  */
-public enum RequestFilterTypeEnum {
+public enum ResponseFilterTypeEnum {
 
 
   /**
    * 各种限制
    */
-  Oauth2HttpRequestFilter(0),// oauth2
-  URLParamHttpRequestFilter(1), // URL参数黑名单参数拦截
-  BlackCookieHttpRequestFilter(2), // Cookie黑名单拦截
-  BlackUaHttpRequestFilter(3), // User-Agent黑名单拦截
-  BlackURLHttpRequestFilter(4), // URL路径黑名单拦截
-  BlackIpHttpRequesFilter(5), // IP黑名单
-  SecurityScannerHttpRequestFilter(6), // 扫描
-  RateLimitHttpRequestFilter(7), // 限流
+  CLICKJACK(1) //
+  ;
 
-
-
-  /**
-   * 协议适配
-   */
-  GRPC(100), //
-  DUBBO(101);
   private int filterOrder;
 
-  RequestFilterTypeEnum(int filteOrder) {
+  ResponseFilterTypeEnum(int filteOrder) {
     this.filterOrder = filteOrder;
   }
 
@@ -49,14 +36,12 @@ public enum RequestFilterTypeEnum {
     return filterOrder;
   }
 
-  public static RequestFilterTypeEnum fromTypeName(String typeName) {
-    for (RequestFilterTypeEnum type : RequestFilterTypeEnum.values()) {
+  public static ResponseFilterTypeEnum fromTypeName(String typeName) {
+    for (ResponseFilterTypeEnum type : ResponseFilterTypeEnum.values()) {
       if (type.name().equals(typeName)) {
         return type;
       }
     }
     return null;
   }
-
-
 }

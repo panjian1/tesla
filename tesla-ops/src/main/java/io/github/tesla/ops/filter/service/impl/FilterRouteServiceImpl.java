@@ -26,10 +26,10 @@ import io.github.tesla.ops.filter.dto.FilterRouteDto;
 import io.github.tesla.ops.filter.service.FilterRouteService;
 import io.github.tesla.ops.system.domain.PageDO;
 import io.github.tesla.ops.utils.Query;
-import io.github.tesla.rule.dao.FilterRouteDao;
-import io.github.tesla.rule.dao.FilterRpcDao;
-import io.github.tesla.rule.domain.FilterRouteDO;
-import io.github.tesla.rule.domain.FilterRpcDO;
+import io.github.tesla.filter.dao.FilterRouteDao;
+import io.github.tesla.filter.dao.FilterRpcDao;
+import io.github.tesla.filter.domain.FilterRouteDO;
+import io.github.tesla.filter.domain.FilterRpcDO;
 
 /**
  * @author liushiming

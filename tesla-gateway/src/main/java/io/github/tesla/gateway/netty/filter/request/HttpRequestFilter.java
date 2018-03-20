@@ -11,7 +11,7 @@ import org.springframework.util.PathMatcher;
 import io.github.tesla.gateway.cache.FilterRuleCacheComponent;
 import io.github.tesla.gateway.config.SpringContextHolder;
 import io.github.tesla.gateway.netty.filter.FilterUtil;
-import io.github.tesla.rule.RequestFilterTypeEnum;
+import io.github.tesla.filter.RequestFilterTypeEnum;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.DefaultHttpHeaders;

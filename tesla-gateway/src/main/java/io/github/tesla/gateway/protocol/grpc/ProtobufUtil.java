@@ -24,7 +24,7 @@ import com.google.protobuf.Descriptors.MethodDescriptor;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.quancheng.saluki.core.grpc.exception.RpcBizException;
 
-import io.github.tesla.rule.domain.FilterRpcDO;
+import io.github.tesla.filter.domain.FilterRpcDO;
 
 /**
  * @author liushiming

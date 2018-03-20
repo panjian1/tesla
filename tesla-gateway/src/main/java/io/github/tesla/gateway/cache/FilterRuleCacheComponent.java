@@ -27,8 +27,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import io.github.tesla.gateway.netty.filter.request.HttpRequestFilter;
-import io.github.tesla.rule.dao.FilterRuleDao;
-import io.github.tesla.rule.domain.FilterRuleDO;
+import io.github.tesla.filter.dao.FilterRuleDao;
+import io.github.tesla.filter.domain.FilterRuleDO;
 
 /**
  * @author liushiming

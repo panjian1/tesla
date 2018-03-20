@@ -11,37 +11,35 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package io.github.tesla.rule.dao;
+package io.github.tesla.filter.dao;
 
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
-import io.github.tesla.rule.domain.FilterRpcDO;
+import io.github.tesla.filter.domain.FilterRouteDO;
 
 /**
  * @author liushiming
- * @version GrpcDao.java, v 0.0.1 2018年1月4日 上午10:48:12 liushiming
+ * @version RouteDao.java, v 0.0.1 2018年1月4日 上午10:38:23 liushiming
  */
 @Mapper
-public interface FilterRpcDao {
-  FilterRpcDO get(@Param("routeId") Long routeId);
+public interface FilterRouteDao {
 
-  FilterRpcDO getByService(@Param("serviceName") String serviceName,
-      @Param("methodName") String methodName, @Param("group") String group,
-      @Param("version") String version);
+  FilterRouteDO get(Long routeId);
 
-  List<FilterRpcDO> list(Map<String, Object> map);
+  FilterRouteDO load(String key);
 
-  int save(FilterRpcDO route);
+  List<FilterRouteDO> list(Map<String, Object> map);
 
-  int update(FilterRpcDO route);
+  int count(Map<String, Object> map);
 
-  int remove(Long id);
+  int save(FilterRouteDO route);
 
-  int removeByRouteId(Long routeId);
+  int update(FilterRouteDO route);
+
+  int remove(Long routeId);
 
   int batchRemove(Long[] routeIds);
 
