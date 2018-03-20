@@ -1,10 +1,10 @@
-var prefix = "/filter/route";
+var prefix = "/filter/rule";
 $(function() {
 	load();
 });
 
 function load() {
-	$('#routeTable')
+	$('#ruleTable')
 			.bootstrapTable(
 					{
 						method : 'get',
@@ -25,89 +25,47 @@ function load() {
 									checkbox : true
 								},
 								{
-									field : 'routeId',
+									field : 'id',
 									title : '序号'
 								},
 								{
-									field : 'fromPath',
-									title : '源路径'
+									field : 'filterType',
+									title : '类型'
 								},
 								{
-									field : 'toHostport',
-									title : '目标地址'
+									field : 'url',
+									title : 'url'
 								},
 								{
-									field : 'toPath',
-									title : '目标路径'
-								},
-								{
-									field : 'serviceId',
-									title : '服务ID'
+									field : 'rule',
+									title : '规则'
 								},
 								{
 									title : '操作',
-									field : 'routeId',
+									field : 'id',
 									align : 'center',
 									formatter : function(value, row, index) {
 										var e = '<a class="btn btn-primary btn-sm '
 												+ s_edit_h
 												+ '" href="#" mce_href="#" title="编辑" onclick="edit(\''
-												+ row.routeId
+												+ row.id
 												+ '\')"><i class="fa fa-edit"></i></a> ';
 										var d = '<a class="btn btn-warning btn-sm" href="#" title="删除"  mce_href="#" onclick="remove(\''
-												+ row.routeId
+												+ row.id
 												+ '\')"><i class="fa fa-remove"></i></a> ';
 										return e + d;
 									}
-								} ],
-						onExpandRow : function(index, row, $detail) {
-							if (row.rpc) {
-								chirdTable(index, row, $detail);
-							}
-						}
+								} ]
 					});
 }
 function reLoad() {
-	$('#routeTable').bootstrapTable('refresh');
+	$('#ruleTable').bootstrapTable('refresh');
 }
-function chirdTable(index, row, $detail) {
-	var cur_table = $detail.html('<table></table>').find('table');
-	var rows = [];
-	rows.push(row);
-	$(cur_table).bootstrapTable({
-		columns : [ {
-			field : 'rpc',
-			title : 'Rpc服务',
-			formatter : function(value, row, index) {
-				if (value) {
-					return "是";
-				} else {
-					return "否"
-				}
-			}
-		}, {
-			field : 'serviceName',
-			title : '接口名'
-		}, {
-			field : 'methodName',
-			title : '方法名'
-		}, {
-			field : 'serviceGroup',
-			title : '组别'
-		}, {
-			field : 'serviceVersion',
-			title : '版本'
-		}, {
-			field : 'inputParam',
-			title : '入参类型（dubbo）'
-		} ],
-		data : rows
-	});
-}
+
 function add() {
 	layer.open({
 		type : 2,
-		title : '添加路由',
+		title : '添加策略',
 		maxmin : true,
 		shadeClose : true,
 		area : [ '1300px', '700px' ],
@@ -139,7 +97,7 @@ function remove(id) {
 function edit(id) {
 	layer.open({
 		type : 2,
-		title : '路由修改',
+		title : '策略',
 		maxmin : true,
 		shadeClose : true,
 		area : [ '1300px', '700px' ],
@@ -147,7 +105,7 @@ function edit(id) {
 	});
 }
 function batchRemove() {
-	var rows = $('#routeTable').bootstrapTable('getSelections'); // 返回所有选择的行，当没有选择的记录时，返回一个空数组
+	var rows = $('#ruleTable').bootstrapTable('getSelections'); // 返回所有选择的行，当没有选择的记录时，返回一个空数组
 	if (rows.length == 0) {
 		layer.msg("请选择要删除的数据");
 		return;

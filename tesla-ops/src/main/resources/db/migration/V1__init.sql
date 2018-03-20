@@ -62,74 +62,92 @@ CREATE TABLE `sys_menu` (
 -- ----------------------------
 INSERT INTO `sys_menu` VALUES ('1', '0', '系统管理', null, null, '0', 'fa fa-desktop', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 INSERT INTO `sys_menu` VALUES ('2', '0', '系统监控', null, null, '0', 'fa fa-video-camera', '5', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('35', '0', '授权监控', null, null, '0', 'fa fa-video-camera', '5', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('3', '0', '网关管理', null, null, '0', 'fa fa-bar-chart', '7', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('3', '0', '授权监控', null, null, '0', 'fa fa-video-camera', '5', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('4', '0', '路由管理', null, null, '0', 'fa fa-bar-chart', '7', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 
 
 -- ----------------------------
--- 系统管理
+-- 系统管理开始
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES ('4', '1', '系统菜单', 'sys/menu', 'sys:menu:menu', '1', 'fa fa-th-list', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('5', '1', '用户管理', 'sys/user', 'sys:user:user', '1', 'fa fa-user', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('6', '1', '角色管理', 'sys/role', 'sys:role:role', '1', 'fa fa-paw', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('7', '1', '部门管理', 'sys/dept', 'sys:dept:dept', '1', 'fa fa-users', '3', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('11', '1', '系统菜单', 'sys/menu', 'sys:menu:menu', '1', 'fa fa-th-list', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('12', '1', '用户管理', 'sys/user', 'sys:user:user', '1', 'fa fa-user', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('13', '1', '角色管理', 'sys/role', 'sys:role:role', '1', 'fa fa-paw', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('14', '1', '部门管理', 'sys/dept', 'sys:dept:dept', '1', 'fa fa-users', '3', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 
 
 
-INSERT INTO `sys_menu` VALUES ('8', '4', '新增', '', 'sys:menu:add', '2', '', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('9', '4', '批量删除', '', 'sys:menu:batchRemove', '2','', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('10', '4', '编辑', '', 'sys:menu:edit', '2', '', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('11', '4', '删除', '', 'sys:menu:remove', '2', '', '3', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('21', '11', '新增', '', 'sys:menu:add', '2', '', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('22', '11', '批量删除', '', 'sys:menu:batchRemove', '2','', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('23', '11', '编辑', '', 'sys:menu:edit', '2', '', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('24', '11', '删除', '', 'sys:menu:remove', '2', '', '3', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 
 
 
-INSERT INTO `sys_menu` VALUES ('12', '6', '新增', '', 'sys:user:add', '2', '', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('13', '6', '编辑', '', 'sys:user:edit', '2', '', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('14', '6', '删除', '', 'sys:user:remove','2', '', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('15', '6', '批量删除', '', 'sys:user:batchRemove', '2', '', '3', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('16', '6', '停用', '', 'sys:user:disable', '2', '', '4', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('17', '6', '重置密码', '', 'sys:user:resetPwd', '2', '', '5', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('25', '12', '新增', '', 'sys:user:add', '2', '', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('26', '12', '编辑', '', 'sys:user:edit', '2', '', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('27', '12', '删除', '', 'sys:user:remove','2', '', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('28', '12', '批量删除', '', 'sys:user:batchRemove', '2', '', '3', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('29', '12', '停用', '', 'sys:user:disable', '2', '', '4', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('30', '12', '重置密码', '', 'sys:user:resetPwd', '2', '', '5', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 
-INSERT INTO `sys_menu` VALUES ('18', '7', '新增', '', 'sys:role:add', '2', '', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('19', '7', '批量删除', '', 'sys:role:batchRemove', '2','', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('20', '7', '编辑', '', 'sys:role:edit', '2', '', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('21', '7', '删除', '', 'sys:role:remove', '2', '', '3', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-
-
-INSERT INTO `sys_menu` VALUES ('22', '8', '增加', '', 'sys:dept:add', '2', '', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('23', '8', '刪除', '', 'sys:dept:remove', '2', '', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('24', '8', '编辑', '', 'sys:dept:edit', '2', '', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('31', '13', '新增', '', 'sys:role:add', '2', '', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('32', '13', '批量删除', '', 'sys:role:batchRemove', '2','', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('33', '13', '编辑', '', 'sys:role:edit', '2', '', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('34', '13', '删除', '', 'sys:role:remove', '2', '', '3', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 
 
+INSERT INTO `sys_menu` VALUES ('35', '14', '增加', '', 'sys:dept:add', '2', '', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('36', '14', '刪除', '', 'sys:dept:remove', '2', '', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('37', '14', '编辑', '', 'sys:dept:edit', '2', '', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 -- ----------------------------
--- 系统监控
+-- 系统管理结束
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES ('25', '2', '在线用户', 'sys/online', 'sys:monitor:online', '1', 'fa fa-user', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('26', '2', '系统日志', 'sys/log', 'sys:monitor:log', '1', 'fa fa-warning', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('27', '2', '运行监控', 'sys/log/run', 'sys:monitor:run', '1', 'fa fa-caret-square-o-right', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-
 
 -- ----------------------------
--- zuul管理
+-- 系统监控开始
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES ('28', '3', '路由管理', '/filter/route', 'filter:route:route', '1', 'fa fa-area-chart', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('29', '3', '策略管理', '/filter/route', 'filter:route:route', '1', 'fa fa-warning', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('30', '3', '动态过滤', '/filter/route', 'filter:route:route', '1', 'fa fa-caret-square-o-right', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('38', '2', '在线用户', 'sys/online', 'sys:monitor:online', '1', 'fa fa-user', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('39', '2', '系统日志', 'sys/log', 'sys:monitor:log', '1', 'fa fa-warning', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('40', '2', '运行监控', 'sys/log/run', 'sys:monitor:run', '1', 'fa fa-caret-square-o-right', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 
-INSERT INTO `sys_menu` VALUES ('31', '28', '新增', '', 'filter:route:add', '2', '', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('32', '28', '批量删除', '', 'filter:route:batchRemove', '2','', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('33', '28', '编辑', '', 'filter:route:edit', '2', '', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('34', '28', '删除', '', 'filter:route:remove', '2', '', '3', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+-- ----------------------------
+-- 系统监控结束
+-- ----------------------------
+
+-- ----------------------------
+-- 路由管理开始
+-- ----------------------------
+INSERT INTO `sys_menu` VALUES ('50', '4', '策略管理', '/filter/route', 'filter:route:route', '1', 'fa fa-area-chart', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('51', '4', '规则管理', '/filter/rule', 'filter:rule:rule', '1', 'fa fa-warning', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+
+INSERT INTO `sys_menu` VALUES ('52', '50', '新增', '', 'filter:route:add', '2', '', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('53', '50', '批量删除', '', 'filter:route:batchRemove', '2','', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('54', '50', '编辑', '', 'filter:route:edit', '2', '', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('55', '50', '删除', '', 'filter:route:remove', '2', '', '3', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+
+INSERT INTO `sys_menu` VALUES ('56', '51', '新增', '', 'filter:rule:add', '2', '', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('57', '51', '批量删除', '', 'filter:rule:batchRemove', '2','', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('58', '51', '编辑', '', 'filter:rule:edit', '2', '', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('59', '51', '删除', '', 'filter:rule:remove', '2', '', '3', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+-- ----------------------------
+-- 路由管理结束
+-- ----------------------------
 
 
+-- ----------------------------
+-- oauth2开始
+-- ----------------------------
+INSERT INTO `sys_menu` VALUES ('70', '3', '客户端管理', 'sys/oauth2/client', 'sys:oauth2:listclient', '1', 'fa fa-th-list', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('71', '3', '令牌监控', 'sys/oauth2/token', 'sys:oauth2:listToken', '1', 'fa fa-user', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 
-INSERT INTO `sys_menu` VALUES ('36', '35', '客户端管理', 'sys/oauth2/client', 'sys:oauth2:listclient', '1', 'fa fa-th-list', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('37', '35', '令牌监控', 'sys/oauth2/token', 'sys:oauth2:listToken', '1', 'fa fa-user', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('80', '70', '新增', '', 'sys:oauth2:add', '2', '', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('81', '70', '批量删除', '', 'sys:oauth2:batchRemove', '2','', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('82', '70', '编辑', '', 'sys:oauth2:edit', '2', '', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('83', '70', '删除', '', 'sys:oauth2:remove', '2', '', '3', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 
-INSERT INTO `sys_menu` VALUES ('38', '36', '新增', '', 'sys:oauth2:add', '2', '', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('39', '36', '批量删除', '', 'sys:oauth2:batchRemove', '2','', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('40', '36', '编辑', '', 'sys:oauth2:edit', '2', '', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('41', '36', '删除', '', 'sys:oauth2:remove', '2', '', '3', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+-- ----------------------------
+-- oauth2结束
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `sys_role`
@@ -206,6 +224,50 @@ INSERT INTO `sys_role_menu` VALUES ('38', '1', '38');
 INSERT INTO `sys_role_menu` VALUES ('39', '1', '39');
 INSERT INTO `sys_role_menu` VALUES ('40', '1', '40');
 INSERT INTO `sys_role_menu` VALUES ('41', '1', '41');
+INSERT INTO `sys_role_menu` VALUES ('42', '1', '42');
+INSERT INTO `sys_role_menu` VALUES ('43', '1', '43');
+INSERT INTO `sys_role_menu` VALUES ('44', '1', '44');
+INSERT INTO `sys_role_menu` VALUES ('45', '1', '45');
+INSERT INTO `sys_role_menu` VALUES ('46', '1', '46');
+INSERT INTO `sys_role_menu` VALUES ('47', '1', '47');
+INSERT INTO `sys_role_menu` VALUES ('48', '1', '48');
+INSERT INTO `sys_role_menu` VALUES ('49', '1', '49');
+INSERT INTO `sys_role_menu` VALUES ('50', '1', '50');
+INSERT INTO `sys_role_menu` VALUES ('51', '1', '51');
+INSERT INTO `sys_role_menu` VALUES ('52', '1', '52');
+INSERT INTO `sys_role_menu` VALUES ('53', '1', '53');
+INSERT INTO `sys_role_menu` VALUES ('54', '1', '54');
+INSERT INTO `sys_role_menu` VALUES ('55', '1', '55');
+INSERT INTO `sys_role_menu` VALUES ('56', '1', '56');
+INSERT INTO `sys_role_menu` VALUES ('57', '1', '57');
+INSERT INTO `sys_role_menu` VALUES ('58', '1', '58');
+INSERT INTO `sys_role_menu` VALUES ('59', '1', '59');
+INSERT INTO `sys_role_menu` VALUES ('60', '1', '60');
+INSERT INTO `sys_role_menu` VALUES ('61', '1', '61');
+INSERT INTO `sys_role_menu` VALUES ('62', '1', '62');
+INSERT INTO `sys_role_menu` VALUES ('63', '1', '63');
+INSERT INTO `sys_role_menu` VALUES ('64', '1', '64');
+INSERT INTO `sys_role_menu` VALUES ('65', '1', '65');
+INSERT INTO `sys_role_menu` VALUES ('66', '1', '66');
+INSERT INTO `sys_role_menu` VALUES ('67', '1', '67');
+INSERT INTO `sys_role_menu` VALUES ('68', '1', '68');
+INSERT INTO `sys_role_menu` VALUES ('69', '1', '69');
+INSERT INTO `sys_role_menu` VALUES ('70', '1', '70');
+INSERT INTO `sys_role_menu` VALUES ('71', '1', '71');
+INSERT INTO `sys_role_menu` VALUES ('72', '1', '72');
+INSERT INTO `sys_role_menu` VALUES ('73', '1', '73');
+INSERT INTO `sys_role_menu` VALUES ('74', '1', '74');
+INSERT INTO `sys_role_menu` VALUES ('75', '1', '75');
+INSERT INTO `sys_role_menu` VALUES ('76', '1', '76');
+INSERT INTO `sys_role_menu` VALUES ('77', '1', '77');
+INSERT INTO `sys_role_menu` VALUES ('78', '1', '78');
+INSERT INTO `sys_role_menu` VALUES ('79', '1', '79');
+INSERT INTO `sys_role_menu` VALUES ('80', '1', '80');
+INSERT INTO `sys_role_menu` VALUES ('81', '1', '81');
+INSERT INTO `sys_role_menu` VALUES ('82', '1', '82');
+INSERT INTO `sys_role_menu` VALUES ('83', '1', '83');
+INSERT INTO `sys_role_menu` VALUES ('84', '1', '84');
+INSERT INTO `sys_role_menu` VALUES ('85', '1', '85');
 -- ----------------------------
 -- Table structure for `sys_user`
 -- ----------------------------
