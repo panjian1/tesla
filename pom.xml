@@ -27,7 +27,7 @@
 			</dependency>
 			<dependency>
 				<groupId>io.github.tesla</groupId>
-				<artifactId>tesla-rule</artifactId>
+				<artifactId>tesla-filter</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
