@@ -49,45 +49,73 @@ import io.github.tesla.ops.utils.Query;
  */
 @Controller
 @RequestMapping("/filter/route")
-public class FilterController extends BaseController {
-  String prefix = "filter/route";
+public class FilterRouteController extends BaseController {
 
+  private final String prefix = "filter/route";
   @Autowired
   private ProtobufService protobufService;
 
   @Autowired
-  private FilterRouteService fitlerService;
+  private FilterRouteService routeService;
 
   @RequiresPermissions("filter:route:route")
   @GetMapping()
-  String route() {
+  public String route() {
     return prefix + "/route";
   }
 
-  @Log("添加路由")
   @RequiresPermissions("filter:route:add")
   @GetMapping("/add")
-  String add() {
+  public String add() {
     return prefix + "/add";
   }
 
-  @Log("编辑路由")
   @RequiresPermissions("filter:route:edit")
   @GetMapping("/edit/{id}")
-  String edit(@PathVariable("id") Long id, Model model) {
-    FilterRouteDto zuulDto = fitlerService.get(id);
+  public String edit(@PathVariable("id") Long id, Model model) {
+    FilterRouteDto zuulDto = routeService.get(id);
     RouteVo zuulVo = RouteVo.buildRouteVo(zuulDto);
     model.addAttribute("route", zuulVo);
     return prefix + "/edit";
   }
 
+  @Log("保存路由")
+  @RequiresPermissions("filter:route:add")
+  @PostMapping("/save")
+  @ResponseBody()
+  public CommonResponse save(RouteVo zuulVo,
+      @RequestParam(name = "zipFile", required = false) MultipartFile zipFile) {
+    try {
+      // grpc路由
+      if (zipFile != null) {
+        InputStream directoryZipStream = zipFile.getInputStream();
+        CommonResponse response = judgeFileType(directoryZipStream, "zip");
+        if (response != null) {
+          return response;
+        } else {
+          String serviceFileName = zuulVo.getServiceFileName();
+          byte[] protoContext = protobufService.compileDirectoryProto(zipFile, serviceFileName);
+          FilterRouteDto zuulDto = zuulVo.buildRouteDto();
+          zuulDto.setProtoContext(protoContext);
+          routeService.save(zuulDto);
+        }
+      } else {
+        FilterRouteDto zuulDto = zuulVo.buildRouteDto();
+        routeService.save(zuulDto);
+      }
+    } catch (IOException e) {
+      throw new TeslaException("保存路由失败", e);
+    }
+    return CommonResponse.ok();
+  }
 
+  @Log("查询路由")
   @RequiresPermissions("filter:route:route")
   @GetMapping("/list")
   @ResponseBody
-  PageDO<RouteVo> list(@RequestParam Map<String, Object> params) {
+  public PageDO<RouteVo> list(@RequestParam Map<String, Object> params) {
     Query query = new Query(params);
-    PageDO<FilterRouteDto> pageDto = fitlerService.queryList(query);
+    PageDO<FilterRouteDto> pageDto = routeService.queryList(query);
     PageDO<RouteVo> pageVo = new PageDO<>();
     pageVo.setTotal(pageDto.getTotal());
     List<FilterRouteDto> zuulDtos = pageDto.getRows();
@@ -99,51 +127,12 @@ public class FilterController extends BaseController {
     return pageVo;
   }
 
-  @Log("保存路由")
-  @RequiresPermissions("filter:route:add")
-  @PostMapping("/save")
-  @ResponseBody()
-  CommonResponse save(RouteVo zuulVo,
-      @RequestParam(name = "zipFile", required = false) MultipartFile zipFile) {
-    try {
-      // grpc路由
-      if (zipFile != null) {
-        InputStream directoryZipStream = zipFile.getInputStream();
-        CommonResponse response = judgeFileType(directoryZipStream, "zip");
-        if (response != null) {
-          return response;
-        } else {
-          String serviceFileName = zuulVo.getServiceFileName();
-          byte[] protoContext = protobufService.compileDirectoryProto(zipFile, serviceFileName);
-          FilterRouteDto zuulDto = zuulVo.buildRouteDto();
-          zuulDto.setProtoContext(protoContext);
-          fitlerService.save(zuulDto);
-        }
-      } else {
-        FilterRouteDto zuulDto = zuulVo.buildRouteDto();
-        fitlerService.save(zuulDto);
-      }
-    } catch (IOException e) {
-      throw new TeslaException("保存路由失败", e);
-    }
-    return CommonResponse.ok();
-  }
-
-  private CommonResponse judgeFileType(InputStream inpustream, String type) throws IOException {
-    String fileType = FileType.calculateFileHexString(inpustream);
-    if (!type.equals(fileType)) {
-      return CommonResponse.error(1, "只能上传" + type + "类型文件");
-    } else {
-      return null;
-    }
-  }
-
 
   @Log("更新路由")
   @RequiresPermissions("filter:route:edit")
   @PostMapping("/update")
   @ResponseBody()
-  CommonResponse update(RouteVo zuulVo,
+  public CommonResponse update(RouteVo zuulVo,
       @RequestParam(name = "zipFile", required = false) MultipartFile zipFile) {
     try {
       // grpc路由
@@ -157,11 +146,11 @@ public class FilterController extends BaseController {
           byte[] protoContext = protobufService.compileDirectoryProto(zipFile, serviceFileName);
           FilterRouteDto zuulDto = zuulVo.buildRouteDto();
           zuulDto.setProtoContext(protoContext);
-          fitlerService.update(zuulDto);
+          routeService.update(zuulDto);
         }
       } else {
         FilterRouteDto zuulDto = zuulVo.buildRouteDto();
-        fitlerService.update(zuulDto);
+        routeService.update(zuulDto);
       }
     } catch (IOException e) {
       throw new TeslaException("保存路由失败", e);
@@ -173,8 +162,8 @@ public class FilterController extends BaseController {
   @RequiresPermissions("filter:route:remove")
   @PostMapping("/remove")
   @ResponseBody()
-  CommonResponse save(Long id) {
-    if (fitlerService.remove(id) > 0) {
+  public CommonResponse save(Long id) {
+    if (routeService.remove(id) > 0) {
       return CommonResponse.ok();
     } else {
       return CommonResponse.error(1, "删除失败");
@@ -185,11 +174,22 @@ public class FilterController extends BaseController {
   @Log("批量删除路由")
   @PostMapping("/batchRemove")
   @ResponseBody
-  CommonResponse batchRemove(@RequestParam("ids[]") Long[] ids) {
-    int response = fitlerService.batchRemove(ids);
+  public CommonResponse batchRemove(@RequestParam("ids[]") Long[] ids) {
+    int response = routeService.batchRemove(ids);
     if (response > 0) {
       return CommonResponse.ok();
     }
     return CommonResponse.error();
   }
+
+
+  private CommonResponse judgeFileType(InputStream inpustream, String type) throws IOException {
+    String fileType = FileType.calculateFileHexString(inpustream);
+    if (!type.equals(fileType)) {
+      return CommonResponse.error(1, "只能上传" + type + "类型文件");
+    } else {
+      return null;
+    }
+  }
+
 }
