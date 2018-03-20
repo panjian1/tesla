@@ -100,12 +100,7 @@ function chirdTable(index, row, $detail) {
 		}, {
 			field : 'inputParam',
 			title : '入参类型（dubbo）'
-		}, {
-			formatter : function(value, row, index) {
-				return "N/A";
-			},
-			title : '入参类型（grpc）'
-		}, ],
+		} ],
 		data : rows
 	});
 }
