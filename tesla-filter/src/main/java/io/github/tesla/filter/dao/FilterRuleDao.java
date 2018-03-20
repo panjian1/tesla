@@ -37,13 +37,13 @@ public interface FilterRuleDao {
 
   int count(Map<String, Object> map);
 
-  int save(FilterRuleDO route);
+  int save(FilterRuleDO rule);
 
-  int update(FilterRuleDO route);
+  int update(FilterRuleDO rule);
 
   int remove(Long id);
 
-  int removeByRouteId(Long routeId);
+  int removeByRouteId(Long ruleId);
 
-  int batchRemove(Long[] routeIds);
+  int batchRemove(Long[] ruleIds);
 }

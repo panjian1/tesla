@@ -28,17 +28,17 @@ public interface FilterRuleService {
 
   PageDO<FilterRuleDO> queryList(Query query);
 
-  FilterRuleDO get(Long routeId);
+  FilterRuleDO get(Long ruleId);
 
   List<FilterRuleDO> list(Map<String, Object> map);
 
   int count(Map<String, Object> map);
 
-  int save(FilterRuleDO zuulDto);
+  int save(FilterRuleDO ruleDo);
 
-  int update(FilterRuleDO zuulDto);
+  int update(FilterRuleDO ruleDo);
 
-  int remove(Long routeId);
+  int remove(Long ruleId);
 
-  int batchRemove(Long[] routeIds);
+  int batchRemove(Long[] ruleIds);
 }
