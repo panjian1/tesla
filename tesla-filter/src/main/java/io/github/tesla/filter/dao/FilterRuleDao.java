@@ -35,6 +35,8 @@ public interface FilterRuleDao {
 
   List<FilterRuleDO> list(Map<String, Object> map);
 
+  int count(Map<String, Object> map);
+
   int save(FilterRuleDO route);
 
   int update(FilterRuleDO route);
