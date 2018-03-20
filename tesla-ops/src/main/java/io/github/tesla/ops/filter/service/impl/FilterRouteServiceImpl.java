@@ -22,59 +22,59 @@ import org.springframework.stereotype.Service;
 import com.google.common.collect.Lists;
 
 import io.github.tesla.ops.common.CommonResponse;
-import io.github.tesla.ops.filter.dto.RouteDto;
-import io.github.tesla.ops.filter.service.FilterService;
+import io.github.tesla.ops.filter.dto.FilterRouteDto;
+import io.github.tesla.ops.filter.service.FilterRouteService;
 import io.github.tesla.ops.system.domain.PageDO;
 import io.github.tesla.ops.utils.Query;
-import io.github.tesla.rule.dao.RouteDao;
-import io.github.tesla.rule.dao.RpcDao;
-import io.github.tesla.rule.domain.RouteDO;
-import io.github.tesla.rule.domain.RpcDO;
+import io.github.tesla.rule.dao.FilterRouteDao;
+import io.github.tesla.rule.dao.FilterRpcDao;
+import io.github.tesla.rule.domain.FilterRouteDO;
+import io.github.tesla.rule.domain.FilterRpcDO;
 
 /**
  * @author liushiming
  * @version routeServiceImpl.java, v 0.0.1 2018年1月8日 上午11:38:49 liushiming
  */
 @Service
-public class FilterServiceImpl implements FilterService {
+public class FilterRouteServiceImpl implements FilterRouteService {
 
   @Autowired
-  private RouteDao routeDao;
+  private FilterRouteDao routeDao;
 
   @Autowired
-  private RpcDao rpcDao;
+  private FilterRpcDao rpcDao;
 
   @Override
-  public PageDO<RouteDto> queryList(Query query) {
+  public PageDO<FilterRouteDto> queryList(Query query) {
     int total = routeDao.count(query);
-    List<RouteDO> routes = routeDao.list(query);
-    List<RouteDto> dtos = Lists.newArrayListWithCapacity(routes.size());
-    for (RouteDO routeDo : routes) {
-      RpcDO rpcDO = rpcDao.get(routeDo.getId());
-      RouteDto dto = RouteDto.buildRouteDto(routeDo, rpcDO);
+    List<FilterRouteDO> routes = routeDao.list(query);
+    List<FilterRouteDto> dtos = Lists.newArrayListWithCapacity(routes.size());
+    for (FilterRouteDO routeDo : routes) {
+      FilterRpcDO rpcDO = rpcDao.get(routeDo.getId());
+      FilterRouteDto dto = FilterRouteDto.buildRouteDto(routeDo, rpcDO);
       dtos.add(dto);
     }
-    PageDO<RouteDto> page = new PageDO<>();
+    PageDO<FilterRouteDto> page = new PageDO<>();
     page.setTotal(total);
     page.setRows(dtos);
     return page;
   }
 
   @Override
-  public RouteDto get(Long routeId) {
-    RouteDO route = routeDao.get(routeId);
-    RpcDO rpc = rpcDao.get(routeId);
-    RouteDto routeDto = RouteDto.buildRouteDto(route, rpc);
+  public FilterRouteDto get(Long routeId) {
+    FilterRouteDO route = routeDao.get(routeId);
+    FilterRpcDO rpc = rpcDao.get(routeId);
+    FilterRouteDto routeDto = FilterRouteDto.buildRouteDto(route, rpc);
     return routeDto;
   }
 
   @Override
-  public List<RouteDto> list(Map<String, Object> map) {
-    List<RouteDO> routes = routeDao.list(map);
-    List<RouteDto> routeDtos = Lists.newArrayList();
-    for (RouteDO route : routes) {
-      RpcDO rpc = rpcDao.get(route.getId());
-      RouteDto routeDto = RouteDto.buildRouteDto(route, rpc);
+  public List<FilterRouteDto> list(Map<String, Object> map) {
+    List<FilterRouteDO> routes = routeDao.list(map);
+    List<FilterRouteDto> routeDtos = Lists.newArrayList();
+    for (FilterRouteDO route : routes) {
+      FilterRpcDO rpc = rpcDao.get(route.getId());
+      FilterRouteDto routeDto = FilterRouteDto.buildRouteDto(route, rpc);
       routeDtos.add(routeDto);
     }
     return routeDtos;
@@ -87,9 +87,9 @@ public class FilterServiceImpl implements FilterService {
   }
 
   @Override
-  public int save(RouteDto routeDto) {
-    RouteDO routeDo = routeDto.buildRoute();
-    RpcDO rpcDo = routeDto.buildRpc();
+  public int save(FilterRouteDto routeDto) {
+    FilterRouteDO routeDo = routeDto.buildRoute();
+    FilterRpcDO rpcDo = routeDto.buildRpc();
     int success2 = routeDao.save(routeDo);
     Long routeId = routeDo.getId();
     rpcDo.setRouteId(routeId);
@@ -106,9 +106,9 @@ public class FilterServiceImpl implements FilterService {
   }
 
   @Override
-  public int update(RouteDto routeDto) {
-    RouteDO routeDo = routeDto.buildRoute();
-    RpcDO rpcDo = routeDto.buildRpc();
+  public int update(FilterRouteDto routeDto) {
+    FilterRouteDO routeDo = routeDto.buildRoute();
+    FilterRpcDO rpcDo = routeDto.buildRpc();
     int success2 = routeDao.update(routeDo);
     if (routeDo.getRpc()) {
       int success1 = rpcDao.update(rpcDo);

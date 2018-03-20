@@ -15,14 +15,14 @@ package io.github.tesla.ops.filter.dto;
 
 import java.io.Serializable;
 
-import io.github.tesla.rule.domain.RouteDO;
-import io.github.tesla.rule.domain.RpcDO;
+import io.github.tesla.rule.domain.FilterRouteDO;
+import io.github.tesla.rule.domain.FilterRpcDO;
 
 /**
  * @author liushiming
  * @version GateWayRouteDto.java, v 0.0.1 2018年1月5日 上午10:47:04 liushiming
  */
-public class RouteDto implements Serializable {
+public class FilterRouteDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -147,8 +147,8 @@ public class RouteDto implements Serializable {
     this.inputParam = inputParam;
   }
 
-  public RouteDO buildRoute() {
-    RouteDO routeDo = new RouteDO();
+  public FilterRouteDO buildRoute() {
+    FilterRouteDO routeDo = new FilterRouteDO();
     if (this.routeId != null && this.routeId != 0) {
       routeDo.setId(this.routeId);
     }
@@ -160,8 +160,8 @@ public class RouteDto implements Serializable {
     return routeDo;
   }
 
-  public RpcDO buildRpc() {
-    RpcDO rpcDO = new RpcDO();
+  public FilterRpcDO buildRpc() {
+    FilterRpcDO rpcDO = new FilterRpcDO();
     rpcDO.setServiceName(this.serviceName);
     rpcDO.setMethodName(this.methodName);
     rpcDO.setServiceGroup(this.serviceGroup);
@@ -172,8 +172,8 @@ public class RouteDto implements Serializable {
     return rpcDO;
   }
 
-  public static RouteDto buildRouteDto(RouteDO route, RpcDO rpc) {
-    RouteDto routeDto = new RouteDto();
+  public static FilterRouteDto buildRouteDto(FilterRouteDO route, FilterRpcDO rpc) {
+    FilterRouteDto routeDto = new FilterRouteDto();
     routeDto.setRouteId(route.getId());
     routeDto.setFromPath(route.getFromPath());
     routeDto.setServiceId(route.getServiceId());
@@ -192,8 +192,8 @@ public class RouteDto implements Serializable {
     return routeDto;
   }
 
-  public static RouteDto buildRouteDto(RouteDO route) {
-    RouteDto routeDto = new RouteDto();
+  public static FilterRouteDto buildRouteDto(FilterRouteDO route) {
+    FilterRouteDto routeDto = new FilterRouteDto();
     routeDto.setRouteId(route.getId());
     routeDto.setFromPath(route.getFromPath());
     routeDto.setServiceId(route.getServiceId());

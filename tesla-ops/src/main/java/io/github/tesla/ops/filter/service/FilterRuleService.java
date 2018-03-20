@@ -16,30 +16,29 @@ package io.github.tesla.ops.filter.service;
 import java.util.List;
 import java.util.Map;
 
+import io.github.tesla.ops.filter.dto.FilterRouteDto;
 import io.github.tesla.ops.system.domain.PageDO;
 import io.github.tesla.ops.utils.Query;
-import io.github.tesla.ops.filter.dto.RouteDto;
 
 /**
  * @author liushiming
- * @version GateWayRouteService.java, v 0.0.1 2018年1月5日 上午10:44:41 liushiming
+ * @version FilterRuleService.java, v 0.0.1 2018年3月20日 上午10:45:27 liushiming
  */
-public interface FilterService {
+public interface FilterRuleService {
 
-  PageDO<RouteDto> queryList(Query query);
+  PageDO<FilterRouteDto> queryList(Query query);
 
-  RouteDto get(Long routeId);
+  FilterRouteDto get(Long routeId);
 
-  List<RouteDto> list(Map<String, Object> map);
+  List<FilterRouteDto> list(Map<String, Object> map);
 
   int count(Map<String, Object> map);
 
-  int save(RouteDto zuulDto);
+  int save(FilterRouteDto zuulDto);
 
-  int update(RouteDto zuulDto);
+  int update(FilterRouteDto zuulDto);
 
   int remove(Long routeId);
 
   int batchRemove(Long[] routeIds);
-
 }

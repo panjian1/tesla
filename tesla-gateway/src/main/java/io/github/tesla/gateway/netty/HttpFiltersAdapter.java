@@ -17,7 +17,7 @@ import java.net.InetSocketAddress;
 
 import io.github.tesla.gateway.cache.DynamicsRouteCacheComponent;
 import io.github.tesla.gateway.config.SpringContextHolder;
-import io.github.tesla.rule.domain.RouteDO;
+import io.github.tesla.rule.domain.FilterRouteDO;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpObject;
@@ -61,7 +61,7 @@ public class HttpFiltersAdapter {
     if (index > -1) {
       actorPath = actorPath.substring(0, index);
     }
-    RouteDO route = dynamicsRouteCache.getRoute(actorPath);
+    FilterRouteDO route = dynamicsRouteCache.getRoute(actorPath);
     if (route != null) {
       String targetPath = route.getToPath();
       String targetHostAndPort = route.getToHostport();

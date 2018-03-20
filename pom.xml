@@ -9,7 +9,7 @@
 	<modules>
 		<module>tesla-ops</module>
 		<module>tesla-gateway</module>
-		<module>tesla-rule</module>
+		<module>tesla-filter</module>
 		<module>tesla-authz</module>
 	</modules>
 	<properties>

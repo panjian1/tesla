@@ -21,7 +21,7 @@ import java.util.Arrays;
  * @author liushiming
  * @version GrpcDO.java, v 0.0.1 2018年1月4日 上午10:33:59 liushiming
  */
-public class RpcDO implements Serializable {
+public class FilterRpcDO implements Serializable {
 
   private static final long serialVersionUID = 4715218350028915340L;
 
@@ -131,8 +131,8 @@ public class RpcDO implements Serializable {
     this.gmtModified = gmtModified;
   }
 
-  public RpcDO copy() {
-    RpcDO rpcDo = new RpcDO();
+  public FilterRpcDO copy() {
+    FilterRpcDO rpcDo = new FilterRpcDO();
     rpcDo.setId(this.id);
     rpcDo.setRouteId(this.routeId);
     rpcDo.setServiceName(this.getServiceName());

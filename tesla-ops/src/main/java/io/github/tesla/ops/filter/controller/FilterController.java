@@ -35,9 +35,9 @@ import io.github.tesla.ops.common.TeslaException;
 import io.github.tesla.ops.common.BaseController;
 import io.github.tesla.ops.common.CommonResponse;
 import io.github.tesla.ops.common.Log;
-import io.github.tesla.ops.filter.dto.RouteDto;
+import io.github.tesla.ops.filter.dto.FilterRouteDto;
 import io.github.tesla.ops.filter.service.ProtobufService;
-import io.github.tesla.ops.filter.service.FilterService;
+import io.github.tesla.ops.filter.service.FilterRouteService;
 import io.github.tesla.ops.filter.vo.RouteVo;
 import io.github.tesla.ops.system.domain.PageDO;
 import io.github.tesla.ops.utils.FileType;
@@ -56,7 +56,7 @@ public class FilterController extends BaseController {
   private ProtobufService protobufService;
 
   @Autowired
-  private FilterService fitlerService;
+  private FilterRouteService fitlerService;
 
   @RequiresPermissions("filter:route:route")
   @GetMapping()
@@ -75,7 +75,7 @@ public class FilterController extends BaseController {
   @RequiresPermissions("filter:route:edit")
   @GetMapping("/edit/{id}")
   String edit(@PathVariable("id") Long id, Model model) {
-    RouteDto zuulDto = fitlerService.get(id);
+    FilterRouteDto zuulDto = fitlerService.get(id);
     RouteVo zuulVo = RouteVo.buildRouteVo(zuulDto);
     model.addAttribute("route", zuulVo);
     return prefix + "/edit";
@@ -87,12 +87,12 @@ public class FilterController extends BaseController {
   @ResponseBody
   PageDO<RouteVo> list(@RequestParam Map<String, Object> params) {
     Query query = new Query(params);
-    PageDO<RouteDto> pageDto = fitlerService.queryList(query);
+    PageDO<FilterRouteDto> pageDto = fitlerService.queryList(query);
     PageDO<RouteVo> pageVo = new PageDO<>();
     pageVo.setTotal(pageDto.getTotal());
-    List<RouteDto> zuulDtos = pageDto.getRows();
+    List<FilterRouteDto> zuulDtos = pageDto.getRows();
     List<RouteVo> vos = Lists.newArrayListWithCapacity(zuulDtos.size());
-    for (RouteDto zuulDto : zuulDtos) {
+    for (FilterRouteDto zuulDto : zuulDtos) {
       vos.add(RouteVo.buildRouteVo(zuulDto));
     }
     pageVo.setRows(vos);
@@ -115,12 +115,12 @@ public class FilterController extends BaseController {
         } else {
           String serviceFileName = zuulVo.getServiceFileName();
           byte[] protoContext = protobufService.compileDirectoryProto(zipFile, serviceFileName);
-          RouteDto zuulDto = zuulVo.buildRouteDto();
+          FilterRouteDto zuulDto = zuulVo.buildRouteDto();
           zuulDto.setProtoContext(protoContext);
           fitlerService.save(zuulDto);
         }
       } else {
-        RouteDto zuulDto = zuulVo.buildRouteDto();
+        FilterRouteDto zuulDto = zuulVo.buildRouteDto();
         fitlerService.save(zuulDto);
       }
     } catch (IOException e) {
@@ -155,12 +155,12 @@ public class FilterController extends BaseController {
         } else {
           String serviceFileName = zuulVo.getServiceFileName();
           byte[] protoContext = protobufService.compileDirectoryProto(zipFile, serviceFileName);
-          RouteDto zuulDto = zuulVo.buildRouteDto();
+          FilterRouteDto zuulDto = zuulVo.buildRouteDto();
           zuulDto.setProtoContext(protoContext);
           fitlerService.update(zuulDto);
         }
       } else {
-        RouteDto zuulDto = zuulVo.buildRouteDto();
+        FilterRouteDto zuulDto = zuulVo.buildRouteDto();
         fitlerService.update(zuulDto);
       }
     } catch (IOException e) {

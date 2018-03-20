@@ -8,8 +8,8 @@
 		<artifactId>tesla</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>tesla-rule</artifactId>
-	<name>tesla-rule</name>
+	<artifactId>tesla-filter</artifactId>
+	<name>tesla-filter</name>
 
 	<dependencies>
 

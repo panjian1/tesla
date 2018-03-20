@@ -19,25 +19,25 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import io.github.tesla.rule.domain.RpcDO;
+import io.github.tesla.rule.domain.FilterRpcDO;
 
 /**
  * @author liushiming
  * @version GrpcDao.java, v 0.0.1 2018年1月4日 上午10:48:12 liushiming
  */
 @Mapper
-public interface RpcDao {
-  RpcDO get(@Param("routeId") Long routeId);
+public interface FilterRpcDao {
+  FilterRpcDO get(@Param("routeId") Long routeId);
 
-  RpcDO getByService(@Param("serviceName") String serviceName,
+  FilterRpcDO getByService(@Param("serviceName") String serviceName,
       @Param("methodName") String methodName, @Param("group") String group,
       @Param("version") String version);
 
-  List<RpcDO> list(Map<String, Object> map);
+  List<FilterRpcDO> list(Map<String, Object> map);
 
-  int save(RpcDO route);
+  int save(FilterRpcDO route);
 
-  int update(RpcDO route);
+  int update(FilterRpcDO route);
 
   int remove(Long id);
 

@@ -18,26 +18,26 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import io.github.tesla.rule.domain.RouteDO;
+import io.github.tesla.rule.domain.FilterRouteDO;
 
 /**
  * @author liushiming
  * @version RouteDao.java, v 0.0.1 2018年1月4日 上午10:38:23 liushiming
  */
 @Mapper
-public interface RouteDao {
+public interface FilterRouteDao {
 
-  RouteDO get(Long routeId);
+  FilterRouteDO get(Long routeId);
 
-  RouteDO load(String key);
+  FilterRouteDO load(String key);
 
-  List<RouteDO> list(Map<String, Object> map);
+  List<FilterRouteDO> list(Map<String, Object> map);
 
   int count(Map<String, Object> map);
 
-  int save(RouteDO route);
+  int save(FilterRouteDO route);
 
-  int update(RouteDO route);
+  int update(FilterRouteDO route);
 
   int remove(Long routeId);
 

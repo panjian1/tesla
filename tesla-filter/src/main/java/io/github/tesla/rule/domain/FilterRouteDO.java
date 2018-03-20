@@ -20,7 +20,7 @@ import java.sql.Timestamp;
  * @author liushiming
  * @version RouteDO.java, v 0.0.1 2018年1月4日 上午10:28:15 liushiming
  */
-public class RouteDO implements Serializable {
+public class FilterRouteDO implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -104,8 +104,8 @@ public class RouteDO implements Serializable {
     this.gmtModified = gmtModified;
   }
 
-  public RouteDO copy() {
-    RouteDO route = new RouteDO();
+  public FilterRouteDO copy() {
+    FilterRouteDO route = new FilterRouteDO();
     route.setId(this.id);
     route.setFromPath(this.fromPath);
     route.setToHostport(this.toHostport);

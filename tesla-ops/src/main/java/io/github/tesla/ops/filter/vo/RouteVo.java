@@ -15,7 +15,7 @@ package io.github.tesla.ops.filter.vo;
 
 import java.io.Serializable;
 
-import io.github.tesla.ops.filter.dto.RouteDto;
+import io.github.tesla.ops.filter.dto.FilterRouteDto;
 
 /**
  * @author liushiming
@@ -146,8 +146,8 @@ public class RouteVo implements Serializable {
     this.inputParam = inputParam;
   }
 
-  public RouteDto buildRouteDto() {
-    RouteDto routeDto = new RouteDto();
+  public FilterRouteDto buildRouteDto() {
+    FilterRouteDto routeDto = new FilterRouteDto();
     routeDto.setRouteId(this.routeId);
     routeDto.setFromPath(this.fromPath);
     routeDto.setServiceId(this.serviceId);
@@ -163,7 +163,7 @@ public class RouteVo implements Serializable {
     return routeDto;
   }
 
-  public static RouteVo buildRouteVo(RouteDto routeDto) {
+  public static RouteVo buildRouteVo(FilterRouteDto routeDto) {
     RouteVo routeVo = new RouteVo();
     routeVo.setRouteId(routeDto.getRouteId());
     routeVo.setFromPath(routeDto.getFromPath());

@@ -17,7 +17,7 @@ import io.github.tesla.gateway.cache.DynamicsRouteCacheComponent;
 import io.github.tesla.gateway.config.SpringContextHolder;
 import io.github.tesla.gateway.protocol.dubbo.DynamicDubboClient;
 import io.github.tesla.rule.RequestFilterTypeEnum;
-import io.github.tesla.rule.domain.RpcDO;
+import io.github.tesla.rule.domain.FilterRpcDO;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -52,7 +52,7 @@ public class DubboTransformHttpRequestFilter extends HttpRequestFilter {
     if (originalRequest instanceof FullHttpRequest && dubboClient != null) {
       FullHttpRequest request = (FullHttpRequest) originalRequest;
       String urlPath = request.uri();
-      RpcDO rpc = routeRuleCache.getRpc(urlPath);
+      FilterRpcDO rpc = routeRuleCache.getRpc(urlPath);
       if (rpc != null) {
         ByteBuf jsonBuf = request.content();
         String jsonInput = jsonBuf.toString(CharsetUtil.UTF_8);

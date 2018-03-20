@@ -13,7 +13,7 @@
  */
 package io.github.tesla.gateway.protocol;
 
-import io.github.tesla.rule.domain.RpcDO;
+import io.github.tesla.rule.domain.FilterRpcDO;
 
 /**
  * @author liushiming
@@ -22,5 +22,5 @@ import io.github.tesla.rule.domain.RpcDO;
 public abstract class RpcDynamicClient {
 
 
-  public abstract String doRemoteCall(final RpcDO rpcDo, final String jsonInput);
+  public abstract String doRemoteCall(final FilterRpcDO rpcDo, final String jsonInput);
 }
