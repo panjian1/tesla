@@ -38,9 +38,17 @@
 					<div class="col-xs-12 col-sm-12 col-md-7 col-lg-8 hidden-xs hidden-sm">
 						<h1 class="txt-color-red login-header-big">Tesla</h1>
 						<div class="hero">
-
 							<div class="pull-left login-desc-box-l">
-								<h4 class="paragraph-header">It's Okay to be Tesla. Experience the simplicity of Tesla, everywhere you go! </h4>
+								<h4 class="paragraph-header">
+								        * 支持gRrpc，将http请求转换为gRpc请求<br/>
+										* 支持Dubbo，将http请求转换为Dubbo请求<br/>
+										* 支持Spring cloud<br/>
+										* 支持智能路由<br/>
+										* 支持限流、鉴权、Ip黑名单、Cookie黑名单、url黑名单，UA黑名单等规则的限制<br/>
+										* 支持动态路由规则的定义<br/>
+										* 有OPS控制台<br/>
+										* 不依赖于Web容器，基于Netty的开发，在性能上要比Zuul要好<br/>
+                                </h4>
 							</div>
 						</div>
 					</div>
@@ -48,17 +56,17 @@
 						<div class="well no-padding">
 							<form id="login-form" class="smart-form client-form">
 								<header>
-									Sign In
+									用户登录
 								</header>
 								<fieldset>
 									<section>
-										<label class="label">UserName</label>
+										<label class="label">用户名</label>
 										<label class="input"> <i class="icon-append fa fa-user"></i>
 											<input type="text" name="username" value="admin">
 											<b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> Please enterusername</b></label>
 									</section>
 									<section>
-										<label class="label">Password</label>
+										<label class="label">密码</label>
 										<label class="input"> <i class="icon-append fa fa-lock"></i>
 											<input type="password" name="password" value="admin">
 											<b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> Enter your password</b> </label>
@@ -66,7 +74,7 @@
 								</fieldset>
 								<footer>
 									<button type="submit" class="btn btn-primary">
-										Sign in
+										登录
 									</button>
 								</footer>
 							</form>
