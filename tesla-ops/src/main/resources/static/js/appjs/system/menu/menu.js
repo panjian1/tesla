@@ -1,4 +1,4 @@
-var prefix = "/sys/menu"
+var prefix = "sys/menu"
 $(document).ready(function() {
 	$('#menutable').bootstrapTreeTable({
 			id : 'menuId',
@@ -65,66 +65,57 @@ $(document).ready(function() {
 							formatter : function(item, index) {
 								var e = '<a class="btn btn-primary btn-sm '
 										+ s_edit_h
-										+ '" href="#" mce_href="#" title="编辑" onclick="edit(\''
+										+ '" href="javascript:void(0)" mce_href="#" title="编辑" onclick="edit(\''
 										+ item.menuId
-										+ '\')"><i class="fa fa-edit"></i></a> ';
+										+ '\',this);"><i class="fa fa-edit"></i></a> ';
 								var p = '<a class="btn btn-primary btn-sm '
 										+ s_add_h
-										+ '" href="#" mce_href="#" title="添加下级" onclick="add(\''
+										+ '" href="javascript:void(0)" mce_href="#" title="添加下级" onclick="add(\''
 										+ item.menuId
-										+ '\')"><i class="fa fa-plus"></i></a> ';
+										+ '\',this);"><i class="fa fa-plus"></i></a> ';
 								var d = '<a class="btn btn-warning btn-sm '
 										+ s_remove_h
-										+ '" href="#" title="删除"  mce_href="#" onclick="remove(\''
+										+ '" href="javascript:void(0)" title="删除"  mce_href="#" onclick="remove(\''
 										+ item.menuId
-										+ '\')"><i class="fa fa-remove"></i></a> ';
+										+ '\',this);"><i class="fa fa-remove"></i></a> ';
 								return e + d + p;
 							}
 						} 
 					]
 		});
 });
-function add(pId) {
-//	layer.open({
-//		type : 2,
-//		title : '增加菜单',
-//		maxmin : true,
-//		shadeClose : false, // 点击遮罩关闭层
-//		area : [ '800px', '520px' ],
-//		content : prefix + '/add/' + pId // iframe的url
-//	});
+function add(pId,target) {
+	var url = prefix + '/add/' + pId;
+	$(target).attr('href',"#"+url);
+	loadURL(url, $('#content'));
 }
 function remove(id) {
-	alert(id);
-//	layer.confirm('确定要删除选中的记录？', {
-//		btn : [ '确定', '取消' ]
-//	}, function() {
-//		$.ajax({
-//			url : prefix + "/remove",
-//			type : "post",
-//			data : {
-//				'id' : id
-//			},
-//			success : function(data) {
-//				if (data.code == 0) {
-//					layer.msg("删除成功");
-//					reLoad();
-//				} else {
-//					layer.msg(data.msg);
-//				}
-//			}
-//		});
-//	})
+    $.SmartMessageBox({
+        title : "<i class='fa fa-sign-out txt-color-orangeDark'></i> 确定要删除选中的记录？",
+        buttons : '[No][Yes]'
+    }, function(ButtonPressed) {
+        if (ButtonPressed == "Yes") {
+            setTimeout(sureremove, 1000);
+        }
+    });
+    function sureremove() {
+    	$.ajax({
+			url : prefix + "/remove",
+			type : "post",
+			data : {
+				'id' : id
+			},
+			success : function(data) {
+				loadURL(prefix, $('#content'));
+			}
+		});
+    }
 }
-function edit(id) {
-//	layer.open({
-//		type : 2,
-//		title : '菜单修改',
-//		maxmin : true,
-//		shadeClose : false, // 点击遮罩关闭层
-//		area : [ '800px', '520px' ],
-//		content : prefix + '/edit/' + id // iframe的url
-//	});
+function edit(pId,target) {
+	var url = prefix + '/edit/' + pId;
+	$(target).attr('href',"#"+url);
+	loadURL(url, $('#content'));
 }
 function batchRemove() {
+	
 }
