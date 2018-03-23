@@ -86,7 +86,6 @@ $(document).ready(function() {
 });
 function add(pId,target) {
 	var url = prefix + '/add/' + pId;
-	$(target).attr('href',"#"+url);
 	loadURL(url, $('#content'));
 }
 function remove(id) {
@@ -113,7 +112,6 @@ function remove(id) {
 }
 function edit(pId,target) {
 	var url = prefix + '/edit/' + pId;
-	$(target).attr('href',"#"+url);
 	loadURL(url, $('#content'));
 }
 function batchRemove() {
