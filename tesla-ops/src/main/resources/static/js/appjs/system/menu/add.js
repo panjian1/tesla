@@ -40,15 +40,5 @@ $(document).ready(function(){
 			}
 		});
 	};
-	$("#ico-btn").click(function() {
-		layer.open({
-			type : 2,
-			title : '图标列表',
-			content : '/FontIcoList.html',
-			area : [ '480px', '90%' ],
-			success : function(layero, index) {
-			}
-		});
-	});
 	loadScript("js/plugin/jquery-form/jquery-form.min.js", pagefunction);
 });

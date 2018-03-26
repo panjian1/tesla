@@ -77,15 +77,14 @@
 								    <section class="col col-10">
 									   <label class="label">图标：</label>
 									   <label class="input">
-										   <input id="icon" name="icon" class="form-control" type="text" placeholder="例如：fa fa-circle-o">
-									       <input id="ico-btn" class="btn btn-warning" type="button" value="选择图标">
+										   <input name="icon" class="form-control" type="text" placeholder="例如：fa fa-circle-o">
 									   </label>
 									</section>
 								  </div> 
 							</fieldset>
 							<footer>
+							   <button type="button" onclick="goback()" class="btn btn-primary">返回</button>
 							   <button type="submit" class="btn btn-primary">提交</button>
-								     <button type="button" onclick="goback()" class="btn btn-primary">返回</button>
 							</footer>
 						</form>
 					</div>
@@ -95,3 +94,8 @@
 	</div>
 </section>
 <script type="text/javascript" src="/js/appjs/system/menu/add.js"></script>
+<script type="text/javascript">
+   function goback(){
+	   loadURL("sys/menu", $('#content'));
+   }
+</script>
