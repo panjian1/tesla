@@ -1,9 +1,6 @@
 $(document).ready(function(){
 	var prefix = "/sys/menu"
 	pageSetUp();
-    function goback(){
-	  loadURL("sys/menu", $('#content'));
-    }
 	var pagefunction = function() {
 		var $menuform = $("#menuform").validate({
 			rules : {
@@ -31,11 +28,11 @@ $(document).ready(function(){
 					async : false,
 					success : function() {
 						$("#menuform").addClass('submited');
+						loadURL("sys/menu", $('#content'));
 					}
 				});
 			},
 			errorPlacement : function(error, element) {
-				alert("test");
 				error.insertAfter(element.parent());
 			}
 		});
