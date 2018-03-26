@@ -84,7 +84,7 @@ var openDept = function() {
   layer.open({
     type: 2,
     title: "选择部门",
-    area: ['600px', '450px'],
+    area: ['700px', '450px'],
     content: "/sys/dept/treeView"
   })
 }
