@@ -34,7 +34,7 @@
 										<label class="label">部门：</label>
 										<label class="input">
 											<input id="deptId" name="deptId" class="hidden" th:value="${user.deptId}">
-											<input id="deptName" name="deptName" type="text" style="cursor: pointer;" onclick="openDept()" readonly="readonly" placeholder="所属部门">
+											<input id="deptName" name="deptName" type="text" style="cursor: pointer;" onclick="openDept()" readonly="readonly" placeholder="所属部门" th:value="${user.deptName}">
 										</label>
 									</section>
 								</div>
@@ -83,7 +83,7 @@
 </section>
 <script type="text/javascript" src="/js/appjs/system/user/add.js"></script>
 <script type="text/javascript">
-	function goback() {
-		loadURL("sys/user", $('#content'));
-	}
+  function goback() {
+    loadURL("sys/user", $('#content'));
+  }
 </script>
