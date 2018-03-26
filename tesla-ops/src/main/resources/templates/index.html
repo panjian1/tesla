@@ -1,31 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
-	<head>
-		<meta charset="utf-8">
-		<title>Tesla</title>
-		<meta name="description" content="">
-		<meta name="author" content="">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-		<link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="css/font-awesome.min.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-production-plugins.min.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-production.min.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-skins.min.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-rtl.min.css"> 
-		<link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap-table.min.css"> 
-		<link rel="stylesheet" type="text/css" media="screen" href="/css/jquery.treegrid.css">
-		<link rel="shortcut icon" href="img/favicon/favicon.ico" type="image/x-icon">
-		<link rel="icon" href="img/favicon/favicon.ico" type="image/x-icon">
-		<link rel="apple-touch-icon" href="img/splash/sptouch-icon-iphone.png">
-		<link rel="apple-touch-icon" sizes="76x76" href="img/splash/touch-icon-ipad.png">
-		<link rel="apple-touch-icon" sizes="120x120" href="img/splash/touch-icon-iphone-retina.png">
-		<link rel="apple-touch-icon" sizes="152x152" href="img/splash/touch-icon-ipad-retina.png">
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		<link rel="apple-touch-startup-image" href="img/splash/ipad-landscape.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
-		<link rel="apple-touch-startup-image" href="img/splash/ipad-portrait.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
-		<link rel="apple-touch-startup-image" href="img/splash/iphone.png" media="screen and (max-device-width: 320px)">
-	</head>
+	<head th:include="include :: header"></head>
 	<body class="">
 		<header id="header">
 			<div id="logo-group">
@@ -260,31 +235,7 @@
 				</div>
 			</div>
 		</div>
-        <script src="js/libs/jquery-2.1.1.min.js"></script>
-        <script src="js/libs/jquery-ui-1.10.3.min.js"></script>
-		<script src="js/app.config.js"></script>
-		<script src="js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script> 
-		<script src="js/bootstrap/bootstrap.min.js"></script>
-		<script src="js/notification/SmartNotification.min.js"></script>
-		<script src="js/smartwidgets/jarvis.widget.min.js"></script>
-		<script src="js/plugin/easy-pie-chart/jquery.easy-pie-chart.min.js"></script>
-		<script src="js/plugin/sparkline/jquery.sparkline.min.js"></script>
-		<script src="js/plugin/jquery-validate/jquery.validate.min.js"></script>
-		<script src="js/plugin/masked-input/jquery.maskedinput.min.js"></script>
-		<script src="js/plugin/select2/select2.min.js"></script>
-		<script src="js/plugin/bootstrap-slider/bootstrap-slider.min.js"></script>
-		<script src="js/plugin/msie-fix/jquery.mb.browser.min.js"></script>
-		<script src="js/plugin/fastclick/fastclick.min.js"></script>
-		<script src="js/plugin/bootstrap-table/bootstrap-table.min.js"></script>
-		<script src="js/plugin/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
-		<script src="js/plugin/jsTree/jstree.min.js"></script>
-		<script src="js/plugin/jqTreeGrid/jquery.treegrid.min.js"></script>
-		<script src="js/plugin/jqTreeGrid/jquery.treegrid.extension.js"></script>
-		<script src="js/plugin/jqTreeGrid/jquery.treegrid.bootstrap3.js"></script>
-		<script src="js/app.js"></script>
-		<script src="js/speech/voicecommand.min.js"></script>
-		<script src="js/smart-chat-ui/smart.chat.ui.min.js"></script>
-		<script src="js/smart-chat-ui/smart.chat.manager.min.js"></script>
+        <div th:include="include :: footer"></div>
 		<script type="text/javascript">
 		  var _gaq = _gaq || [];
 		  _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
