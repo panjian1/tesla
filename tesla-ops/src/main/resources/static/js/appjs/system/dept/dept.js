@@ -8,20 +8,11 @@ function load() {
     id: 'deptId',
     code: 'deptId',
     parentCode: 'parentId',
-    type: "GET", // 请求数据的ajax类型
-    url: prefix + '/list', // 请求数据的ajax的url
-    ajaxParams: {}, // 请求数据的ajax的data属性
-    expandColumn: '1', // 在哪一列上面显示展开按钮
-    striped: true, // 是否各行渐变色
-    bordered: true, // 是否显示边框
-    expandAll: false, // 是否全部展开
+    type: "GET",
+    url: prefix + '/list',
     columns: [{
-      title: '编号',
       field: 'deptId',
-      visible: false,
-      align: 'center',
-      valign: 'middle',
-      width: '50px'
+      title: '编号'
     }, {
       field: 'name',
       title: '部门名称'
@@ -42,10 +33,10 @@ function load() {
       field: 'id',
       align: 'center',
       formatter: function(item, index) {
-        var e = '<a class="btn btn-primary btn-sm ' + s_edit_h + '" href="#" mce_href="#" title="编辑" onclick="edit(\'' + item.deptId + '\')"><i class="fa fa-edit"></i></a> ';
-        var a = '<a class="btn btn-primary btn-sm ' + s_add_h + '" href="#" title="增加下級"  mce_href="#" onclick="add(\'' + item.deptId + '\')"><i class="fa fa-plus"></i></a> ';
-        var d = '<a class="btn btn-warning btn-sm ' + s_remove_h + '" href="#" title="删除"  mce_href="#" onclick="removeone(\'' + item.deptId + '\')"><i class="fa fa-remove"></i></a> ';
-        var f = '<a class="btn btn-success btn-sm＂ href="#" title="备用"  mce_href="#" onclick="resetPwd(\'' + item.deptId + '\')"><i class="fa fa-key"></i></a> ';
+        var e = '<a class="btn btn-primary btn-sm ' + s_edit_h + '" href="javascript:void(0)" mce_href="#" title="编辑" onclick="edit(\'' + item.deptId + '\')"><i class="fa fa-edit"></i></a> ';
+        var a = '<a class="btn btn-primary btn-sm ' + s_add_h + '" href="javascript:void(0)" title="增加下級"  mce_href="#" onclick="add(\'' + item.deptId + '\')"><i class="fa fa-plus"></i></a> ';
+        var d = '<a class="btn btn-warning btn-sm ' + s_remove_h + '" href="javascript:void(0)" title="删除"  mce_href="#" onclick="removeone(\'' + item.deptId + '\')"><i class="fa fa-remove"></i></a> ';
+        var f = '<a class="btn btn-success btn-sm＂ href="#" title="备用"  mce_href="javascript:void(0)" onclick="resetPwd(\'' + item.deptId + '\')"><i class="fa fa-key"></i></a> ';
         return e + a + d;
       }
     }]
@@ -55,58 +46,58 @@ function reLoad() {
   load();
 }
 function add(pId) {
-  layer.open({
-    type: 2,
-    title: '增加',
-    maxmin: true,
-    shadeClose: false, // 点击遮罩关闭层
-    area: ['800px', '520px'],
-    content: prefix + '/add/' + pId
-  });
+  var url = prefix + '/add/' + pId;
+  loadURL(url, $('#content'));
 }
 function edit(id) {
-  layer.open({
-    type: 2,
-    title: '编辑',
-    maxmin: true,
-    shadeClose: false, // 点击遮罩关闭层
-    area: ['800px', '520px'],
-    content: prefix + '/edit/' + id // iframe的url
-  });
+  var url = prefix + '/edit/' + id;
+  loadURL(url, $('#content'));
 }
 function removeone(id) {
-  layer.confirm('确定要删除选中的记录？', {
-    btn: ['确定', '取消']
-  }, function() {
+
+  $.SmartMessageBox({
+    title: "<i class='fa fa-sign-out txt-color-orangeDark'></i> 确定要删除选中的记录？",
+    buttons: '[No][Yes]'
+  }, function(ButtonPressed) {
+    if (ButtonPressed == "Yes") {
+      setTimeout(sureremove, 1000);
+    }
+  });
+  function sureremove() {
     $.ajax({
       url: prefix + "/remove",
       type: "post",
       data: {
         'deptId': id
       },
-      success: function(r) {
-        if (r.code == 0) {
-          layer.msg(r.msg);
-          reLoad();
-        } else {
-          layer.msg(r.msg);
-        }
+      success: function(data) {
+        loadURL(prefix, $('#content'));
       }
     });
-  })
+  }
 }
 
 function resetPwd(id) {
 }
 function batchRemove() {
-  var rows = $('#deptTable').bootstrapTable('getSelections'); // 返回所有选择的行，当没有选择的记录时，返回一个空数组
+
+  var rows = $('#deptTable').bootstrapTable('getSelections');
   if (rows.length == 0) {
-    layer.msg("请选择要删除的数据");
+    $.SmartMessageBox({
+      title: "<i class='fa fa-sign-out txt-color-orangeDark'></i> 请选择要删除的记录？",
+      buttons: '[Yes]'
+    });
     return;
   }
-  layer.confirm("确认要删除选中的'" + rows.length + "'条数据吗?", {
-    btn: ['确定', '取消']
-  }, function() {
+  $.SmartMessageBox({
+    title: "<i class='fa fa-sign-out txt-color-orangeDark'></i> 确定要删除选中的记录？",
+    buttons: '[No][Yes]'
+  }, function(ButtonPressed) {
+    if (ButtonPressed == "Yes") {
+      setTimeout(sureremove, 1000);
+    }
+  });
+  function sureremove() {
     var ids = new Array();
     $.each(rows, function(i, row) {
       ids[i] = row['deptId'];
@@ -118,14 +109,8 @@ function batchRemove() {
       },
       url: prefix + '/batchRemove',
       success: function(r) {
-        if (r.code == 0) {
-          layer.msg(r.msg);
-          reLoad();
-        } else {
-          layer.msg(r.msg);
-        }
+        loadURL(prefix, $('#content'));
       }
     });
-  }, function() {
-  });
+  }
 }
