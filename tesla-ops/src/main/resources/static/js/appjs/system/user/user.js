@@ -31,8 +31,8 @@ $('#userTable').bootstrapTable({
 						checkbox : true
 					},
 					{
-						field : 'userId', // 列字段名
-						title : '序号' // 列标题
+						field : 'userId',  
+						title : '序号' 
 					},
 					{
 						field : 'name',
