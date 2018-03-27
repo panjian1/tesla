@@ -9,6 +9,8 @@ function load() {
     code: 'deptId',
     parentCode: 'parentId',
     type: "GET",
+    pageSize: 5,
+    pageList: [5],
     url: prefix + '/list',
     columns: [{
       field: 'deptId',

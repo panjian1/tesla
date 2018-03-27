@@ -8,6 +8,8 @@ $(document).ready(function() {
     url: prefix + '/list',
     expandColumn: '1',
     expandAll: false,
+    pageSize: 5,
+    pageList: [5],
     columns: [{
       title: '编号',
       field: 'menuId',
