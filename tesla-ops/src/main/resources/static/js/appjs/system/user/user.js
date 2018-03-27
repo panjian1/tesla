@@ -18,6 +18,14 @@ function load(deptId) {
     pageNumber: 1,
     showColumns: false,
     sidePagination: "server",
+    queryParams: function(params) {
+      return {
+        limit: params.limit,
+        offset: params.offset,
+        name: $('#searchName').val(),
+        deptId: deptId
+      };
+    },
     columns: [{
       checkbox: true
     }, {

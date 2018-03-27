@@ -54,25 +54,25 @@
 	</div>
 	<div>
 		<script type="text/javascript">
-			var s_edit_h = 'hidden';
-			var s_remove_h = 'hidden';
-			var s_resetPwd_h = 'hidden';
-		</script>
+      var s_edit_h = 'hidden';
+      var s_remove_h = 'hidden';
+      var s_resetPwd_h = 'hidden';
+    </script>
 	</div>
 	<div shiro:hasPermission="sys:user:edit">
 		<script type="text/javascript">
-			s_edit_h = '';
-		</script>
+      s_edit_h = '';
+    </script>
 	</div>
 	<div shiro:hasPermission="sys:user:remove">
 		<script type="text/javascript">
-			s_remove_h = '';
-		</script>
+      s_remove_h = '';
+    </script>
 	</div>
 	<div shiro:hasPermission="sys:user:resetPwd">
 		<script type="text/javascript">
-			s_resetPwd_h = '';
-		</script>
+      s_resetPwd_h = '';
+    </script>
 	</div>
 </div>
 <script type="text/javascript" src="/js/appjs/system/user/user.js"></script>
