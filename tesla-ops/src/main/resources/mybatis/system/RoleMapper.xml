@@ -19,8 +19,6 @@
 			<if test="roleSign != null and roleSign != ''"> and role_sign = #{roleSign} </if>
 			<if test="remark != null and remark != ''"> and remark = #{remark} </if>
 			<if test="userIdCreate != null and userIdCreate != ''"> and user_id_create = #{userIdCreate} </if>
-			<if test="gmtCreate != null and gmtCreate != ''"> and gmt_create = #{gmtCreate} </if>
-			<if test="gmtModified != null and gmtModified != ''"> and gmt_modified = #{gmtModified} </if>
 		</where>
 		<choose>
 			<when test="sort != null and sort.trim() != ''">
@@ -43,8 +41,6 @@
 			<if test="roleSign != null and roleSign != ''"> and role_sign = #{roleSign} </if>
 			<if test="remark != null and remark != ''"> and remark = #{remark} </if>
 			<if test="userIdCreate != null and userIdCreate != ''"> and user_id_create = #{userIdCreate} </if>
-			<if test="gmtCreate != null and gmtCreate != ''"> and gmt_create = #{gmtCreate} </if>
-			<if test="gmtModified != null and gmtModified != ''"> and gmt_modified = #{gmtModified} </if>
 		</where>
 	</select>
 
@@ -65,8 +61,8 @@
 		#{roleSign},
 		#{remark},
 		#{userIdCreate},
-		#{gmtCreate},
-		#{gmtModified}
+		sysdate(),
+		sysdate()
 		)
 	</insert>
 
@@ -78,7 +74,7 @@
 			<if test="remark != null">`remark` = #{remark}, </if>
 			<if test="userIdCreate != null">`user_id_create` = #{userIdCreate}, </if>
 			<if test="gmtCreate != null">`gmt_create` = #{gmtCreate}, </if>
-			<if test="gmtModified != null">`gmt_modified` = #{gmtModified}</if>
+			`gmt_modified`=sysdate()
 		</set>
 		where role_id = #{roleId}
 	</update>

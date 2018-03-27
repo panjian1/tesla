@@ -61,6 +61,8 @@ public class RoleController extends BaseController {
   @PostMapping("/save")
   @ResponseBody()
   CommonResponse save(RoleDO role) {
+    Long userId = BaseController.getUserId();
+    role.setUserIdCreate(userId);
     if (roleService.save(role) > 0) {
       return CommonResponse.ok();
     } else {
@@ -73,6 +75,8 @@ public class RoleController extends BaseController {
   @PostMapping("/update")
   @ResponseBody()
   CommonResponse update(RoleDO role) {
+    Long userId = BaseController.getUserId();
+    role.setUserIdCreate(userId);
     if (roleService.update(role) > 0) {
       return CommonResponse.ok();
     } else {
