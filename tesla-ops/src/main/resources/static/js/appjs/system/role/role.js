@@ -26,6 +26,9 @@ function load() {
       field: 'roleName',
       title: '角色名'
     }, {
+      field: 'roleSign',
+      title: '昵称'
+    }, {
       field: 'remark',
       title: '备注'
     }, {
