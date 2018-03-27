@@ -47,9 +47,11 @@ $(document).ready(function() {
         'core': {
           'data': menuTree
         },
-        "plugins": ["search"]
+        "checkbox": {
+          "three_state": true,
+        },
+        "plugins": ["wholerow", "checkbox"]
       });
-      $('#menuTree').jstree().open_all();
     }
   });
   loadScript("js/plugin/jquery-form/jquery-form.min.js", pagefunction);
