@@ -5,8 +5,12 @@
 
 	<select id="get" resultType="io.github.tesla.ops.system.domain.RoleDO">
 		select
-		`role_id`,`role_name`,`role_sign`,`remark`,`user_id_create`,`gmt_create`,`gmt_modified`
-		from sys_role where role_id = #{value}
+		role.role_id,role_name,role_sign,remark,user_id_create,menuIdStr,gmt_create,gmt_modified
+		from
+		sys_role role left join (select role_id,group_concat(menu_id) as
+		menuIdStr from sys_role_menu where role_id=#{value} group by role_id )
+		as menu
+		on role.role_id = menu.role_id where role.role_id = #{value};
 	</select>
 
 	<select id="list" resultType="io.github.tesla.ops.system.domain.RoleDO">

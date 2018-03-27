@@ -1,85 +1,61 @@
-var menuIds;
-$(function() {
-	getMenuTreeData();
-	validateRule();
+$(document).ready(function() {
+  var prefix = "sys/role"
+  pageSetUp();
+  var pagefunction = function() {
+    var $roleForm = $("#roleForm").validate({
+      rules: {
+        roleName: {
+          required: true
+        }
+      },
+      messages: {
+        roleName: {
+          required: "请输入角色名"
+        }
+      },
+      submitHandler: function(form) {
+        $(form).ajaxSubmit({
+          cache: true,
+          type: "POST",
+          url: prefix + "/update",
+          data: $('#roleForm').serialize(),
+          async: false,
+          beforeSubmit: function() {
+            var ref = $('#menuTree').jstree(true);
+            var menuIds = ref.get_selected();
+            $("#menuTree").find(".jstree-undetermined").each(function(i, element) {
+              menuIds.push($(element).closest('.jstree-node').attr("id"));
+            });
+            $('#menuIds').val(menuIds);
+          },
+          success: function() {
+            $("#roleForm").addClass('submited');
+            loadURL(prefix, $('#content'));
+          }
+        });
+      },
+      errorPlacement: function(error, element) {
+        error.insertAfter(element.parent());
+      }
+    });
+  };
+  $.ajax({
+    type: "GET",
+    url: "/sys/menu/tree",
+    success: function(menuTree) {
+      $('#menuTree').jstree({
+        'core': {
+          'data': menuTree
+        },
+        "checkbox": {
+          "three_state": true,
+        },
+        "plugins": ["wholerow", "checkbox"]
+      }).on("loaded.jstree", function(event, data) {
+        $("#menuTree").jstree("deselect_all", true);
+        $('#menuTree').jstree('select_node', $('#menuIds').val().split(','), true);
+      });
+    }
+  });
+  loadScript("js/plugin/jquery-form/jquery-form.min.js", pagefunction);
 });
-$.validator.setDefaults({
-	submitHandler : function() {
-		getAllSelectNodes();
-		update();
-	}
-});
-function loadMenuTree(menuTree) {
-	$('#menuTree').jstree({
-		"plugins" : [ "wholerow", "checkbox" ],
-		'core' : {
-			'data' : menuTree
-		},
-		"checkbox" : {
-			//"keep_selected_style" : false,
-			//"undetermined" : true
-			//"three_state" : false,
-			//"cascade" : ' up'
-		}
-	});
-	$('#menuTree').jstree('open_all');
-}
-function getAllSelectNodes() {
-	var ref = $('#menuTree').jstree(true); // 获得整个树
-	menuIds = ref.get_selected(); // 获得所有选中节点的，返回值为数组
-	$("#menuTree").find(".jstree-undetermined").each(function(i, element) {
-		menuIds.push($(element).closest('.jstree-node').attr("id"));
-	});
-	console.log(menuIds); 
-}
-function getMenuTreeData() {
-	var roleId = $('#roleId').val();
-	$.ajax({
-		type : "GET",
-		url : "/sys/menu/tree/" + roleId,
-		success : function(data) {
-			loadMenuTree(data);
-		}
-	});
-}
-function update() {
-	$('#menuIds').val(menuIds);
-	var role = $('#signupForm').serialize();
-	$.ajax({
-		cache : true,
-		type : "POST",
-		url : "/sys/role/update",
-		data : role, // 你的formid
-		async : false,
-		error : function(request) {
-			alert("Connection error");
-		},
-		success : function(r) {
-			if (r.code == 0) {
-				parent.layer.msg(r.msg);
-				parent.reLoad();
-				var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
-				parent.layer.close(index);
-
-			} else {
-				parent.layer.msg(r.msg);
-			}
-
-		}
-	});
-}
-function validateRule() {
-	var icon = "<i class='fa fa-times-circle'></i> ";
-	$("#signupForm").validate({
-		rules : {
-			roleName : {
-				required : true
-			}
-		},
-		messages : {
-			roleName : {
-				required : icon + "请输入角色名"
-			}
-		}
-	});
-}

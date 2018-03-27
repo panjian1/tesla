@@ -13,6 +13,7 @@ public class RoleDO {
   private Timestamp gmtCreate;
   private Timestamp gmtModified;
   private List<Long> menuIds;
+  private String menuIdStr;
 
   public Long getRoleId() {
     return roleId;
@@ -76,6 +77,14 @@ public class RoleDO {
 
   public void setMenuIds(List<Long> menuIds) {
     this.menuIds = menuIds;
+  }
+
+  public void setMenuIdStr(String menuIds) {
+    this.menuIdStr = menuIds;
+  }
+
+  public String getMenuIdStr() {
+    return menuIdStr;
   }
 
   @Override
