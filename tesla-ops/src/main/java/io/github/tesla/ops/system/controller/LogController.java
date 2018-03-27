@@ -29,7 +29,7 @@ public class LogController {
   @GetMapping("/run")
   @RequiresPermissions("sys:monitor:run")
   String run() {
-    return "redirect:/druid/index.html";
+    return prefix + "/monitor";
   }
 
   @GetMapping()
