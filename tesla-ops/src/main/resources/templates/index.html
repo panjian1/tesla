@@ -338,7 +338,7 @@
 	<div th:include="include :: footer"></div>
 	<script type="text/javascript">
     var localUrl = window.location.href;
-    var index = localUrl.indexOf('indexOf');
+    var index = localUrl.indexOf('#');
     if (index == -1) {
       window.location.hash = 'sys/menu';
     }
