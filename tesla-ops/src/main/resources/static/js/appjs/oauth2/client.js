@@ -126,7 +126,7 @@ function remove(id) {
         'id': id
       },
       success: function(data) {
-        loadURL(prefix, $('#content'));
+        loadURL("sys/oauth2/client", $('#content'));
       }
     });
   }
@@ -160,7 +160,7 @@ function batchRemove() {
       },
       url: prefix + '/batchRemove',
       success: function(r) {
-        loadURL(prefix, $('#content'));
+        loadURL("sys/oauth2/client", $('#content'));
       }
     });
   }
