@@ -1,11 +1,7 @@
 var prefix = "sys/oauth2";
-$(function() {
-  load();
-});
-
-function load() {
+$(document).ready(function() {
   $('#oauth2Table').bootstrapTable({
-    method: 'get',
+    method: 'GET',
     url: prefix + "/listClient",
     iconSize: 'outline',
     striped: true,
@@ -96,10 +92,8 @@ function load() {
   $('#oauth2Table').on('post-body.bs.table', function() {
     pageSetUp();
   });
-}
-function reLoad() {
-  $('#oauth2Table').bootstrapTable('refresh');
-}
+});
+
 function add() {
   var url = prefix + '/add';
   loadURL(url, $('#content'));

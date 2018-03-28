@@ -1,85 +1,140 @@
-<!DOCTYPE html>
-<html>
-<meta charset="utf-8">
-<body class="gray-bg">
-	<div class="wrapper wrapper-content animated fadeInRight">
-		<div class="row">
-			<div class="col-sm-12">
-				<div class="ibox float-e-margins">
-					<div class="ibox-content">
-						<form class="form-horizontal" id="oauth2Form">
-							<div class="form-group">
-								<label class="col-sm-2 control-label" for="clientId">客户端Id</label>
-								<div class="col-sm-4">
-									<input class="form-control" id="clientId" name="clientId" type="text" placeholder="clientId" th:value="${client.clientId}" />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label" for="name">客户端Name</label>
-								<div class="col-sm-4">
-									<input class="form-control" id="fromPath" name="name" type="text" placeholder="name" th:value="${client.name}" />
-								</div>
-								<label class="col-sm-2 control-label" for="clientSecret">客户端安全码</label>
-								<div class="col-sm-4">
-									<input class="form-control" id="clientSecret" name="clientSecret" type="text" placeholder="clientSecret" th:value="${client.clientSecret}" />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label" for="redirectUri">授权成功重定向URL</label>
-								<div class="col-sm-10">
-									<input class="form-control" id="redirectUri" name="redirectUri" type="text" placeholder="redirectUri" th:value="${client.redirectUri}" />
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="scope" class="col-sm-2 control-label">权限范围</label>
-								<div class="col-sm-4">
-									<select id="scope" name="scope" class="form-control" multiple="multiple" th:value="${client.scope}">
-										<option value="read" th:selected="${#strings.contains(client.scope,'read')}">read</option>
-										<option value="write" th:selected="${#strings.contains(client.scope,'write')}">write</option>
-									</select>
-								</div>
-								<label for="grantTypes" class="col-sm-2 control-label">权限类型</label>
-								<div class="col-sm-4">
-									<select id="grantTypes" name="grantTypes" class="form-control" multiple="multiple" th:value="${client.grantTypes}">
-										<option value="authorization_code" th:selected="${#strings.contains(client.grantTypes,'authorization_code')}">authorization_code</option>
-										<option value="password" th:selected="${#strings.contains(client.grantTypes,'password')}">password</option>
-										<option value="refresh_token" th:selected="${#strings.contains(client.grantTypes,'refresh_token')}">refresh_token</option>
-										<option value="client_credentials" th:selected="${#strings.contains(client.grantTypes,'client_credentials')}">client_credentials</option>
-									</select>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label" for="accessTokenValidity">AccessToken有效时长</label>
-								<div class="col-sm-4">
-									<input class="form-control" id="accessTokenValidity" name="accessTokenValidity" type="text" placeholder="accessTokenValidity" th:value="${client.accessTokenValidity}" />
-								</div>
-								<label class="col-sm-2 control-label" for="refreshTokenValidity">RefreshToken有效时长</label>
-								<div class="col-sm-4">
-									<input id="refreshTokenValidity" name="refreshTokenValidity" class="form-control" type="text" placeholder="refreshTokenValidity" th:value="${client.refreshTokenValidity}" />
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="trusted" class="col-sm-2 control-label">是否完全信任</label>
-								<div class="col-sm-4">
-									<select id="trusted" name="trusted" class="form-control" th:value="${client.trusted}">
-										<option value="0" th:selected="${client.trusted ==false}">否</option>
-										<option value="1" th:selected="${client.trusted ==true}">是</option>
-									</select>
-								</div>
-							</div>
+<section id="widget-grid" class="">
+	<div class="row">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
+				<header>
+					<span class="widget-icon">
+						<i class="fa fa-table"></i>
+					</span>
+					<h2>添加客户端</h2>
+				</header>
+				<div>
+					<div class="widget-body no-padding">
+						<form method="post" id="oauth2Form" class="smart-form">
 							<fieldset>
-								<div class="form-group">
-									<div class="col-sm-12" align="center">
-										<button type="submit" class="btn btn-primary">提交</button>
-									</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">ClientId：</label>
+										<label class="input">
+											<input class="form-control" id="clientId" name="clientId" type="text" th:value="${client.clientId}" />
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">ClientName：</label>
+										<label class="input">
+											<input class="form-control" id="fromPath" name="name" type="text" th:value="${client.name}" />
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">ClientSecret：</label>
+										<label class="input">
+											<input class="form-control" id="clientSecret" name="clientSecret" type="text" th:value="${client.clientSecret}" />
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">Redirect URL：</label>
+										<label class="input">
+											<input class="form-control" id="redirectUri" name="redirectUri" type="text" th:value="${client.redirectUri}" />
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">Scope：</label>
+										<div class="inline-group">
+											<label class="checkbox">
+												<input type="checkbox" name="scope" value="read" th:checked="${#strings.contains(client.scope,'read')}">
+												<i></i>
+												Read
+											</label>
+											<label class="checkbox">
+												<input type="checkbox" name="scope" value="write" th:checked="${#strings.contains(client.scope,'write')}">
+												<i></i>
+												Write
+											</label>
+										</div>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">GrantTypes：</label>
+										<div class="inline-group">
+											<label class="checkbox">
+												<input type="checkbox" name="grantTypes" value="authorization_code" th:checked="${#strings.contains(client.grantTypes,'authorization_code')}">
+												<i></i>
+												授权码
+											</label>
+											<label class="checkbox">
+												<input type="checkbox" name="grantTypes" value="password" th:checked="${#strings.contains(client.grantTypes,'password')}">
+												<i></i>
+												密码
+											</label>
+											<label class="checkbox">
+												<input type="checkbox" name="grantTypes" value="refresh_token" th:checked="${#strings.contains(client.grantTypes,'refresh_token')}">
+												<i></i>
+												刷新Token
+											</label>
+											<label class="checkbox">
+												<input type="checkbox" name="grantTypes" value="implicit" th:checked="${#strings.contains(client.grantTypes,'implicit')}">
+												<i></i>
+												简化模式
+											</label>
+											<label class="checkbox">
+												<input type="checkbox" name="grantTypes" value="client_credentials" th:checked="${#strings.contains(client.grantTypes,'client_credentials')}">
+												<i></i>
+												客户端
+											</label>
+										</div>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">AccessToken Effective：</label>
+										<label class="input">
+											<input class="form-control" id="accessTokenValidity" name="accessTokenValidity" type="text" th:value="${client.accessTokenValidity}" />
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">RefreshToken Effective：</label>
+										<label class="input">
+											<input id="refreshTokenValidity" name="refreshTokenValidity" class="form-control" type="text" th:value="${client.refreshTokenValidity}" />
+										</label>
+									</section>
+								</div>
+								<div class="row">
+									<section class="col col-10">
+										<label class="label">Trusted：</label>
+										<label class="input">
+											<select id="trusted" name="trusted" class="form-control" th:value="${client.trusted}">
+												<option value="0" th:selected="${client.trusted ==false}">否</option>
+												<option value="1" th:selected="${client.trusted ==true}">是</option>
+											</select>
+										</label>
+									</section>
 								</div>
 							</fieldset>
+							<footer>
+								<button type="button" onclick="goback()" class="btn btn-primary">返回</button>
+								<button type="submit" class="btn btn-primary">提交</button>
+							</footer>
 						</form>
 					</div>
 				</div>
 			</div>
-		</div>
+		</article>
 	</div>
-	<script type="text/javascript" src="/js/appjs/oauth2/edit.js"></script>
-</body>
-</html>
+</section>
+<script type="text/javascript" src="/js/appjs/oauth2/edit.js"></script>
+<script type="text/javascript">
+  function goback() {
+    loadURL("sys/oauth2/client", $('#content'));
+  }
+</script>
