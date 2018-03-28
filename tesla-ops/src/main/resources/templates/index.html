@@ -337,7 +337,11 @@
 	</div>
 	<div th:include="include :: footer"></div>
 	<script type="text/javascript">
-    window.location.hash = 'sys/menu';
+    var localUrl = window.location.href;
+    var index = localUrl.indexOf('indexOf');
+    if (index == -1) {
+      window.location.hash = 'sys/menu';
+    }
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
     _gaq.push(['_trackPageview']);
