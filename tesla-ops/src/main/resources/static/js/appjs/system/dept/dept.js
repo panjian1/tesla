@@ -56,7 +56,6 @@ function edit(id) {
   loadURL(url, $('#content'));
 }
 function removeone(id) {
-
   $.SmartMessageBox({
     title: "<i class='fa fa-sign-out txt-color-orangeDark'></i> 确定要删除选中的记录？",
     buttons: '[No][Yes]'
