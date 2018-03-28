@@ -35,7 +35,7 @@ function load() {
       title: 'Secret'
     }, {
       field: 'redirectUri',
-      title: 'RedirectUrL',
+      title: 'Redirect URL',
       cellStyle: function(value, row, index) {
         return {
           css: {
