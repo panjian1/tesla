@@ -341,6 +341,13 @@
     var index = localUrl.indexOf('#');
     if (index == -1) {
       window.location.hash = 'sys/menu';
+      window.location.reload();
+    } else {
+      var url = localUrl.substring(index + 1);
+      if (url == 'undefined') {
+        window.location.hash = 'sys/menu';
+        window.location.reload();
+      }
     }
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
