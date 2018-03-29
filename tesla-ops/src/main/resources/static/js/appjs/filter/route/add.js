@@ -123,7 +123,23 @@ $(document).ready(function() {
           }
         },
         'onFinish': function(tab, navigation, index) {
-          alert('test');
+          var $valid = $("#wizardFrom").valid();
+          if (!$valid) {
+            $validator.focusInvalid();
+            return false;
+          } else {
+            $("#routeForm").ajaxSubmit({
+              type: "POST",
+              url: "/filter/route/save",
+              dataType: 'json',
+              error: function(request) {
+                parent.layer.alert("Connection error");
+              },
+              success: function() {
+                loadURL("filter/route", $('#content'));
+              }
+            });
+          }
         }
       });
     }
