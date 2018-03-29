@@ -1,198 +1,237 @@
-<!DOCTYPE html>
-<html>
-<meta charset="utf-8">
-<body class="gray-bg">
-	<div class="wrapper wrapper-content animated fadeInRight">
-		<div class="row">
-			<div class="col-sm-12">
-				<div class="wizard-container">
-					<div class="card wizard-card" data-color="green" id="wizardProfile">
-						<form class="form-horizontal" id="routeForm"
-							enctype="multipart/form-data">
-							<div class="wizard-header"></div>
-							<div class="wizard-navigation">
-								<ul>
-									<li><a href="#basic" data-toggle="tab">基础配置</a></li>
-									<li><a href="#rest" data-toggle="tab">SpringCloud服务发现</a></li>
-									<li><a href="#rpcsoa" data-toggle="tab">Rpc服务发现</a></li>
-									<li><a href="#grpc" data-toggle="tab">gRpc</a></li>
-									<li><a href="#dubbo" data-toggle="tab">dubbo</a></li>
-								</ul>
-							</div>
-							<div class="tab-content">
-								<div class="tab-pane" id="basic">
-									<div class="row">
-										<div class="col-sm-12">
-											<div class="form-group">
-												<label class="col-sm-3 control-label" for="fromPath">源路径</label>
-												<div class="col-sm-6">
-													<input class="form-control" id="fromPath" name="fromPath"
-														type="text" placeholder="请求源URL路径" />
-												</div>
-											</div>
-										</div>
-										<div class="col-sm-12">
-											<div class="form-group">
-												<label class="col-sm-3 control-label" for="rpc">是否RPC</label>
-												<div class="col-sm-6">
-													<select id="rpc" name="rpc" class="form-control">
-														<option value="0">否</option>
-														<option value="1">是</option>
-													</select>
-												</div>
-											</div>
-										</div>
-										<div class="col-sm-12">
-											<div class="form-group">
-												<label class="col-sm-3 control-label" for="toHostport">目标地址</label>
-												<div class="col-sm-6">
-													<input class="form-control" id="toHostport"
-														name="toHostport" type="text" placeholder="目标IP和端口" />
-												</div>
-											</div>
-										</div>
-										<div class="col-sm-12">
-											<div class="form-group">
-												<label class="col-sm-3 control-label" for="toPath">目标路径</label>
-												<div class="col-sm-6">
-													<input id="toPath" name="toPath" class="form-control"
-														type="text" placeholder="目标URL路径" />
-												</div>
-											</div>
-										</div>
+<section id="widget-grid" class="">
+	<div class="row">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-deletebutton="false">
+				<header>
+					<h2>路由策略添加</h2>
+				</header>
+				<div>
+					<div class="jarviswidget-editbox"></div>
+					<div class="widget-body">
+						<div class="row">
+							<form id="wizardFrom" novalidate="novalidate">
+								<div id="routeWizard" class="col-sm-12">
+									<div class="form-bootstrapWizard">
+										<ul class="bootstrapWizard form-wizard">
+											<li class="active" data-target="#step1">
+												<a href="#tab1" data-toggle="tab">
+													<span class="step">1</span>
+													<span class="title">基础配置</span>
+												</a>
+											</li>
+											<li data-target="#step2">
+												<a href="#tab2" data-toggle="tab">
+													<span class="step">2</span>
+													<span class="title">Spring Cloud服务发现</span>
+												</a>
+											</li>
+											<li data-target="#step3">
+												<a href="#tab3" data-toggle="tab">
+													<span class="step">3</span>
+													<span class="title">RPC 服务发现</span>
+												</a>
+											</li>
+											<li data-target="#step4">
+												<a href="#tab4" data-toggle="tab">
+													<span class="step">4</span>
+													<span class="title">gRPC服务发现</span>
+												</a>
+											</li>
+											<li data-target="#step5">
+												<a href="#tab5" data-toggle="tab">
+													<span class="step">5</span>
+													<span class="title">DUBBO服务发现</span>
+												</a>
+											</li>
+										</ul>
+										<div class="clearfix"></div>
 									</div>
-								</div>
-								<div class="tab-pane" id="rest">
-									<div class="row">
-										<div class="col-sm-12">
-											<div class="form-group">
-												<label class="col-sm-3 control-label" for="serviceId">服务ID</label>
-												<div class="col-sm-6">
-													<input class="form-control" id="serviceId" name="serviceId"
-														type="text" placeholder="SpringCloud服务ID" />
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="tab-pane" id="rpcsoa">
-									<div class="row">
-										<div class="col-sm-12">
-											<div class="form-group">
-												<label class="col-sm-3 control-label" for="serviceName">服务名</label>
-												<div class="col-sm-6">
-													<input class="form-control" id="serviceName"
-														name="serviceName" type="text" placeholder="服务接口名" />
-												</div>
-											</div>
-										</div>
-										<div class="col-sm-12">
-											<div class="form-group">
-												<label class="col-sm-3 control-label" for="methodName">方法名</label>
-												<div class="col-sm-6">
-													<input class="form-control" id="methodName"
-														name="methodName" type="text" placeholder="服务方法名" />
-												</div>
-											</div>
-										</div>
-										<div class="col-sm-12">
-											<div class="form-group">
-												<label class="col-sm-3 control-label" for="serviceGroup">组别</label>
-												<div class="col-sm-6">
-													<input class="form-control" id="serviceGroup"
-														name="serviceGroup" type="text" placeholder="服务Group" />
-												</div>
-											</div>
-										</div>
-										<div class="col-sm-12">
-											<div class="form-group">
-												<label class="col-sm-3 control-label" for="serviceVersion">版本</label>
-												<div class="col-sm-6">
-													<input class="form-control" id="serviceVersion"
-														name="serviceVersion" type="text" placeholder="服务Version" />
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="tab-pane" id="grpc">
-									<div class="row">
-										<div class="col-sm-12">
-											<div class="form-group">
-												<label class="col-sm-3 control-label" for="zipFile">gRpc
-													Proto定义</label>
-												<div class="col-sm-6">
-													<span id="zipfilename" style="vertical-align: left">未上传文件</span>
-													<div class="file-container"
-														style="display: inline-block; position: relative; overflow: hidden; vertical-align: middle">
-														<button class="btn btn-success fileinput-button"
-															type="button">上传</button>
-														<input type="file" id="zipFile" name="zipFile"
-															onchange="loadZipFile(this.files[0])"
-															style="position: absolute; top: 0; left: 0; font-size: 34px; opacity: 0">
+									<div class="tab-content">
+										<div class="tab-pane active" id="tab1">
+											<br>
+											<h3>
+												<strong>Step 1 </strong>
+												- 路由基本配置
+											</h3>
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="form-group">
+														<label class="col-sm-3 control-label" for="fromPath">源路径</label>
+														<div class="col-sm-6">
+															<input class="form-control" id="fromPath" name="fromPath" type="text" placeholder="请求源URL路径" />
+														</div>
 													</div>
-													<span class="help-block">(包括服务定义、入参、出参的proto文件,以zip包的方式提交)</span>
+												</div>
+												<div class="col-sm-12">
+													<div class="form-group">
+														<label class="col-sm-3 control-label" for="rpc">是否RPC</label>
+														<div class="col-sm-6">
+															<select id="rpc" name="rpc" class="form-control">
+																<option value="0">否</option>
+																<option value="1">是</option>
+															</select>
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-12">
+													<div class="form-group">
+														<label class="col-sm-3 control-label" for="toHostport">目标地址</label>
+														<div class="col-sm-6">
+															<input class="form-control" id="toHostport" name="toHostport" type="text" placeholder="目标IP和端口" />
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-12">
+													<div class="form-group">
+														<label class="col-sm-3 control-label" for="toPath">目标路径</label>
+														<div class="col-sm-6">
+															<input id="toPath" name="toPath" class="form-control" type="text" placeholder="目标URL路径" />
+														</div>
+													</div>
 												</div>
 											</div>
 										</div>
-										<div class="col-sm-12">
-											<div class="form-group">
-												<label class="col-sm-3 control-label" for="serviceFileName">服务文件名</label>
-												<div class="col-sm-6">
-													<input class="form-control" id="serviceFileName"
-														name="serviceFileName" type="text"
-														placeholder="指定gRpc的服务定义文件名" />
+										<div class="tab-pane" id="tab2">
+											<br>
+											<h3>
+												<strong>Step 2</strong>
+												- Spring Cloud服务发现
+											</h3>
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="form-group">
+														<label class="col-sm-3 control-label" for="serviceId">服务ID</label>
+														<div class="col-sm-6">
+															<input class="form-control" id="serviceId" name="serviceId" type="text" placeholder="SpringCloud服务ID" />
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="tab-pane" id="tab3">
+											<br>
+											<h3>
+												<strong>Step 3</strong>
+												- RPC 服务发现
+											</h3>
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="form-group">
+														<label class="col-sm-3 control-label" for="serviceName">服务名</label>
+														<div class="col-sm-6">
+															<input class="form-control" id="serviceName" name="serviceName" type="text" placeholder="服务接口名" />
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-12">
+													<div class="form-group">
+														<label class="col-sm-3 control-label" for="methodName">方法名</label>
+														<div class="col-sm-6">
+															<input class="form-control" id="methodName" name="methodName" type="text" placeholder="服务方法名" />
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-12">
+													<div class="form-group">
+														<label class="col-sm-3 control-label" for="serviceGroup">组别</label>
+														<div class="col-sm-6">
+															<input class="form-control" id="serviceGroup" name="serviceGroup" type="text" placeholder="服务Group" />
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-12">
+													<div class="form-group">
+														<label class="col-sm-3 control-label" for="serviceVersion">版本</label>
+														<div class="col-sm-6">
+															<input class="form-control" id="serviceVersion" name="serviceVersion" type="text" placeholder="服务Version" />
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="tab-pane" id="tab4">
+											<br>
+											<h3>
+												<strong>Step 4</strong>
+												- gRPC 服务发现
+											</h3>
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="form-group">
+														<label class="col-sm-3 control-label" for="zipFile">gRPC Proto定义</label>
+														<div class="col-sm-8">
+															<span id="zipfilename" style="vertical-align: left">未上传文件</span>
+															<div class="file-container" style="display: inline-block; position: relative; overflow: hidden; vertical-align: middle">
+																<button class="btn btn-success fileinput-button" type="button">上传</button>
+																<input type="file" id="zipFile" name="zipFile" onchange="loadZipFile(this.files[0])" style="position: absolute; top: 0; left: 0; font-size: 34px; opacity: 0">
+															</div>
+															<span>(包括服务定义、入参、出参的proto文件,以zip包的方式提交)</span>
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-12">
+													<div class="form-group">
+														<label class="col-sm-3 control-label" for="serviceFileName">服务文件名</label>
+														<div class="col-sm-6">
+															<input class="form-control" id="serviceFileName" name="serviceFileName" type="text" placeholder="指定gRpc的服务定义文件名" />
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="tab-pane" id="tab5">
+											<br>
+											<h3>
+												<strong>Step 5</strong>
+												- DUBBO 服务发现
+											</h3>
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="form-group">
+														<label class="col-sm-3 control-label" for="inputParam">dubbo入参类名</label>
+														<div class="col-sm-6">
+															<input class="form-control" id="inputParam" name="inputParam" type="text" placeholder="dubbo入参全类名" />
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="form-actions">
+											<div class="row">
+												<div class="col-sm-12">
+													<ul class="pager wizard no-margin">
+														<li class="previous disabled">
+															<a href="javascript:void(0);" class="btn btn-lg btn-default"> 上一步 </a>
+														</li>
+														<li class="next">
+															<a href="javascript:void(0);" class="btn btn-lg txt-color-darken"> 下一步 </a>
+														</li>
+														<li class="finish pull-right">
+															<a href="javascript:void(0);" class="btn btn-lg txt-color-darken"> 提交 </a>
+														</li>
+														<li class="pull-center">
+															<a href="javascript:void(0);" onclick="goback()" class="btn btn-lg txt-color-darken"> 返回 </a>
+														</li>
+													</ul>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-								<div class="tab-pane" id="dubbo">
-									<div class="row">
-										<div class="col-sm-12">
-											<div class="form-group">
-												<label class="col-sm-3 control-label" for="inputParam">dubbo入参类名</label>
-												<div class="col-sm-6">
-													<input class="form-control" id="inputParam"
-														name="inputParam" type="text" placeholder="dubbo入参全类名" />
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="wizard-footer">
-								<div class="pull-right">
-									<input type='button'
-										class='btn btn-next btn-fill btn-success btn-wd' name='next'
-										value='Next' /> <input type='submit'
-										class='btn btn-finish btn-fill btn-success btn-wd'
-										name='finish' value='Finish' />
-								</div>
-								<div class="pull-left">
-									<input type='button'
-										class='btn btn-previous btn-fill btn-default btn-wd'
-										name='previous' value='Previous' />
-								</div>
-								<div class="clearfix"></div>
-							</div>
-						</form>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</article>
 	</div>
-	<script>
-		function loadZipFile(file) {
-			$("#zipfilename").html(file.name);
-		}
-		function loadInputFile(file) {
-			$("#inputname").html(file.name);
-		}
-		function loadOutputFile(file) {
-			$("#outputname").html(file.name);
-		}
-	</script>
-	<script type="text/javascript" src="/js/appjs/filter/route/add.js"></script>
-</body>
-</html>
+</section>
+<script type="text/javascript" src="/js/appjs/filter/route/add.js"></script>
+<script type="text/javascript">
+  function loadZipFile(file) {
+    $("#zipfilename").html(file.name);
+  }
+  function goback() {
+    loadURL("filter/route", $('#content'));
+  }
+</script>
