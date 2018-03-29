@@ -4,7 +4,6 @@ $(document).ready(function() {
     method: 'get',
     url: prefix + "/listToken",
     iconSize: 'outline',
-    toolbar: '#exampleToolbar',
     striped: true,
     dataType: "json",
     pagination: true,
