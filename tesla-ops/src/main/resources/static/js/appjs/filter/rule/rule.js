@@ -52,7 +52,7 @@ function load() {
           value = value.replace(/\n/g, "<br>");
           return `<a href="javascript:void(0);" onclick="ruleDetail('${value}')"><strong>详情</strong></a>`;
         } else {
-
+          return `<a href="javascript:void(0);" rel="popover" data-placement="top" data-original-title="详情" data-content="${value}"><strong>${value}</strong></a>`;
         }
       }
     }, {
