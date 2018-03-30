@@ -62,11 +62,9 @@ function chirdTable(index, row, $detail) {
       field: 'rpc',
       title: 'Rpc服务',
       formatter: function(value, row, index) {
-        if (value) {
-          return "是";
-        } else {
-          return "否"
-        }
+        if (row.grpc) {
+          return "gRPC";
+        } else if (row.dubbo) { return "dubbo" }
       }
     }, {
       field: 'serviceName',
@@ -80,6 +78,11 @@ function chirdTable(index, row, $detail) {
     }, {
       field: 'serviceVersion',
       title: '版本'
+    }, {
+      title: '入参类型（grpc）',
+      formatter: function(value, row, index) {
+        return 'TBD...'
+      }
     }, {
       field: 'inputParam',
       title: '入参类型（dubbo）'

@@ -15,6 +15,8 @@ package io.github.tesla.ops.filter.vo;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.StringUtils;
+
 import io.github.tesla.ops.filter.dto.FilterRouteDto;
 
 /**
@@ -48,6 +50,10 @@ public class RouteVo implements Serializable {
   private String serviceFileName;
 
   private String inputParam;
+
+  private Boolean grpc;
+
+  private Boolean dubbo;
 
   public Long getRouteId() {
     return routeId;
@@ -146,6 +152,25 @@ public class RouteVo implements Serializable {
     this.inputParam = inputParam;
   }
 
+
+  public void setGrpc(Boolean grpc) {
+    this.grpc = grpc;
+  }
+
+
+  public Boolean getGrpc() {
+    return grpc;
+  }
+
+  public Boolean getDubbo() {
+    return dubbo;
+  }
+
+  public void setDubbo(Boolean dubbo) {
+    this.dubbo = dubbo;
+  }
+
+
   public FilterRouteDto buildRouteDto() {
     FilterRouteDto routeDto = new FilterRouteDto();
     routeDto.setRouteId(this.routeId);
@@ -163,6 +188,8 @@ public class RouteVo implements Serializable {
     return routeDto;
   }
 
+
+
   public static RouteVo buildRouteVo(FilterRouteDto routeDto) {
     RouteVo routeVo = new RouteVo();
     routeVo.setRouteId(routeDto.getRouteId());
@@ -177,6 +204,8 @@ public class RouteVo implements Serializable {
     routeVo.setServiceGroup(routeDto.getServiceGroup());
     routeVo.setServiceVersion(routeDto.getServiceVersion());
     routeVo.setInputParam(routeDto.getInputParam());
+    routeVo.setGrpc(routeDto.getRpc() && routeDto.getProtoContext() != null);
+    routeVo.setDubbo(routeDto.getRpc() && StringUtils.isNotEmpty(routeDto.getInputParam()));
     return routeVo;
   }
 
