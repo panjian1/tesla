@@ -13,6 +13,8 @@
  */
 package io.github.tesla.ops.filter.controller;
 
+import java.util.Map;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,8 @@ import io.github.tesla.ops.common.BaseController;
 import io.github.tesla.ops.common.CommonResponse;
 import io.github.tesla.ops.common.Log;
 import io.github.tesla.ops.filter.service.FilterRuleService;
+import io.github.tesla.ops.system.domain.PageDO;
+import io.github.tesla.ops.utils.Query;
 
 /**
  * @author liushiming
@@ -53,6 +57,17 @@ public class FilterRuleController extends BaseController {
   public String add() {
     return prefix + "/add";
   }
+
+
+  @Log("查询规则")
+  @RequiresPermissions("filter:rule:rule")
+  @GetMapping("/list")
+  @ResponseBody
+  public PageDO<FilterRuleDO> list(@RequestParam Map<String, Object> params) {
+    Query query = new Query(params);
+    return ruleService.queryList(query);
+  }
+
 
   @RequiresPermissions("filter:rule:edit")
   @GetMapping("/edit/{id}")

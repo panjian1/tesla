@@ -16,6 +16,7 @@ package io.github.tesla.ops.filter.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.github.tesla.filter.dao.FilterRuleDao;
@@ -31,6 +32,7 @@ import io.github.tesla.ops.utils.Query;
 @Service
 public class FilterRuleServiceImpl implements FilterRuleService {
 
+  @Autowired
   private FilterRuleDao ruleDao;
 
   @Override
