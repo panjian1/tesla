@@ -50,6 +50,10 @@ public class FilterRouteDto implements Serializable {
 
   private String inputParam;
 
+  private Boolean grpc = false;
+
+  private Boolean dubbo = false;
+
   public String getFromPath() {
     return fromPath;
   }
@@ -145,6 +149,22 @@ public class FilterRouteDto implements Serializable {
 
   public void setInputParam(String inputParam) {
     this.inputParam = inputParam;
+  }
+
+  public Boolean getGrpc() {
+    return this.getRpc() && this.getProtoContext() != null;
+  }
+
+  public void setGrpc(Boolean grpc) {
+    this.grpc = grpc;
+  }
+
+  public Boolean getDubbo() {
+    return this.getRpc() && this.getInputParam() != null;
+  }
+
+  public void setDubbo(Boolean dubbo) {
+    this.dubbo = dubbo;
   }
 
   public FilterRouteDO buildRoute() {

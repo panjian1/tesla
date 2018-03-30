@@ -3,7 +3,7 @@ $(document).ready(function() {
   var pagefunction = function() {
     loadScript("js/plugin/bootstrap-wizard/jquery.bootstrap.wizard.min.js", runBootstrapWizard);
     function runBootstrapWizard() {
-      var $validator = $("#wizardFrom").validate({
+      var $validator = $("#routeForm").validate({
         rules: {
           fromPath: {
             required: true
@@ -103,7 +103,7 @@ $(document).ready(function() {
       $('#routeWizard').bootstrapWizard({
         'tabClass': 'form-wizard',
         'onNext': function(tab, navigation, index) {
-          var $valid = $("#wizardFrom").valid();
+          var $valid = $("#routeForm").valid();
           if (!$valid) {
             $validator.focusInvalid();
             return false;
@@ -113,7 +113,7 @@ $(document).ready(function() {
           }
         },
         'onTabShow': function(tab, navigation, index) {
-          var $valid = $("#wizardFrom").valid();
+          var $valid = $("#routeForm").valid();
           if (!$valid) {
             $validator.focusInvalid();
             return false;
@@ -123,21 +123,24 @@ $(document).ready(function() {
           }
         },
         'onFinish': function(tab, navigation, index) {
-          var $valid = $("#wizardFrom").valid();
+          var $valid = $("#routeForm").valid();
           if (!$valid) {
             $validator.focusInvalid();
             return false;
           } else {
-            $("#routeForm").ajaxSubmit({
-              type: "POST",
-              url: "/filter/route/save",
-              dataType: 'json',
-              error: function(request) {
-                parent.layer.alert("Connection error");
-              },
-              success: function() {
-                loadURL("filter/route", $('#content'));
-              }
+            loadScript("js/plugin/jquery-form/jquery-form.min.js", function() {
+              $("#routeForm").ajaxSubmit({
+                type: "POST",
+                url: "/filter/route/save",
+                dataType: 'json',
+                data: $('#routeForm').serialize(),
+                error: function(request) {
+                  parent.layer.alert("Connection error");
+                },
+                success: function() {
+                  loadURL("filter/route", $('#content'));
+                }
+              });
             });
           }
         }
