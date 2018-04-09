@@ -54,7 +54,7 @@ function reLoad() {
   $('#routeTable').bootstrapTable('refresh');
 }
 function chirdTable(index, row, $detail) {
-  var cur_table = $detail.html('<table></table>').find('table');
+  var cur_table = $detail.html('<table class="table table-striped table-bordered table-hover"></table>').find('table');
   var rows = [];
   rows.push(row);
   $(cur_table).bootstrapTable({
