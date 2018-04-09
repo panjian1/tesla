@@ -1,42 +1,268 @@
-<!DOCTYPE html>
-<html>
-<meta charset="utf-8">
-<head th:include="include :: header"></head>
-<body class="gray-bg">
-	<div class="wrapper wrapper-content animated fadeInRight">
-		<div class="row">
-			<div class="col-sm-12">
-				<div class="panel with-nav-tabs panel-primary">
-					<div class="panel-heading">
-						<ul class="nav nav-tabs">
-							<li class="active"><a href="#tab1primary" data-toggle="tab">Primary
-									1</a></li>
-							<li><a href="#tab2primary" data-toggle="tab">Primary 2</a></li>
-							<li><a href="#tab3primary" data-toggle="tab">Primary 3</a></li>
-							<li class="dropdown"><a href="#" data-toggle="dropdown">Dropdown
-									<span class="caret"></span>
-							</a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="#tab4primary" data-toggle="tab">Primary 4</a></li>
-									<li><a href="#tab5primary" data-toggle="tab">Primary 5</a></li>
-								</ul></li>
-						</ul>
-					</div>
-					<div class="panel-body">
-						<div class="tab-content">
-							<div class="tab-pane fade in active" id="tab1primary">Primary
-								1</div>
-							<div class="tab-pane fade" id="tab2primary">Primary 2</div>
-							<div class="tab-pane fade" id="tab3primary">Primary 3</div>
-							<div class="tab-pane fade" id="tab4primary">Primary 4</div>
-							<div class="tab-pane fade" id="tab5primary">Primary 5</div>
+<section id="widget-grid" class="">
+	<div class="row">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="jarviswidget jarviswidget-color-darken" data-widget-editbutton="false" data-widget-deletebutton="false">
+				<header>
+					<h2>路由规则添加</h2>
+				</header>
+				<div>
+					<div class="jarviswidget-editbox"></div>
+					<div class="widget-body">
+						<div class="row">
+							<div class="jarviswidget" data-widget-editbutton="true" data-widget-fullscreenbutton="false" data-widget-custombutton="false" data-widget-sortable="false" role="widget">
+								<header role="heading">
+									<ul class="nav nav-tabs pull-left in">
+										<li class="active">
+											<a data-toggle="tab" href="#URLParamHttpRequestFilter" aria-expanded="true">
+												<i class="fa fa-lg fa-arrow-circle-o-down"></i>
+												<span class="hidden-mobile hidden-tablet">URL参数黑名单</span>
+											</a>
+										</li>
+										<li class="">
+											<a data-toggle="tab" href="#BlackCookieHttpRequestFilter" aria-expanded="false">
+												<i class="fa fa-lg fa-arrow-circle-o-down"></i>
+												<span class="hidden-mobile hidden-tablet">Cookie黑名单</span>
+											</a>
+										</li>
+										<li class="">
+											<a data-toggle="tab" href="#BlackUaHttpRequestFilter" aria-expanded="false">
+												<i class="fa fa-lg fa-arrow-circle-o-down"></i>
+												<span class="hidden-mobile hidden-tablet">User-Agent黑名单</span>
+											</a>
+										</li>
+										<li class="">
+											<a data-toggle="tab" href="#BlackURLHttpRequestFilter" aria-expanded="false">
+												<i class="fa fa-lg fa-arrow-circle-o-down"></i>
+												<span class="hidden-mobile hidden-tablet">URL黑名单</span>
+											</a>
+										</li>
+										<li class="">
+											<a data-toggle="tab" href="#BlackIpHttpRequesFilter" aria-expanded="false">
+												<i class="fa fa-lg fa-arrow-circle-o-down"></i>
+												<span class="hidden-mobile hidden-tablet">IP黑名单</span>
+											</a>
+										</li>
+										<li class="">
+											<a data-toggle="tab" href="#SecurityScannerHttpRequestFilter" aria-expanded="false">
+												<i class="fa fa-lg fa-arrow-circle-o-down"></i>
+												<span class="hidden-mobile hidden-tablet">IP黑名单</span>
+											</a>
+										</li>
+										<li class="">
+											<a data-toggle="tab" href="#RateLimitHttpRequestFilter" aria-expanded="false">
+												<i class="fa fa-lg fa-arrow-circle-o-down"></i>
+												<span class="hidden-mobile hidden-tablet">限流</span>
+											</a>
+										</li>
+									</ul>
+								</header>
+								<div role="content">
+									<div class="jarviswidget-editbox"></div>
+									<div class="widget-body">
+										<div class="tab-content">
+											<div class="tab-pane active" id="URLParamHttpRequestFilter">
+												<div class="tabbable tabs-below">
+													<form method="post" id="ruleForm" class="smart-form">
+														<fieldset>
+															<div class="row">
+																<section class="col col-10">
+																	<label class="label">策略类型：</label>
+																	<label class="input">
+																		<input id="name" name="name" class="form-control" type="text">
+																	</label>
+																</section>
+															</div>
+															<div class="row">
+																<section class="col col-10">
+																	<label class="label">内容：</label>
+																	<label class="textarea textarea-resizable">
+																		<textarea rows="5" class="custom-scroll"></textarea>
+																	</label>
+																</section>
+															</div>
+														</fieldset>
+														<footer>
+															<button type="button" onclick="goback()" class="btn btn-primary">返回</button>
+															<button type="submit" class="btn btn-primary">提交</button>
+														</footer>
+													</form>
+												</div>
+											</div>
+											<div class="tab-pane" id="BlackCookieHttpRequestFilter">
+												<form method="post" id="ruleForm" class="smart-form">
+													<fieldset>
+														<div class="row">
+															<section class="col col-10">
+																<label class="label">策略类型：</label>
+																<label class="input">
+																	<input id="name" name="name" class="form-control" type="text">
+																</label>
+															</section>
+														</div>
+														<div class="row">
+															<section class="col col-10">
+																<label class="label">内容：</label>
+																<label class="textarea textarea-resizable">
+																	<textarea rows="5" class="custom-scroll"></textarea>
+																</label>
+															</section>
+														</div>
+													</fieldset>
+													<footer>
+														<button type="button" onclick="goback()" class="btn btn-primary">返回</button>
+														<button type="submit" class="btn btn-primary">提交</button>
+													</footer>
+												</form>
+											</div>
+											<div class="tab-pane" id="BlackUaHttpRequestFilter">
+												<form method="post" id="ruleForm" class="smart-form">
+													<fieldset>
+														<div class="row">
+															<section class="col col-10">
+																<label class="label">策略类型：</label>
+																<label class="input">
+																	<input id="name" name="name" class="form-control" type="text">
+																</label>
+															</section>
+														</div>
+														<div class="row">
+															<section class="col col-10">
+																<label class="label">内容：</label>
+																<label class="textarea textarea-resizable">
+																	<textarea rows="5" class="custom-scroll"></textarea>
+																</label>
+															</section>
+														</div>
+													</fieldset>
+													<footer>
+														<button type="button" onclick="goback()" class="btn btn-primary">返回</button>
+														<button type="submit" class="btn btn-primary">提交</button>
+													</footer>
+												</form>
+											</div>
+											<div class="tab-pane" id="BlackURLHttpRequestFilter">
+												<form method="post" id="ruleForm" class="smart-form">
+													<fieldset>
+														<div class="row">
+															<section class="col col-10">
+																<label class="label">策略类型：</label>
+																<label class="input">
+																	<input id="name" name="name" class="form-control" type="text">
+																</label>
+															</section>
+														</div>
+														<div class="row">
+															<section class="col col-10">
+																<label class="label">内容：</label>
+																<label class="textarea textarea-resizable">
+																	<textarea rows="5" class="custom-scroll"></textarea>
+																</label>
+															</section>
+														</div>
+													</fieldset>
+													<footer>
+														<button type="button" onclick="goback()" class="btn btn-primary">返回</button>
+														<button type="submit" class="btn btn-primary">提交</button>
+													</footer>
+												</form>
+											</div>
+											<div class="tab-pane" id="BlackIpHttpRequesFilter">
+												<form method="post" id="ruleForm" class="smart-form">
+													<fieldset>
+														<div class="row">
+															<section class="col col-10">
+																<label class="label">策略类型：</label>
+																<label class="input">
+																	<input id="name" name="name" class="form-control" type="text">
+																</label>
+															</section>
+														</div>
+														<div class="row">
+															<section class="col col-10">
+																<label class="label">内容：</label>
+																<label class="textarea textarea-resizable">
+																	<textarea rows="5" class="custom-scroll"></textarea>
+																</label>
+															</section>
+														</div>
+													</fieldset>
+													<footer>
+														<button type="button" onclick="goback()" class="btn btn-primary">返回</button>
+														<button type="submit" class="btn btn-primary">提交</button>
+													</footer>
+												</form>
+											</div>
+											<div class="tab-pane" id="SecurityScannerHttpRequestFilter">
+												<form method="post" id="ruleForm" class="smart-form">
+													<fieldset>
+														<div class="row">
+															<section class="col col-10">
+																<label class="label">策略类型：</label>
+																<label class="input">
+																	<input id="name" name="name" class="form-control" type="text">
+																</label>
+															</section>
+														</div>
+														<div class="row">
+															<section class="col col-10">
+																<label class="label">内容：</label>
+																<label class="textarea textarea-resizable">
+																	<textarea rows="5" class="custom-scroll"></textarea>
+																</label>
+															</section>
+														</div>
+													</fieldset>
+													<footer>
+														<button type="button" onclick="goback()" class="btn btn-primary">返回</button>
+														<button type="submit" class="btn btn-primary">提交</button>
+													</footer>
+												</form>
+											</div>
+											<div class="tab-pane" id="RateLimitHttpRequestFilter">
+												<form method="post" id="ruleForm" class="smart-form">
+													<fieldset>
+														<div class="row">
+															<section class="col col-10">
+																<label class="label">策略类型：</label>
+																<label class="input">
+																	<input id="name" name="name" class="form-control" type="text">
+																</label>
+															</section>
+														</div>
+														<div class="row">
+															<section class="col col-10">
+																<label class="label">URL：</label>
+																<label class="input">
+																	<input id="name" name="name" class="form-control" type="text">
+																</label>
+															</section>
+														</div>
+														<div class="row">
+															<section class="col col-10">
+																<label class="label">内容：</label>
+																<label class="textarea textarea-resizable">
+																	<textarea rows="5" class="custom-scroll"></textarea>
+																</label>
+															</section>
+														</div>
+													</fieldset>
+													<footer>
+														<button type="button" onclick="goback()" class="btn btn-primary">返回</button>
+														<button type="submit" class="btn btn-primary">提交</button>
+													</footer>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</article>
 	</div>
-	<div th:include="include::footer"></div>
-	<script type="text/javascript" src="/js/appjs/filter/rule/add.js"></script>
-</body>
-</html>
+</section>
+<script type="text/javascript" src="/js/appjs/filter/rule/add.js"></script>
+
+
