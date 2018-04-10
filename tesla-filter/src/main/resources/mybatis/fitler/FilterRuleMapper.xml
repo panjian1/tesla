@@ -28,7 +28,7 @@
 		from gateway_filterrule
 		<where>
 			<if test="id != null and id != ''"> and id = #{id} </if>
-			<if test="filterType != null and filterType != ''"> and filter_type = #{filterType} </if>
+			<if test="filterType != null"> and filter_type = #{filterType} </if>
 		</where>
 		<choose>
 			<when test="sort != null and sort.trim() != ''">
@@ -47,7 +47,7 @@
 		select count(*) from gateway_filterrule
 		<where>
 			<if test="id != null and id != ''"> and id = #{id} </if>
-			<if test="filterType != null and filterType != ''"> and filter_type = #{filterType} </if>
+			<if test="filterType != null"> and filter_type = #{filterType} </if>
 		</where>
 	</select>
 
@@ -78,10 +78,10 @@
 	<update id="update" parameterType="io.github.tesla.filter.domain.FilterRuleDO">
 		update gateway_filterrule
 		<set>
-			<if test="filterType != null and filterType != ''"> and filter_type = #{filterType} </if>
-			<if test="rule != null and rule != ''"> and rule = #{rule} </if>
-			<if test="url != null and url != ''"> and url = #{url} </if>
-			`gmt_modified`=sysdate()
+			<if test="filterType != null">`filter_type`=#{filterType},</if>
+			<if test="rule != null and rule != ''">`rule` =#{rule},</if>
+			<if test="url != null and url != ''">`url`= #{url},</if>
+			`gmt_modified`=sysdate()  
 		</set>
 		where id = #{id}
 	</update>
