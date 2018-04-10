@@ -112,7 +112,7 @@ $(document).ready(function() {
             $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).find('.step').html('<i class="fa fa-check"></i>');
           }
         },
-        'onTabShow': function(tab, navigation, index) {
+        'onTabClick': function(tab, navigation, index) {
           var $valid = $("#routeForm").valid();
           if (!$valid) {
             $validator.focusInvalid();
