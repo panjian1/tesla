@@ -399,6 +399,8 @@ CREATE TABLE `gateway_filterrule` (
   `filter_type` varchar(100) DEFAULT NULL,
   `rule` varchar(1000) DEFAULT NULL,
   `url` varchar(100) DEFAULT NULL,
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

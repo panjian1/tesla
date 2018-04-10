@@ -12,9 +12,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MapperScan(basePackages = {"io.github.tesla.filter", "io.github.tesla.ops"},
     annotationClass = Mapper.class)
 @SpringBootApplication
-public class TeslaOpslApplication {
+public class TeslaOpsApplication {
   public static void main(String[] args) {
-    SpringApplication.run(TeslaOpslApplication.class, args);
+    SpringApplication.run(TeslaOpsApplication.class, args);
   }
 
 }

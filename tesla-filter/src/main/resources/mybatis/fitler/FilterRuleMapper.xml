@@ -5,7 +5,7 @@
 
 	<select id="get" resultType="io.github.tesla.filter.domain.FilterRuleDO">
 		select
-		`id`,`filter_type`,`rule`,`url` 
+		`id`,`filter_type`,`rule`,`url`
 		from
 		gateway_filterrule
 		id = #{value}
@@ -14,19 +14,19 @@
 
 	<select id="getByFilterType" resultType="io.github.tesla.filter.domain.FilterRuleDO">
 		select
-		`id`,`filter_type`,`rule`,`url` 
+		`id`,`filter_type`,`rule`,`url`
 		from gateway_filterrule
 		where filter_type =
-		#{filterType.name()}
+		#{filterType}
 	</select>
 
 	<select id="list" resultType="io.github.tesla.filter.domain.FilterRuleDO">
 		select
-		`id`,`filter_type`,`rule`,`url` 
+		`id`,`filter_type`,`rule`,`url`
 		from gateway_filterrule
 		<where>
 			<if test="id != null and id != ''"> and id = #{id} </if>
-			<if test="filterType != null and filterType != ''"> and filter_type = #{filterType.name()} </if>
+			<if test="filterType != null and filterType != ''"> and filter_type = #{filterType} </if>
 		</where>
 		<choose>
 			<when test="sort != null and sort.trim() != ''">
@@ -45,7 +45,7 @@
 		select count(*) from gateway_filterrule
 		<where>
 			<if test="id != null and id != ''"> and id = #{id} </if>
-			<if test="filterType != null and filterType != ''"> and filter_type = #{filterType.name()} </if>
+			<if test="filterType != null and filterType != ''"> and filter_type = #{filterType} </if>
 		</where>
 	</select>
 
@@ -59,13 +59,13 @@
 		(
 		`filter_type`,
 		`rule`,
-	    `url`,
+		`url`,
 		`gmt_create`,
 		`gmt_modified`
 		)
 		values
 		(
-		#{filterType.name()},
+		#{filterType},
 		#{rule},
 		#{url},
 		sysdate(),
@@ -76,7 +76,7 @@
 	<update id="update" parameterType="io.github.tesla.filter.domain.FilterRuleDO">
 		update gateway_filterrule
 		<set>
-			<if test="filterType != null and filterType != ''"> and filter_type = #{filterType.name()} </if>
+			<if test="filterType != null and filterType != ''"> and filter_type = #{filterType} </if>
 			<if test="rule != null and rule != ''"> and rule = #{rule} </if>
 			<if test="url != null and url != ''"> and url = #{url} </if>
 			`gmt_modified`=sysdate()
