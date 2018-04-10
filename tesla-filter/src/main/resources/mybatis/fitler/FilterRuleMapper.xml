@@ -8,7 +8,8 @@
 		`id`,`filter_type`,`rule`,`url`
 		from
 		gateway_filterrule
-		id = #{value}
+		where id =
+		#{value}
 	</select>
 
 
@@ -16,7 +17,8 @@
 		select
 		`id`,`filter_type`,`rule`,`url`
 		from gateway_filterrule
-		where filter_type =
+		where
+		filter_type =
 		#{filterType}
 	</select>
 
