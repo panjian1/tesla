@@ -47,7 +47,7 @@ function load() {
         }
       },
       formatter: function(value, row, index) {
-        if (value.indexOf('/\r\n') > 0 || value.indexOf('/\n') > 0) {
+        if (value.indexOf('/\r\n') > 0 || value.indexOf('/\n') > 0 || value.indexOf('\n') > 0 || value.indexOf('\r\n') > 0) {
           value = value.replace(/\r\n/g, "<br>")
           value = value.replace(/\n/g, "<br>");
           return `<a href="javascript:void(0);" onclick="ruleDetail('${value}')"><strong>详情</strong></a>`;
