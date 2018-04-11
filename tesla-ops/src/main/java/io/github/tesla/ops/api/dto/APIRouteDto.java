@@ -11,7 +11,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package io.github.tesla.ops.filter.dto;
+package io.github.tesla.ops.api.dto;
 
 import java.io.Serializable;
 
@@ -22,7 +22,7 @@ import io.github.tesla.filter.domain.FilterRpcDO;
  * @author liushiming
  * @version GateWayRouteDto.java, v 0.0.1 2018年1月5日 上午10:47:04 liushiming
  */
-public class FilterRouteDto implements Serializable {
+public class APIRouteDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -172,8 +172,8 @@ public class FilterRouteDto implements Serializable {
     return rpcDO;
   }
 
-  public static FilterRouteDto buildRouteDto(FilterRouteDO route, FilterRpcDO rpc) {
-    FilterRouteDto routeDto = new FilterRouteDto();
+  public static APIRouteDto buildRouteDto(FilterRouteDO route, FilterRpcDO rpc) {
+    APIRouteDto routeDto = new APIRouteDto();
     routeDto.setRouteId(route.getId());
     routeDto.setFromPath(route.getFromPath());
     routeDto.setServiceId(route.getServiceId());
@@ -192,8 +192,8 @@ public class FilterRouteDto implements Serializable {
     return routeDto;
   }
 
-  public static FilterRouteDto buildRouteDto(FilterRouteDO route) {
-    FilterRouteDto routeDto = new FilterRouteDto();
+  public static APIRouteDto buildRouteDto(FilterRouteDO route) {
+    APIRouteDto routeDto = new APIRouteDto();
     routeDto.setRouteId(route.getId());
     routeDto.setFromPath(route.getFromPath());
     routeDto.setServiceId(route.getServiceId());

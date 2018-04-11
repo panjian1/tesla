@@ -11,7 +11,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package io.github.tesla.ops.filter.controller;
+package io.github.tesla.ops.api.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,13 +32,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.collect.Lists;
 import io.github.tesla.ops.common.TeslaException;
+import io.github.tesla.ops.api.dto.APIRouteDto;
+import io.github.tesla.ops.api.service.APIRouteService;
+import io.github.tesla.ops.api.service.ProtobufService;
+import io.github.tesla.ops.api.vo.APIRouteVo;
 import io.github.tesla.ops.common.BaseController;
 import io.github.tesla.ops.common.CommonResponse;
 import io.github.tesla.ops.common.Log;
-import io.github.tesla.ops.filter.dto.FilterRouteDto;
-import io.github.tesla.ops.filter.service.ProtobufService;
-import io.github.tesla.ops.filter.service.FilterRouteService;
-import io.github.tesla.ops.filter.vo.RouteVo;
 import io.github.tesla.ops.system.domain.PageDO;
 import io.github.tesla.ops.utils.FileType;
 import io.github.tesla.ops.utils.Query;
@@ -49,14 +49,14 @@ import io.github.tesla.ops.utils.Query;
  */
 @Controller
 @RequestMapping("/filter/route")
-public class FilterRouteController extends BaseController {
+public class APIRouteController extends BaseController {
 
   private final String prefix = "filter/route";
   @Autowired
   private ProtobufService protobufService;
 
   @Autowired
-  private FilterRouteService routeService;
+  private APIRouteService routeService;
 
   @RequiresPermissions("filter:route:route")
   @GetMapping()
@@ -73,8 +73,8 @@ public class FilterRouteController extends BaseController {
   @RequiresPermissions("filter:route:edit")
   @GetMapping("/edit/{id}")
   public String edit(@PathVariable("id") Long id, Model model) {
-    FilterRouteDto zuulDto = routeService.get(id);
-    RouteVo zuulVo = RouteVo.buildRouteVo(zuulDto);
+    APIRouteDto zuulDto = routeService.get(id);
+    APIRouteVo zuulVo = APIRouteVo.buildRouteVo(zuulDto);
     model.addAttribute("route", zuulVo);
     return prefix + "/edit";
   }
@@ -83,7 +83,7 @@ public class FilterRouteController extends BaseController {
   @RequiresPermissions("filter:route:add")
   @PostMapping("/save")
   @ResponseBody()
-  public CommonResponse save(RouteVo zuulVo,
+  public CommonResponse save(APIRouteVo zuulVo,
       @RequestParam(name = "zipFile", required = false) MultipartFile zipFile) {
     try {
       // grpc路由
@@ -95,12 +95,12 @@ public class FilterRouteController extends BaseController {
         } else {
           String serviceFileName = zuulVo.getServiceFileName();
           byte[] protoContext = protobufService.compileDirectoryProto(zipFile, serviceFileName);
-          FilterRouteDto zuulDto = zuulVo.buildRouteDto();
+          APIRouteDto zuulDto = zuulVo.buildRouteDto();
           zuulDto.setProtoContext(protoContext);
           routeService.save(zuulDto);
         }
       } else {
-        FilterRouteDto zuulDto = zuulVo.buildRouteDto();
+        APIRouteDto zuulDto = zuulVo.buildRouteDto();
         routeService.save(zuulDto);
       }
     } catch (IOException e) {
@@ -113,15 +113,15 @@ public class FilterRouteController extends BaseController {
   @RequiresPermissions("filter:route:route")
   @GetMapping("/list")
   @ResponseBody
-  public PageDO<RouteVo> list(@RequestParam Map<String, Object> params) {
+  public PageDO<APIRouteVo> list(@RequestParam Map<String, Object> params) {
     Query query = new Query(params);
-    PageDO<FilterRouteDto> pageDto = routeService.queryList(query);
-    PageDO<RouteVo> pageVo = new PageDO<>();
+    PageDO<APIRouteDto> pageDto = routeService.queryList(query);
+    PageDO<APIRouteVo> pageVo = new PageDO<>();
     pageVo.setTotal(pageDto.getTotal());
-    List<FilterRouteDto> zuulDtos = pageDto.getRows();
-    List<RouteVo> vos = Lists.newArrayListWithCapacity(zuulDtos.size());
-    for (FilterRouteDto zuulDto : zuulDtos) {
-      vos.add(RouteVo.buildRouteVo(zuulDto));
+    List<APIRouteDto> zuulDtos = pageDto.getRows();
+    List<APIRouteVo> vos = Lists.newArrayListWithCapacity(zuulDtos.size());
+    for (APIRouteDto zuulDto : zuulDtos) {
+      vos.add(APIRouteVo.buildRouteVo(zuulDto));
     }
     pageVo.setRows(vos);
     return pageVo;
@@ -132,7 +132,7 @@ public class FilterRouteController extends BaseController {
   @RequiresPermissions("filter:route:edit")
   @PostMapping("/update")
   @ResponseBody()
-  public CommonResponse update(RouteVo zuulVo,
+  public CommonResponse update(APIRouteVo zuulVo,
       @RequestParam(name = "zipFile", required = false) MultipartFile zipFile) {
     try {
       // grpc路由
@@ -144,12 +144,12 @@ public class FilterRouteController extends BaseController {
         } else {
           String serviceFileName = zuulVo.getServiceFileName();
           byte[] protoContext = protobufService.compileDirectoryProto(zipFile, serviceFileName);
-          FilterRouteDto zuulDto = zuulVo.buildRouteDto();
+          APIRouteDto zuulDto = zuulVo.buildRouteDto();
           zuulDto.setProtoContext(protoContext);
           routeService.update(zuulDto);
         }
       } else {
-        FilterRouteDto zuulDto = zuulVo.buildRouteDto();
+        APIRouteDto zuulDto = zuulVo.buildRouteDto();
         routeService.update(zuulDto);
       }
     } catch (IOException e) {

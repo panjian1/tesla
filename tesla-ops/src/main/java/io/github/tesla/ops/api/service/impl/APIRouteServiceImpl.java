@@ -11,7 +11,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package io.github.tesla.ops.filter.service.impl;
+package io.github.tesla.ops.api.service.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -21,9 +21,9 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
 
+import io.github.tesla.ops.api.dto.APIRouteDto;
+import io.github.tesla.ops.api.service.APIRouteService;
 import io.github.tesla.ops.common.CommonResponse;
-import io.github.tesla.ops.filter.dto.FilterRouteDto;
-import io.github.tesla.ops.filter.service.FilterRouteService;
 import io.github.tesla.ops.system.domain.PageDO;
 import io.github.tesla.ops.utils.Query;
 import io.github.tesla.filter.dao.FilterRouteDao;
@@ -36,7 +36,7 @@ import io.github.tesla.filter.domain.FilterRpcDO;
  * @version routeServiceImpl.java, v 0.0.1 2018年1月8日 上午11:38:49 liushiming
  */
 @Service
-public class FilterRouteServiceImpl implements FilterRouteService {
+public class APIRouteServiceImpl implements APIRouteService {
 
   @Autowired
   private FilterRouteDao routeDao;
@@ -45,36 +45,36 @@ public class FilterRouteServiceImpl implements FilterRouteService {
   private FilterRpcDao rpcDao;
 
   @Override
-  public PageDO<FilterRouteDto> queryList(Query query) {
+  public PageDO<APIRouteDto> queryList(Query query) {
     int total = routeDao.count(query);
     List<FilterRouteDO> routes = routeDao.list(query);
-    List<FilterRouteDto> dtos = Lists.newArrayListWithCapacity(routes.size());
+    List<APIRouteDto> dtos = Lists.newArrayListWithCapacity(routes.size());
     for (FilterRouteDO routeDo : routes) {
       FilterRpcDO rpcDO = rpcDao.get(routeDo.getId());
-      FilterRouteDto dto = FilterRouteDto.buildRouteDto(routeDo, rpcDO);
+      APIRouteDto dto = APIRouteDto.buildRouteDto(routeDo, rpcDO);
       dtos.add(dto);
     }
-    PageDO<FilterRouteDto> page = new PageDO<>();
+    PageDO<APIRouteDto> page = new PageDO<>();
     page.setTotal(total);
     page.setRows(dtos);
     return page;
   }
 
   @Override
-  public FilterRouteDto get(Long routeId) {
+  public APIRouteDto get(Long routeId) {
     FilterRouteDO route = routeDao.get(routeId);
     FilterRpcDO rpc = rpcDao.get(routeId);
-    FilterRouteDto routeDto = FilterRouteDto.buildRouteDto(route, rpc);
+    APIRouteDto routeDto = APIRouteDto.buildRouteDto(route, rpc);
     return routeDto;
   }
 
   @Override
-  public List<FilterRouteDto> list(Map<String, Object> map) {
+  public List<APIRouteDto> list(Map<String, Object> map) {
     List<FilterRouteDO> routes = routeDao.list(map);
-    List<FilterRouteDto> routeDtos = Lists.newArrayList();
+    List<APIRouteDto> routeDtos = Lists.newArrayList();
     for (FilterRouteDO route : routes) {
       FilterRpcDO rpc = rpcDao.get(route.getId());
-      FilterRouteDto routeDto = FilterRouteDto.buildRouteDto(route, rpc);
+      APIRouteDto routeDto = APIRouteDto.buildRouteDto(route, rpc);
       routeDtos.add(routeDto);
     }
     return routeDtos;
@@ -87,7 +87,7 @@ public class FilterRouteServiceImpl implements FilterRouteService {
   }
 
   @Override
-  public int save(FilterRouteDto routeDto) {
+  public int save(APIRouteDto routeDto) {
     FilterRouteDO routeDo = routeDto.buildRoute();
     FilterRpcDO rpcDo = routeDto.buildRpc();
     int success2 = routeDao.save(routeDo);
@@ -106,7 +106,7 @@ public class FilterRouteServiceImpl implements FilterRouteService {
   }
 
   @Override
-  public int update(FilterRouteDto routeDto) {
+  public int update(APIRouteDto routeDto) {
     FilterRouteDO routeDo = routeDto.buildRoute();
     FilterRpcDO rpcDo = routeDto.buildRpc();
     int success2 = routeDao.update(routeDo);

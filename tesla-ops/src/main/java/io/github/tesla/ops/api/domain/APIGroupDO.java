@@ -11,19 +11,12 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package io.github.tesla.ops.filter.service;
+package io.github.tesla.ops.api.domain;
 
-import org.springframework.web.multipart.MultipartFile;
-
-/**
- * @author liushiming
- * @version ProtobufFileService.java, v 0.0.1 2018年1月8日 下午3:59:38 liushiming
+/** 
+ * @author liushiming 
+ * @version APIGroupDO.java, v 0.0.1 2018年4月11日 下午4:05:39 liushiming 
  */
-public interface ProtobufService {
-
-  public byte[] compileDirectoryProto(MultipartFile directoryZipStream, String serviceFileName);
-
-  public byte[] compileFileProto(MultipartFile inputStream, String fileName);
-
+public class APIGroupDO {
 
 }

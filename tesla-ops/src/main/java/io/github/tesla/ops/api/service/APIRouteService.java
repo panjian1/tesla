@@ -11,32 +11,32 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package io.github.tesla.ops.filter.service;
+package io.github.tesla.ops.api.service;
 
 import java.util.List;
 import java.util.Map;
 
+import io.github.tesla.ops.api.dto.APIRouteDto;
 import io.github.tesla.ops.system.domain.PageDO;
 import io.github.tesla.ops.utils.Query;
-import io.github.tesla.ops.filter.dto.FilterRouteDto;
 
 /**
  * @author liushiming
  * @version GateWayRouteService.java, v 0.0.1 2018年1月5日 上午10:44:41 liushiming
  */
-public interface FilterRouteService {
+public interface APIRouteService {
 
-  PageDO<FilterRouteDto> queryList(Query query);
+  PageDO<APIRouteDto> queryList(Query query);
 
-  FilterRouteDto get(Long routeId);
+  APIRouteDto get(Long routeId);
 
-  List<FilterRouteDto> list(Map<String, Object> map);
+  List<APIRouteDto> list(Map<String, Object> map);
 
   int count(Map<String, Object> map);
 
-  int save(FilterRouteDto zuulDto);
+  int save(APIRouteDto zuulDto);
 
-  int update(FilterRouteDto zuulDto);
+  int update(APIRouteDto zuulDto);
 
   int remove(Long routeId);
 

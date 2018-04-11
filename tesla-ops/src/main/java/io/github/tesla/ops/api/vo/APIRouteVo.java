@@ -11,19 +11,19 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package io.github.tesla.ops.filter.vo;
+package io.github.tesla.ops.api.vo;
 
 import java.io.Serializable;
 
 import org.apache.commons.lang3.StringUtils;
 
-import io.github.tesla.ops.filter.dto.FilterRouteDto;
+import io.github.tesla.ops.api.dto.APIRouteDto;
 
 /**
  * @author liushiming
  * @version routeVo.java, v 0.0.1 2018年1月9日 下午1:26:56 liushiming
  */
-public class RouteVo implements Serializable {
+public class APIRouteVo implements Serializable {
   private static final long serialVersionUID = 1L;
 
 
@@ -171,8 +171,8 @@ public class RouteVo implements Serializable {
   }
 
 
-  public FilterRouteDto buildRouteDto() {
-    FilterRouteDto routeDto = new FilterRouteDto();
+  public APIRouteDto buildRouteDto() {
+    APIRouteDto routeDto = new APIRouteDto();
     routeDto.setRouteId(this.routeId);
     routeDto.setFromPath(this.fromPath);
     routeDto.setServiceId(this.serviceId);
@@ -190,8 +190,8 @@ public class RouteVo implements Serializable {
 
 
 
-  public static RouteVo buildRouteVo(FilterRouteDto routeDto) {
-    RouteVo routeVo = new RouteVo();
+  public static APIRouteVo buildRouteVo(APIRouteDto routeDto) {
+    APIRouteVo routeVo = new APIRouteVo();
     routeVo.setRouteId(routeDto.getRouteId());
     routeVo.setFromPath(routeDto.getFromPath());
     routeVo.setServiceId(routeDto.getServiceId());
