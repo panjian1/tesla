@@ -15,19 +15,18 @@ package io.github.tesla.filter.domain;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Arrays;
+
+import org.springframework.beans.BeanUtils;
 
 /**
  * @author liushiming
  * @version GrpcDO.java, v 0.0.1 2018年1月4日 上午10:33:59 liushiming
  */
-public class FilterRpcDO implements Serializable {
+public class ApiRpcDO implements Serializable {
 
   private static final long serialVersionUID = 4715218350028915340L;
 
   private Long id;
-
-  private Long routeId;
 
   private String serviceName;
 
@@ -47,6 +46,8 @@ public class FilterRpcDO implements Serializable {
    */
   private String inputParam;
 
+  private ApiDO api;
+
   private Timestamp gmtCreate;
 
   private Timestamp gmtModified;
@@ -57,14 +58,6 @@ public class FilterRpcDO implements Serializable {
 
   public void setId(Long id) {
     this.id = id;
-  }
-
-  public Long getRouteId() {
-    return routeId;
-  }
-
-  public void setRouteId(Long routeId) {
-    this.routeId = routeId;
   }
 
   public String getServiceName() {
@@ -81,14 +74,6 @@ public class FilterRpcDO implements Serializable {
 
   public void setMethodName(String methodName) {
     this.methodName = methodName;
-  }
-
-  public String getInputParam() {
-    return inputParam;
-  }
-
-  public void setInputParam(String inputParam) {
-    this.inputParam = inputParam;
   }
 
   public String getServiceGroup() {
@@ -115,6 +100,22 @@ public class FilterRpcDO implements Serializable {
     this.protoContext = protoContext;
   }
 
+  public String getInputParam() {
+    return inputParam;
+  }
+
+  public void setInputParam(String inputParam) {
+    this.inputParam = inputParam;
+  }
+
+  public ApiDO getApi() {
+    return api;
+  }
+
+  public void setApi(ApiDO api) {
+    this.api = api;
+  }
+
   public Timestamp getGmtCreate() {
     return gmtCreate;
   }
@@ -131,28 +132,12 @@ public class FilterRpcDO implements Serializable {
     this.gmtModified = gmtModified;
   }
 
-  public FilterRpcDO copy() {
-    FilterRpcDO rpcDo = new FilterRpcDO();
-    rpcDo.setId(this.id);
-    rpcDo.setRouteId(this.routeId);
-    rpcDo.setServiceName(this.getServiceName());
-    rpcDo.setMethodName(this.methodName);
-    rpcDo.setServiceGroup(this.serviceGroup);
-    rpcDo.setServiceVersion(this.serviceVersion);
-    rpcDo.setProtoContext(this.protoContext);
-    rpcDo.setGmtCreate(this.gmtCreate);
-    rpcDo.setGmtModified(this.gmtModified);
-    rpcDo.setInputParam(this.inputParam);
-    return rpcDo;
+  public ApiRpcDO copy(ApiRpcDO source) {
+    ApiRpcDO target = new ApiRpcDO();
+    BeanUtils.copyProperties(source, target);
+    return target;
   }
 
-  @Override
-  public String toString() {
-    return "RpcDO [id=" + id + ", routeId=" + routeId + ", serviceName=" + serviceName
-        + ", methodName=" + methodName + ", serviceGroup=" + serviceGroup + ", serviceVersion="
-        + serviceVersion + ", protoContext=" + Arrays.toString(protoContext) + ", inputParam="
-        + inputParam + ", gmtCreate=" + gmtCreate + ", gmtModified=" + gmtModified + "]";
-  }
 
 
 }

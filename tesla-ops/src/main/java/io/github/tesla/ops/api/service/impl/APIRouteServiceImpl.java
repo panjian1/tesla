@@ -26,10 +26,10 @@ import io.github.tesla.ops.api.service.APIRouteService;
 import io.github.tesla.ops.common.CommonResponse;
 import io.github.tesla.ops.system.domain.PageDO;
 import io.github.tesla.ops.utils.Query;
-import io.github.tesla.filter.dao.FilterRouteDao;
-import io.github.tesla.filter.dao.FilterRpcDao;
-import io.github.tesla.filter.domain.FilterRouteDO;
-import io.github.tesla.filter.domain.FilterRpcDO;
+import io.github.tesla.filter.dao.ApiDao;
+import io.github.tesla.filter.dao.ApiRpcDao;
+import io.github.tesla.filter.domain.ApiDO;
+import io.github.tesla.filter.domain.ApiRpcDO;
 
 /**
  * @author liushiming
@@ -39,18 +39,18 @@ import io.github.tesla.filter.domain.FilterRpcDO;
 public class APIRouteServiceImpl implements APIRouteService {
 
   @Autowired
-  private FilterRouteDao routeDao;
+  private ApiDao routeDao;
 
   @Autowired
-  private FilterRpcDao rpcDao;
+  private ApiRpcDao rpcDao;
 
   @Override
   public PageDO<APIRouteDto> queryList(Query query) {
     int total = routeDao.count(query);
-    List<FilterRouteDO> routes = routeDao.list(query);
+    List<ApiDO> routes = routeDao.list(query);
     List<APIRouteDto> dtos = Lists.newArrayListWithCapacity(routes.size());
-    for (FilterRouteDO routeDo : routes) {
-      FilterRpcDO rpcDO = rpcDao.get(routeDo.getId());
+    for (ApiDO routeDo : routes) {
+      ApiRpcDO rpcDO = rpcDao.get(routeDo.getId());
       APIRouteDto dto = APIRouteDto.buildRouteDto(routeDo, rpcDO);
       dtos.add(dto);
     }
@@ -62,18 +62,18 @@ public class APIRouteServiceImpl implements APIRouteService {
 
   @Override
   public APIRouteDto get(Long routeId) {
-    FilterRouteDO route = routeDao.get(routeId);
-    FilterRpcDO rpc = rpcDao.get(routeId);
+    ApiDO route = routeDao.get(routeId);
+    ApiRpcDO rpc = rpcDao.get(routeId);
     APIRouteDto routeDto = APIRouteDto.buildRouteDto(route, rpc);
     return routeDto;
   }
 
   @Override
   public List<APIRouteDto> list(Map<String, Object> map) {
-    List<FilterRouteDO> routes = routeDao.list(map);
+    List<ApiDO> routes = routeDao.list(map);
     List<APIRouteDto> routeDtos = Lists.newArrayList();
-    for (FilterRouteDO route : routes) {
-      FilterRpcDO rpc = rpcDao.get(route.getId());
+    for (ApiDO route : routes) {
+      ApiRpcDO rpc = rpcDao.get(route.getId());
       APIRouteDto routeDto = APIRouteDto.buildRouteDto(route, rpc);
       routeDtos.add(routeDto);
     }
@@ -88,8 +88,8 @@ public class APIRouteServiceImpl implements APIRouteService {
 
   @Override
   public int save(APIRouteDto routeDto) {
-    FilterRouteDO routeDo = routeDto.buildRoute();
-    FilterRpcDO rpcDo = routeDto.buildRpc();
+    ApiDO routeDo = routeDto.buildRoute();
+    ApiRpcDO rpcDo = routeDto.buildRpc();
     int success2 = routeDao.save(routeDo);
     Long routeId = routeDo.getId();
     rpcDo.setRouteId(routeId);
@@ -107,8 +107,8 @@ public class APIRouteServiceImpl implements APIRouteService {
 
   @Override
   public int update(APIRouteDto routeDto) {
-    FilterRouteDO routeDo = routeDto.buildRoute();
-    FilterRpcDO rpcDo = routeDto.buildRpc();
+    ApiDO routeDo = routeDto.buildRoute();
+    ApiRpcDO rpcDo = routeDto.buildRpc();
     int success2 = routeDao.update(routeDo);
     if (routeDo.getRpc()) {
       int success1 = rpcDao.update(rpcDo);

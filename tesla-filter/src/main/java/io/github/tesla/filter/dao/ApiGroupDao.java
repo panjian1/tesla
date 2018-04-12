@@ -18,29 +18,28 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import io.github.tesla.filter.domain.FilterRouteDO;
+import io.github.tesla.filter.domain.ApiGroupDO;
 
 /**
  * @author liushiming
- * @version RouteDao.java, v 0.0.1 2018年1月4日 上午10:38:23 liushiming
+ * @version ApiGroupDao.java, v 0.0.1 2018年4月11日 下午5:49:59 liushiming
  */
 @Mapper
-public interface FilterRouteDao {
+public interface ApiGroupDao {
+  ApiGroupDO get(Long id);
 
-  FilterRouteDO get(Long routeId);
+  ApiGroupDO load(String key);
 
-  FilterRouteDO load(String key);
-
-  List<FilterRouteDO> list(Map<String, Object> map);
+  List<ApiGroupDO> list(Map<String, Object> map);
 
   int count(Map<String, Object> map);
 
-  int save(FilterRouteDO route);
+  int save(ApiGroupDO api);
 
-  int update(FilterRouteDO route);
+  int update(ApiGroupDO api);
 
-  int remove(Long routeId);
+  int remove(Long id);
 
-  int batchRemove(Long[] routeIds);
+  int batchRemove(Long[] ids);
 
 }

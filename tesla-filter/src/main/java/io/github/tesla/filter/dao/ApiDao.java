@@ -11,16 +11,36 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package io.github.tesla.gateway.protocol;
+package io.github.tesla.filter.dao;
 
-import io.github.tesla.filter.domain.ApiRpcDO;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import io.github.tesla.filter.domain.ApiDO;
 
 /**
  * @author liushiming
- * @version RpcDynamicClient.java, v 0.0.1 2018年1月29日 下午3:59:33 liushiming
+ * @version RouteDao.java, v 0.0.1 2018年1月4日 上午10:38:23 liushiming
  */
-public abstract class RpcDynamicClient {
+@Mapper
+public interface ApiDao {
 
+  ApiDO get(Long id);
 
-  public abstract String doRemoteCall(final ApiRpcDO rpcDo, final String jsonInput);
+  ApiDO load(String key);
+
+  List<ApiDO> list(Map<String, Object> map);
+
+  int count(Map<String, Object> map);
+
+  int save(ApiDO api);
+
+  int update(ApiDO api);
+
+  int remove(Long id);
+
+  int batchRemove(Long[] ids);
+
 }

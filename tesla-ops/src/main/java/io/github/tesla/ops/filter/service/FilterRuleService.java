@@ -16,7 +16,7 @@ package io.github.tesla.ops.filter.service;
 import java.util.List;
 import java.util.Map;
 
-import io.github.tesla.filter.domain.FilterRuleDO;
+import io.github.tesla.filter.domain.FilterDO;
 import io.github.tesla.ops.system.domain.PageDO;
 import io.github.tesla.ops.utils.Query;
 
@@ -26,17 +26,17 @@ import io.github.tesla.ops.utils.Query;
  */
 public interface FilterRuleService {
 
-  PageDO<FilterRuleDO> queryList(Query query);
+  PageDO<FilterDO> queryList(Query query);
 
-  FilterRuleDO get(Long ruleId);
+  FilterDO get(Long ruleId);
 
-  List<FilterRuleDO> list(Map<String, Object> map);
+  List<FilterDO> list(Map<String, Object> map);
 
   int count(Map<String, Object> map);
 
-  int save(FilterRuleDO ruleDo);
+  int save(FilterDO ruleDo);
 
-  int update(FilterRuleDO ruleDo);
+  int update(FilterDO ruleDo);
 
   int remove(Long ruleId);
 

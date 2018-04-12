@@ -29,7 +29,7 @@ import com.quancheng.saluki.core.grpc.exception.RpcServiceException;
 import com.quancheng.saluki.core.grpc.service.GenericService;
 
 import io.github.tesla.gateway.protocol.RpcDynamicClient;
-import io.github.tesla.filter.domain.FilterRpcDO;
+import io.github.tesla.filter.domain.ApiRpcDO;
 import io.grpc.MethodDescriptor;
 import io.grpc.MethodDescriptor.Marshaller;
 import io.grpc.MethodDescriptor.MethodType;
@@ -56,7 +56,7 @@ public class DynamicGrpcClient extends RpcDynamicClient {
   }
 
   @Override
-  public String doRemoteCall(final FilterRpcDO rpcDo, final String jsonInput) {
+  public String doRemoteCall(final ApiRpcDO rpcDo, final String jsonInput) {
     try {
 
       final String serviceName = rpcDo.getServiceName();

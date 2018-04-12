@@ -15,8 +15,8 @@ package io.github.tesla.ops.api.dto;
 
 import java.io.Serializable;
 
-import io.github.tesla.filter.domain.FilterRouteDO;
-import io.github.tesla.filter.domain.FilterRpcDO;
+import io.github.tesla.filter.domain.ApiDO;
+import io.github.tesla.filter.domain.ApiRpcDO;
 
 /**
  * @author liushiming
@@ -147,8 +147,8 @@ public class APIRouteDto implements Serializable {
     this.inputParam = inputParam;
   }
 
-  public FilterRouteDO buildRoute() {
-    FilterRouteDO routeDo = new FilterRouteDO();
+  public ApiDO buildRoute() {
+    ApiDO routeDo = new ApiDO();
     if (this.routeId != null && this.routeId != 0) {
       routeDo.setId(this.routeId);
     }
@@ -160,8 +160,8 @@ public class APIRouteDto implements Serializable {
     return routeDo;
   }
 
-  public FilterRpcDO buildRpc() {
-    FilterRpcDO rpcDO = new FilterRpcDO();
+  public ApiRpcDO buildRpc() {
+    ApiRpcDO rpcDO = new ApiRpcDO();
     rpcDO.setServiceName(this.serviceName);
     rpcDO.setMethodName(this.methodName);
     rpcDO.setServiceGroup(this.serviceGroup);
@@ -172,7 +172,7 @@ public class APIRouteDto implements Serializable {
     return rpcDO;
   }
 
-  public static APIRouteDto buildRouteDto(FilterRouteDO route, FilterRpcDO rpc) {
+  public static APIRouteDto buildRouteDto(ApiDO route, ApiRpcDO rpc) {
     APIRouteDto routeDto = new APIRouteDto();
     routeDto.setRouteId(route.getId());
     routeDto.setFromPath(route.getFromPath());
@@ -192,7 +192,7 @@ public class APIRouteDto implements Serializable {
     return routeDto;
   }
 
-  public static APIRouteDto buildRouteDto(FilterRouteDO route) {
+  public static APIRouteDto buildRouteDto(ApiDO route) {
     APIRouteDto routeDto = new APIRouteDto();
     routeDto.setRouteId(route.getId());
     routeDto.setFromPath(route.getFromPath());

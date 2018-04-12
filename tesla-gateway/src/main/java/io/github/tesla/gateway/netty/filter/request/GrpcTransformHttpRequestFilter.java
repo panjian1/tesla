@@ -17,7 +17,7 @@ import io.github.tesla.gateway.cache.DynamicsRouteCacheComponent;
 import io.github.tesla.gateway.config.SpringContextHolder;
 import io.github.tesla.gateway.protocol.grpc.DynamicGrpcClient;
 import io.github.tesla.filter.RequestFilterTypeEnum;
-import io.github.tesla.filter.domain.FilterRpcDO;
+import io.github.tesla.filter.domain.ApiRpcDO;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -50,7 +50,7 @@ public class GrpcTransformHttpRequestFilter extends HttpRequestFilter {
     if (originalRequest instanceof FullHttpRequest && grpcClient != null) {
       FullHttpRequest request = (FullHttpRequest) originalRequest;
       String urlPath = request.uri();
-      FilterRpcDO rpc = routeRuleCache.getRpc(urlPath);
+      ApiRpcDO rpc = routeRuleCache.getRpc(urlPath);
       if (rpc != null) {
         ByteBuf jsonBuf = request.content();
         String jsonInput = jsonBuf.toString(CharsetUtil.UTF_8);

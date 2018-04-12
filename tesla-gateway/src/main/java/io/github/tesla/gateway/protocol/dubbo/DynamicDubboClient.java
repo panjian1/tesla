@@ -28,7 +28,7 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 
 import io.github.tesla.gateway.protocol.RpcDynamicClient;
-import io.github.tesla.filter.domain.FilterRpcDO;
+import io.github.tesla.filter.domain.ApiRpcDO;
 
 /**
  * @author liushiming
@@ -48,7 +48,7 @@ public class DynamicDubboClient extends RpcDynamicClient {
   }
 
   @Override
-  public String doRemoteCall(final FilterRpcDO rpcDo, final String jsonInput) {
+  public String doRemoteCall(final ApiRpcDO rpcDo, final String jsonInput) {
     try {
       final String serviceName = rpcDo.getServiceName();
       final String methodName = rpcDo.getMethodName();

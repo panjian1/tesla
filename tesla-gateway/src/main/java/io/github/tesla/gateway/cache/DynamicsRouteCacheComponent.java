@@ -25,10 +25,10 @@ import org.springframework.util.PathMatcher;
 
 import com.google.common.collect.Maps;
 
-import io.github.tesla.filter.dao.FilterRouteDao;
-import io.github.tesla.filter.dao.FilterRpcDao;
-import io.github.tesla.filter.domain.FilterRouteDO;
-import io.github.tesla.filter.domain.FilterRpcDO;
+import io.github.tesla.filter.dao.ApiDao;
+import io.github.tesla.filter.dao.ApiRpcDao;
+import io.github.tesla.filter.domain.ApiDO;
+import io.github.tesla.filter.domain.ApiRpcDO;
 
 /**
  * @author liushiming
@@ -39,17 +39,17 @@ public class DynamicsRouteCacheComponent extends AbstractScheduleCache {
 
   private static final PathMatcher pathMatcher = new AntPathMatcher();
 
-  private static final Map<String, FilterRouteDO> ROUTE_CACHE = Maps.newConcurrentMap();
+  private static final Map<String, ApiDO> ROUTE_CACHE = Maps.newConcurrentMap();
 
-  private static final Map<Long, FilterRpcDO> RPC_CACHE = Maps.newConcurrentMap();
+  private static final Map<Long, ApiRpcDO> RPC_CACHE = Maps.newConcurrentMap();
 
   private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
   @Autowired
-  private FilterRouteDao routeDao;
+  private ApiDao routeDao;
 
   @Autowired
-  private FilterRpcDao rpcDao;
+  private ApiRpcDao rpcDao;
 
 
   @Override
@@ -60,15 +60,15 @@ public class DynamicsRouteCacheComponent extends AbstractScheduleCache {
       ROUTE_CACHE.clear();
       RPC_CACHE.clear();
       // cache all data
-      List<FilterRouteDO> routes = routeDao.list(Maps.newHashMap());
-      for (FilterRouteDO route : routes) {
-        FilterRouteDO routeCopy = route.copy();
+      List<ApiDO> routes = routeDao.list(Maps.newHashMap());
+      for (ApiDO route : routes) {
+        ApiDO routeCopy = route.copy();
         String path = routeCopy.getFromPath();
         ROUTE_CACHE.put(path, routeCopy);
       }
-      List<FilterRpcDO> rpcs = rpcDao.list(Maps.newHashMap());
-      for (FilterRpcDO rpc : rpcs) {
-        FilterRpcDO rpcCopy = rpc.copy();
+      List<ApiRpcDO> rpcs = rpcDao.list(Maps.newHashMap());
+      for (ApiRpcDO rpc : rpcs) {
+        ApiRpcDO rpcCopy = rpc.copy();
         RPC_CACHE.put(rpcCopy.getRouteId(), rpcCopy);
       }
     } finally {
@@ -77,7 +77,7 @@ public class DynamicsRouteCacheComponent extends AbstractScheduleCache {
   }
 
 
-  public FilterRouteDO getRoute(String actorPath) {
+  public ApiDO getRoute(String actorPath) {
     try {
       readWriteLock.readLock().lock();
       Set<String> allRoutePath = ROUTE_CACHE.keySet();
@@ -97,8 +97,8 @@ public class DynamicsRouteCacheComponent extends AbstractScheduleCache {
 
   }
 
-  public FilterRpcDO getRpc(String actorPath) {
-    FilterRouteDO route = getRoute(actorPath);
+  public ApiRpcDO getRpc(String actorPath) {
+    ApiDO route = getRoute(actorPath);
     if (route != null) {
       Long routeId = route.getId();
       try {

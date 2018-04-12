@@ -24,7 +24,7 @@ import com.google.protobuf.Descriptors.MethodDescriptor;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.quancheng.saluki.core.grpc.exception.RpcBizException;
 
-import io.github.tesla.filter.domain.FilterRpcDO;
+import io.github.tesla.filter.domain.ApiRpcDO;
 
 /**
  * @author liushiming
@@ -36,7 +36,7 @@ public class ProtobufUtil {
   private static final Logger LOG = LoggerFactory.getLogger(ProtobufUtil.class);
 
 
-  public static Pair<Descriptor, Descriptor> resolveServiceInputOutputType(final FilterRpcDO rpcDo) {
+  public static Pair<Descriptor, Descriptor> resolveServiceInputOutputType(final ApiRpcDO rpcDo) {
     return findDirectyprotobuf(rpcDo);
     // Pair<Descriptor, Descriptor> argsDesc = findSingleProtobuf(rpcDo);
     // if (argsDesc == null) {
@@ -46,7 +46,7 @@ public class ProtobufUtil {
   }
 
 
-  private static Pair<Descriptor, Descriptor> findDirectyprotobuf(final FilterRpcDO rpcDo) {
+  private static Pair<Descriptor, Descriptor> findDirectyprotobuf(final ApiRpcDO rpcDo) {
     byte[] protoContent = rpcDo.getProtoContext();
     FileDescriptorSet descriptorSet = null;
     if (protoContent != null && protoContent.length > 0) {

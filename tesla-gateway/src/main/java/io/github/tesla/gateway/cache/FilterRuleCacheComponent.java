@@ -28,7 +28,7 @@ import com.google.common.collect.Maps;
 
 import io.github.tesla.gateway.netty.filter.request.HttpRequestFilter;
 import io.github.tesla.filter.dao.FilterRuleDao;
-import io.github.tesla.filter.domain.FilterRuleDO;
+import io.github.tesla.filter.domain.FilterDO;
 
 /**
  * @author liushiming
@@ -60,8 +60,8 @@ public class FilterRuleCacheComponent extends AbstractScheduleCache {
       readWriteLock.writeLock().lock();
       COMMUNITY_RULE_CACHE.clear();
       URL_RULE_CACHE.clear();
-      List<FilterRuleDO> filterRuleDOs = rilterRuleDao.list(Maps.newHashMap());
-      for (FilterRuleDO ruleDO : filterRuleDOs) {
+      List<FilterDO> filterRuleDOs = rilterRuleDao.list(Maps.newHashMap());
+      for (FilterDO ruleDO : filterRuleDOs) {
         String type = ruleDO.getFilterType().name();
         String rule = ruleDO.getRule();
         String url = ruleDO.getUrl();

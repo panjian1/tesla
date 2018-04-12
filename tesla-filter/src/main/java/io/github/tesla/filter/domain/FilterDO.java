@@ -21,7 +21,7 @@ import io.github.tesla.filter.RequestFilterTypeEnum;
  * @author liushiming
  * @version FilterRule.java, v 0.0.1 2018年2月11日 下午2:00:13 liushiming
  */
-public class FilterRuleDO implements Serializable {
+public class FilterDO implements Serializable {
 
   private static final long serialVersionUID = 8473084736935164540L;
 

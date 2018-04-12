@@ -19,31 +19,30 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import io.github.tesla.filter.RequestFilterTypeEnum;
-import io.github.tesla.filter.domain.FilterDO;
+import io.github.tesla.filter.domain.ApiRpcDO;
 
 /**
  * @author liushiming
- * @version FilterRuleDao.java, v 0.0.1 2018年2月11日 下午2:36:34 liushiming
+ * @version GrpcDao.java, v 0.0.1 2018年1月4日 上午10:48:12 liushiming
  */
 @Mapper
-public interface FilterRuleDao {
+public interface ApiRpcDao {
+  ApiRpcDO get(@Param("apiId") Long apiId);
 
-  FilterDO get(Long ruleId);
+  ApiRpcDO getByService(@Param("serviceName") String serviceName,
+      @Param("methodName") String methodName, @Param("group") String group,
+      @Param("version") String version);
 
-  List<FilterDO> getByFilterType(@Param("filterType") RequestFilterTypeEnum type);
+  List<ApiRpcDO> list(Map<String, Object> map);
 
-  List<FilterDO> list(Map<String, Object> map);
+  int save(ApiRpcDO rpc);
 
-  int count(Map<String, Object> map);
-
-  int save(FilterDO rule);
-
-  int update(FilterDO rule);
+  int update(ApiRpcDO rpc);
 
   int remove(Long id);
 
-  int removeByRouteId(Long ruleId);
+  int removeByApiId(Long apiId);
 
-  int batchRemove(Long[] ruleIds);
+  int batchRemove(Long[] apiIds);
+
 }

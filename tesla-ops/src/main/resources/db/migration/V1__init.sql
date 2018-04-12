@@ -62,7 +62,7 @@ CREATE TABLE `sys_menu` (
 -- ----------------------------
 INSERT INTO `sys_menu` VALUES ('1', '0', '系统管理', null, null, '0', 'fa fa-desktop', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 INSERT INTO `sys_menu` VALUES ('2', '0', '系统监控', null, null, '0', 'fa fa-video-camera', '5', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('3', '0', '授权监控', null, null, '0', 'fa fa-eye', '5', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('3', '0', 'API消费端管理', null, null, '0', 'fa fa-eye', '5', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 INSERT INTO `sys_menu` VALUES ('4', '0', 'API管理', null, null, '0', 'fa fa-tachometer', '7', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 INSERT INTO `sys_menu` VALUES ('5', '0', 'Filter管理', null, null, '0', 'fa fa-tachometer', '7', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 
@@ -119,18 +119,26 @@ INSERT INTO `sys_menu` VALUES ('40', '2', '运行监控', 'sys/log/run', 'sys:mo
 -- API管理开始
 -- ----------------------------
 
-INSERT INTO `sys_menu` VALUES ('50', '4', 'API列表', 'filter/route', 'filter:route:route', '1', 'fa fa-area-chart', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('51', '4', 'API分组列表', 'filter/route', 'filter:route:route', '1', 'fa fa-area-chart', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('50', '4', 'API列表', 'gateway/api', 'gateway:api:api', '1', 'fa fa-area-chart', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('51', '4', 'API分组列表', 'gateway/api', 'gateway:apigroup:apigroup', '1', 'fa fa-area-chart', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 
-INSERT INTO `sys_menu` VALUES ('52', '50', '新增', '', 'filter:route:add', '2', '', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('53', '50', '批量删除', '', 'filter:route:batchRemove', '2','', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('54', '50', '编辑', '', 'filter:route:edit', '2', '', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('55', '50', '删除', '', 'filter:route:remove', '2', '', '3', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('52', '50', '新增', '', 'gateway:api:add', '2', '', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('53', '50', '批量删除', '', 'gateway:api:batchRemove', '2','', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('54', '50', '编辑', '', 'gateway:api:edit', '2', '', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('55', '50', '删除', '', 'gateway:api:remove', '2', '', '3', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 
+
+INSERT INTO `sys_menu` VALUES ('56', '51', '新增', '', 'gateway:apigroup:add', '2', '', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('57', '51', '批量删除', '', 'gateway:apigroup:batchRemove', '2','', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('58', '51', '编辑', '', 'gateway:apigroup:edit', '2', '', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('59', '51', '删除', '', 'gateway:apigroup:remove', '2', '', '3', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 
 -- ----------------------------
 -- API管理结束
 -- ----------------------------
+
+ 
+
 
 
 -- ----------------------------
@@ -138,10 +146,10 @@ INSERT INTO `sys_menu` VALUES ('55', '50', '删除', '', 'filter:route:remove', 
 -- ----------------------------
 INSERT INTO `sys_menu` VALUES ('60', '5', 'Filter列表', 'filter/rule', 'filter:rule:rule', '1', 'fa fa-warning', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 
-INSERT INTO `sys_menu` VALUES ('56', '60', '新增', '', 'filter:rule:add', '2', '', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('57', '60', '批量删除', '', 'filter:rule:batchRemove', '2','', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('58', '60', '编辑', '', 'filter:rule:edit', '2', '', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
-INSERT INTO `sys_menu` VALUES ('59', '60', '删除', '', 'filter:rule:remove', '2', '', '3', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('61', '60', '新增', '', 'filter:rule:add', '2', '', '0', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('62', '60', '批量删除', '', 'filter:rule:batchRemove', '2','', '1', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('63', '60', '编辑', '', 'filter:rule:edit', '2', '', '2', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
+INSERT INTO `sys_menu` VALUES ('64', '60', '删除', '', 'filter:rule:remove', '2', '', '3', '2017-08-09 23:06:55', '2017-08-14 14:13:43');
 
 -- ----------------------------
 -- Filter管理结束
@@ -324,25 +332,60 @@ CREATE TABLE `sys_user_role` (
 INSERT INTO `sys_user_role` VALUES ('1', '1', '1');
 INSERT INTO `sys_user_role` VALUES ('2', '2', '2');
 
-DROP TABLE IF EXISTS `gateway_route`;
 
-CREATE TABLE `gateway_route` (
+DROP TABLE IF EXISTS `gateway_api_group`;
+
+CREATE TABLE `gateway_api_group` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `from_path` varchar(255) DEFAULT NULL COMMENT '请求路径',
-  `to_hostport` varchar(255) DEFAULT NULL COMMENT '目标地址',
-  `to_path` varchar(100) DEFAULT NULL COMMENT '目标路径',
-  `service_id` varchar(100) DEFAULT NULL COMMENT '服务ID',
-  `rpc` tinyint(1) DEFAULT NULL COMMENT '是否RPC请求',
+  `name` varchar(255) DEFAULT NULL COMMENT 'api名称',
+  `describe` varchar(500) DEFAULT NULL COMMENT 'api描述',
+  `backend_host` varchar(255) DEFAULT NULL COMMENT '目标地址',
+  `backend_port` varchar(255) DEFAULT NULL COMMENT '目标端口',
+  `backend_path` varchar(255) DEFAULT NULL COMMENT '目标url前缀',
   `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
   `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='api';
+
+
+
+DROP TABLE IF EXISTS `gateway_api`;
+
+CREATE TABLE `gateway_api` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL COMMENT 'api名称',
+  `describe` varchar(500) DEFAULT NULL COMMENT 'api描述',
+  `url` varchar(255) DEFAULT NULL COMMENT '请求路径',
+  `path` varchar(255) DEFAULT NULL COMMENT '后端请求路径',
+  `rpc` tinyint(1) DEFAULT NULL COMMENT '是否RPC请求',
+  `spring_cloud` tinyint(1) DEFAULT NULL COMMENT '是否springCloud请求',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+  `group_id` bigint(20) unsigned NOT NULL COMMENT '分组Id',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `serviceDefinition` (`to_hostport`,`to_path`,`service_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='网关路由表';
+  UNIQUE KEY `unique_path` (`url`,`path`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='api';
+
+ALTER TABLE `gateway_api`
+ADD CONSTRAINT `fk_group` FOREIGN KEY (`group_id`) REFERENCES `gateway_api_group` (`id`);
 
 
-DROP TABLE IF EXISTS `gateway_rpc`;
+DROP TABLE IF EXISTS `gateway_api_springcloud`;
 
-CREATE TABLE `gateway_rpc` (
+CREATE TABLE `gateway_api_springcloud` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `instance_id` varchar(100) DEFAULT NULL COMMENT '服务ID',
+  `api_id` bigint(20) unsigned NOT NULL COMMENT 'apiId',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_instance` (`instance_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='SpringCloud服务映射表';
+
+ALTER TABLE `gateway_api_springcloud`
+ADD CONSTRAINT `fk_sc_api` FOREIGN KEY (`api_id`) REFERENCES `gateway_api` (`id`);
+
+DROP TABLE IF EXISTS `gateway_api_rpc`;
+
+CREATE TABLE `gateway_api_rpc` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `service_name` varchar(255) DEFAULT NULL COMMENT '服务名',
   `method_name` varchar(100) DEFAULT NULL COMMENT '方法名',
@@ -352,12 +395,13 @@ CREATE TABLE `gateway_rpc` (
   `input_param` blob COMMENT 'dubbo请求参数类型',
   `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
   `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
-  `route_id` bigint(20) unsigned NOT NULL COMMENT '路由ID',
+  `api_id` bigint(20) unsigned NOT NULL COMMENT 'apiId',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `serviceDefinition` (`service_name`,`method_name`,`service_group`,`service_version`),
-  KEY `route` (`route_id`)
+  UNIQUE KEY `unique_service` (`service_name`,`method_name`,`service_group`,`service_version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='rpc服务映射表';
 
+ALTER TABLE `gateway_api_rpc`
+ADD CONSTRAINT `fk_rpc_api` FOREIGN KEY (`api_id`) REFERENCES `gateway_api` (`id`);
 
 
 DROP TABLE IF EXISTS `oauth_access_token`;
@@ -407,9 +451,9 @@ CREATE TABLE `oauth_code` (
   UNIQUE KEY `code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `gateway_filterrule`;
+DROP TABLE IF EXISTS `gateway_filter`;
 
-CREATE TABLE `gateway_filterrule` (
+CREATE TABLE `gateway_filter` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `filter_type` varchar(100) DEFAULT NULL,
   `rule` varchar(1000) DEFAULT NULL,
@@ -419,7 +463,7 @@ CREATE TABLE `gateway_filterrule` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `gateway_filterrule` (`id`, `filter_type`, `rule`, `url`, `gmt_create`, `gmt_modified`)
+INSERT INTO `gateway_filter` (`id`, `filter_type`, `rule`, `url`, `gmt_create`, `gmt_modified`)
 VALUES
 	(1,'BlackCookieHttpRequestFilter','\\.\\./\n\\:\\$\n\\$\\{\nselect.+(from|limit)\n(?:(union(.*?)select))\nhaving|rongjitest\nsleep\\((\\s*)(\\d*)(\\s*)\\)\nbenchmark\\((.*)\\,(.*)\\)\nbase64_decode\\(\n(?:from\\W+information_schema\\W)\n(?:(?:current_)user|database|schema|connection_id)\\s*\\(\n(?:etc\\/\\W*passwd)\ninto(\\s+)+(?:dump|out)file\\s*\ngroup\\s+by.+\\(\nxwork.methodaccessor\n(?:define|eval|file_get_contents|include|require|require_once|shell_exec|phpinfo|system|passthru|preg_\\w+|execute|echo|print|print_r|var_dump|(fp)open|alert|showmodaldialog)\\(\nxwork\\.methodaccessor\n(gopher|doc|php|glob|file|phar|zlib|ftp|ldap|dict|ogg|data)\\:\\/\njava\\.lang\n\\$_(get|post|cookie|files|session|env|phplib|globals|server)\\[\n',NULL,NULL,NULL),
 	(2,'URLParamHttpRequestFilter','\\.\\./\n\\:\\$\n\\$\\{\nselect.+(from|limit)\n(?:(union(.*?)select))\nhaving|rongjitest\nsleep\\((\\s*)(\\d*)(\\s*)\\)\nbenchmark\\((.*)\\,(.*)\\)\nbase64_decode\\(\n(?:from\\W+information_schema\\W)\n(?:(?:current_)user|database|schema|connection_id)\\s*\\(\n(?:etc\\/\\W*passwd)\ninto(\\s+)+(?:dump|out)file\\s*\ngroup\\s+by.+\\(\nxwork.methodaccessor\n(?:define|eval|file_get_contents|include|require|require_once|shell_exec|phpinfo|system|passthru|preg_\\w+|execute|echo|print|print_r|var_dump|(fp)open|alert|showmodaldialog)\\(\nxwork\\.MethodAccessor\n(gopher|doc|php|glob|file|phar|zlib|ftp|ldap|dict|ogg|data)\\:\\/\njava\\.lang\n\\$_(get|post|cookie|files|session|env|phplib|globals|server)\\[\n\\<(iframe|script|body|img|layer|div|meta|style|base|object|input)\n(onmouseover|onerror|onload)\\=\n',NULL,NULL,NULL),

@@ -16,25 +16,31 @@ package io.github.tesla.filter.domain;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import org.springframework.beans.BeanUtils;
+
 /**
  * @author liushiming
- * @version RouteDO.java, v 0.0.1 2018年1月4日 上午10:28:15 liushiming
+ * @version ApiDO.java, v 0.0.1 2018年1月4日 上午10:28:15 liushiming
  */
-public class FilterRouteDO implements Serializable {
+public class ApiDO implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
   private Long id;
 
-  private String fromPath;
+  private String name;
 
-  private String toHostport;
+  private String describe;
 
-  private String toPath;
+  private String url;
 
-  private String serviceId;
+  private String path;
 
-  private Boolean rpc = false;
+  private Boolean rpc;
+
+  private Boolean springCloud;
+
+  private ApiGroupDO apiGroup;
 
   private Timestamp gmtCreate;
 
@@ -48,36 +54,36 @@ public class FilterRouteDO implements Serializable {
     this.id = id;
   }
 
-  public String getFromPath() {
-    return fromPath;
+  public String getName() {
+    return name;
   }
 
-  public void setFromPath(String fromPath) {
-    this.fromPath = fromPath;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public String getToHostport() {
-    return toHostport;
+  public String getDescribe() {
+    return describe;
   }
 
-  public void setToHostport(String toHostport) {
-    this.toHostport = toHostport;
+  public void setDescribe(String describe) {
+    this.describe = describe;
   }
 
-  public String getToPath() {
-    return toPath;
+  public String getUrl() {
+    return url;
   }
 
-  public void setToPath(String toPath) {
-    this.toPath = toPath;
+  public void setUrl(String url) {
+    this.url = url;
   }
 
-  public String getServiceId() {
-    return serviceId;
+  public String getPath() {
+    return path;
   }
 
-  public void setServiceId(String serviceId) {
-    this.serviceId = serviceId;
+  public void setPath(String path) {
+    this.path = path;
   }
 
   public Boolean getRpc() {
@@ -86,6 +92,22 @@ public class FilterRouteDO implements Serializable {
 
   public void setRpc(Boolean rpc) {
     this.rpc = rpc;
+  }
+
+  public Boolean getSpringCloud() {
+    return springCloud;
+  }
+
+  public ApiGroupDO getApiGroup() {
+    return apiGroup;
+  }
+
+  public void setApiGroup(ApiGroupDO apiGroup) {
+    this.apiGroup = apiGroup;
+  }
+
+  public void setSpringCloud(Boolean springCloud) {
+    this.springCloud = springCloud;
   }
 
   public Timestamp getGmtCreate() {
@@ -104,24 +126,11 @@ public class FilterRouteDO implements Serializable {
     this.gmtModified = gmtModified;
   }
 
-  public FilterRouteDO copy() {
-    FilterRouteDO route = new FilterRouteDO();
-    route.setId(this.id);
-    route.setFromPath(this.fromPath);
-    route.setToHostport(this.toHostport);
-    route.setToPath(this.toPath);
-    route.setServiceId(this.serviceId);
-    route.setRpc(this.rpc);
-    return route;
+  public ApiDO copy(ApiDO source) {
+    ApiDO target = new ApiDO();
+    BeanUtils.copyProperties(source, target);
+    return target;
   }
-
-  @Override
-  public String toString() {
-    return "RouteDO [id=" + id + ", fromPath=" + fromPath + ", toHostport=" + toHostport
-        + ", toPath=" + toPath + ", serviceId=" + serviceId + ", rpc=" + rpc + ", gmtCreate="
-        + gmtCreate + ", gmtModified=" + gmtModified + "]";
-  }
-
 
 
 }

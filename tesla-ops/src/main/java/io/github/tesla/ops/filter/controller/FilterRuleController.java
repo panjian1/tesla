@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import io.github.tesla.filter.domain.FilterRuleDO;
+import io.github.tesla.filter.domain.FilterDO;
 import io.github.tesla.ops.common.BaseController;
 import io.github.tesla.ops.common.CommonResponse;
 import io.github.tesla.ops.common.Log;
@@ -63,7 +63,7 @@ public class FilterRuleController extends BaseController {
   @RequiresPermissions("filter:rule:rule")
   @GetMapping("/list")
   @ResponseBody
-  public PageDO<FilterRuleDO> list(@RequestParam Map<String, Object> params) {
+  public PageDO<FilterDO> list(@RequestParam Map<String, Object> params) {
     Query query = new Query(params);
     return ruleService.queryList(query);
   }
@@ -72,7 +72,7 @@ public class FilterRuleController extends BaseController {
   @RequiresPermissions("filter:rule:edit")
   @GetMapping("/edit/{id}")
   public String edit(@PathVariable("id") Long id, Model model) {
-    FilterRuleDO ruleDo = ruleService.get(id);
+    FilterDO ruleDo = ruleService.get(id);
     model.addAttribute("rule", ruleDo);
     return prefix + "/edit";
   }
@@ -81,7 +81,7 @@ public class FilterRuleController extends BaseController {
   @ResponseBody
   @PostMapping("/save")
   @RequiresPermissions("filter:rule:add")
-  public CommonResponse save(FilterRuleDO rule) {
+  public CommonResponse save(FilterDO rule) {
     if (ruleService.save(rule) > 0) {
       return CommonResponse.ok();
     }
@@ -92,7 +92,7 @@ public class FilterRuleController extends BaseController {
   @ResponseBody
   @RequestMapping("/update")
   @RequiresPermissions("filter:rule:edit")
-  public CommonResponse update(FilterRuleDO rule) {
+  public CommonResponse update(FilterDO rule) {
     if (ruleService.update(rule) > 0) {
       return CommonResponse.ok();
     }

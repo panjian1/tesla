@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.github.tesla.filter.dao.FilterRuleDao;
-import io.github.tesla.filter.domain.FilterRuleDO;
+import io.github.tesla.filter.domain.FilterDO;
 import io.github.tesla.ops.filter.service.FilterRuleService;
 import io.github.tesla.ops.system.domain.PageDO;
 import io.github.tesla.ops.utils.Query;
@@ -36,24 +36,24 @@ public class FilterRuleServiceImpl implements FilterRuleService {
   private FilterRuleDao ruleDao;
 
   @Override
-  public PageDO<FilterRuleDO> queryList(Query query) {
+  public PageDO<FilterDO> queryList(Query query) {
     int total = ruleDao.count(query);
-    List<FilterRuleDO> rules = ruleDao.list(query);
-    PageDO<FilterRuleDO> page = new PageDO<>();
+    List<FilterDO> rules = ruleDao.list(query);
+    PageDO<FilterDO> page = new PageDO<>();
     page.setTotal(total);
     page.setRows(rules);
     return page;
   }
 
   @Override
-  public FilterRuleDO get(Long ruleId) {
-    FilterRuleDO rule = ruleDao.get(ruleId);
+  public FilterDO get(Long ruleId) {
+    FilterDO rule = ruleDao.get(ruleId);
     return rule;
   }
 
   @Override
-  public List<FilterRuleDO> list(Map<String, Object> map) {
-    List<FilterRuleDO> routes = ruleDao.list(map);
+  public List<FilterDO> list(Map<String, Object> map) {
+    List<FilterDO> routes = ruleDao.list(map);
     return routes;
   }
 
@@ -63,12 +63,12 @@ public class FilterRuleServiceImpl implements FilterRuleService {
   }
 
   @Override
-  public int save(FilterRuleDO ruleDo) {
+  public int save(FilterDO ruleDo) {
     return ruleDao.save(ruleDo);
   }
 
   @Override
-  public int update(FilterRuleDO ruleDo) {
+  public int update(FilterDO ruleDo) {
     return ruleDao.update(ruleDo);
   }
 

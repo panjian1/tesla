@@ -19,30 +19,25 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import io.github.tesla.filter.domain.FilterRpcDO;
+import io.github.tesla.filter.domain.ApiSpringCloudDO;
 
 /**
  * @author liushiming
- * @version GrpcDao.java, v 0.0.1 2018年1月4日 上午10:48:12 liushiming
+ * @version ApiSpringCloudDao.java, v 0.0.1 2018年4月11日 下午5:48:37 liushiming
  */
 @Mapper
-public interface FilterRpcDao {
-  FilterRpcDO get(@Param("routeId") Long routeId);
+public interface ApiSpringCloudDao {
+  ApiSpringCloudDO get(@Param("apiId") Long apiId);
 
-  FilterRpcDO getByService(@Param("serviceName") String serviceName,
-      @Param("methodName") String methodName, @Param("group") String group,
-      @Param("version") String version);
+  List<ApiSpringCloudDO> list(Map<String, Object> map);
 
-  List<FilterRpcDO> list(Map<String, Object> map);
+  int save(ApiSpringCloudDO springCloud);
 
-  int save(FilterRpcDO route);
-
-  int update(FilterRpcDO route);
+  int update(ApiSpringCloudDO springCloud);
 
   int remove(Long id);
 
-  int removeByRouteId(Long routeId);
+  int removeByRouteId(Long apiId);
 
-  int batchRemove(Long[] routeIds);
-
+  int batchRemove(Long[] apiIds);
 }
