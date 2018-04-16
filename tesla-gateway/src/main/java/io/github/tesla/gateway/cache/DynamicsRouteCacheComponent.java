@@ -13,11 +13,15 @@
  */
 package io.github.tesla.gateway.cache;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -27,8 +31,11 @@ import com.google.common.collect.Maps;
 
 import io.github.tesla.filter.dao.ApiDao;
 import io.github.tesla.filter.dao.ApiRpcDao;
+import io.github.tesla.filter.dao.ApiSpringCloudDao;
 import io.github.tesla.filter.domain.ApiDO;
+import io.github.tesla.filter.domain.ApiGroupDO;
 import io.github.tesla.filter.domain.ApiRpcDO;
+import io.github.tesla.filter.domain.ApiSpringCloudDO;
 
 /**
  * @author liushiming
@@ -39,37 +46,55 @@ public class DynamicsRouteCacheComponent extends AbstractScheduleCache {
 
   private static final PathMatcher pathMatcher = new AntPathMatcher();
 
-  private static final Map<String, ApiDO> ROUTE_CACHE = Maps.newConcurrentMap();
+  // 直接路由
+  private static final Map<String, Pair<String, String>> REDIRECT_ROUTE =
+      Collections.synchronizedMap(new WeakHashMap<String, Pair<String, String>>());
 
-  private static final Map<Long, ApiRpcDO> RPC_CACHE = Maps.newConcurrentMap();
+  // RPC服务发现
+  private static final Map<String, ApiRpcDO> RPC_ROUTE =
+      Collections.synchronizedMap(new WeakHashMap<String, ApiRpcDO>());
+
+  // SpringCloud服务发现
+  private static final Map<String, ApiSpringCloudDO> SPRINGCLOUD_ROUTE =
+      Collections.synchronizedMap(new WeakHashMap<String, ApiSpringCloudDO>());
 
   private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
   @Autowired
-  private ApiDao routeDao;
+  private ApiDao apiDao;
 
   @Autowired
   private ApiRpcDao rpcDao;
+
+  @Autowired
+  private ApiSpringCloudDao springCloudDao;
 
 
   @Override
   protected void doCache() {
     try {
       readWriteLock.writeLock().lock();
-      // clear data
-      ROUTE_CACHE.clear();
-      RPC_CACHE.clear();
       // cache all data
-      List<ApiDO> routes = routeDao.list(Maps.newHashMap());
-      for (ApiDO route : routes) {
-        ApiDO routeCopy = route.copy();
-        String path = routeCopy.getFromPath();
-        ROUTE_CACHE.put(path, routeCopy);
-      }
-      List<ApiRpcDO> rpcs = rpcDao.list(Maps.newHashMap());
-      for (ApiRpcDO rpc : rpcs) {
-        ApiRpcDO rpcCopy = rpc.copy();
-        RPC_CACHE.put(rpcCopy.getRouteId(), rpcCopy);
+      List<ApiDO> apis = apiDao.list(Maps.newHashMap());
+      for (ApiDO api : apis) {
+        ApiDO apiClone = api.copy();
+        String url = apiClone.getUrl();
+        Long apiId = apiClone.getId();
+        ApiGroupDO group = apiClone.getApiGroup();
+        // 直接路由
+        String backEndHost = group.getBackendHost();
+        String backEndPort = group.getBackendPort();
+        String backEndPath = group.getBackendPath();
+        if (backEndHost != null && backEndPort != null && backEndPath != null) {
+          REDIRECT_ROUTE.put(url,
+              new MutablePair<String, String>(backEndHost + ":" + backEndPort, backEndPath));
+        } else if (apiClone.getRpc()) {
+          ApiRpcDO rpc = rpcDao.get(apiId);
+          RPC_ROUTE.put(url, rpc);
+        } else if (apiClone.getSpringCloud()) {
+          ApiSpringCloudDO springCloud = springCloudDao.get(apiId);
+          SPRINGCLOUD_ROUTE.put(url, springCloud);
+        }
       }
     } finally {
       readWriteLock.writeLock().unlock();
@@ -77,14 +102,14 @@ public class DynamicsRouteCacheComponent extends AbstractScheduleCache {
   }
 
 
-  public ApiDO getRoute(String actorPath) {
+  public Pair<String, String> getDirectRoute(String actorPath) {
     try {
       readWriteLock.readLock().lock();
-      Set<String> allRoutePath = ROUTE_CACHE.keySet();
+      Set<String> allRoutePath = REDIRECT_ROUTE.keySet();
       for (String path : allRoutePath) {
         if (path.equals(actorPath) || pathMatcher.match(path, actorPath)) {
           try {
-            return ROUTE_CACHE.get(path);
+            return REDIRECT_ROUTE.get(path);
           } catch (Throwable e) {
             return null;
           }
@@ -97,22 +122,22 @@ public class DynamicsRouteCacheComponent extends AbstractScheduleCache {
 
   }
 
-  public ApiRpcDO getRpc(String actorPath) {
-    ApiDO route = getRoute(actorPath);
-    if (route != null) {
-      Long routeId = route.getId();
-      try {
-        readWriteLock.readLock().lock();
-        return RPC_CACHE.get(routeId);
-      } catch (Throwable e) {
-        return null;
-      } finally {
-        readWriteLock.readLock().unlock();
-      }
+  public ApiRpcDO getRpcRoute(String actorPath) {
+    try {
+      readWriteLock.readLock().lock();
+      return RPC_ROUTE.get(actorPath);
+    } finally {
+      readWriteLock.readLock().unlock();
     }
-    return null;
   }
 
-
+  public ApiSpringCloudDO getSpringCloudRoute(String actorPath) {
+    try {
+      readWriteLock.readLock().lock();
+      return SPRINGCLOUD_ROUTE.get(actorPath);
+    } finally {
+      readWriteLock.readLock().unlock();
+    }
+  }
 
 }

@@ -31,7 +31,7 @@ import io.netty.handler.codec.http.HttpVersion;
 import io.netty.util.CharsetUtil;
 
 /**
- *dubbo协议转换
+ * dubbo协议转换
  */
 public class DubboTransformHttpRequestFilter extends HttpRequestFilter {
 
@@ -50,11 +50,15 @@ public class DubboTransformHttpRequestFilter extends HttpRequestFilter {
   public HttpResponse doFilter(HttpRequest originalRequest, HttpObject httpObject,
       ChannelHandlerContext channelHandlerContext) {
     if (originalRequest instanceof FullHttpRequest && dubboClient != null) {
-      FullHttpRequest request = (FullHttpRequest) originalRequest;
-      String urlPath = request.uri();
-      ApiRpcDO rpc = routeRuleCache.getRpc(urlPath);
-      if (rpc != null) {
-        ByteBuf jsonBuf = request.content();
+      FullHttpRequest httpRequest = (FullHttpRequest) originalRequest;
+      String actorPath = httpRequest.uri();
+      int index = actorPath.indexOf("?");
+      if (index > -1) {
+        actorPath = actorPath.substring(0, index);
+      }
+      ApiRpcDO rpc = routeRuleCache.getRpcRoute(actorPath);
+      if (rpc != null && rpc.getInputParam() != null) {
+        ByteBuf jsonBuf = httpRequest.content();
         String jsonInput = jsonBuf.toString(CharsetUtil.UTF_8);
         String jsonOutput = dubboClient.doRemoteCall(rpc, jsonInput);
         return new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK,

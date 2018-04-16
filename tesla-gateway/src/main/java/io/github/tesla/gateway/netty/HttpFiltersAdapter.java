@@ -15,9 +15,10 @@ package io.github.tesla.gateway.netty;
 
 import java.net.InetSocketAddress;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import io.github.tesla.gateway.cache.DynamicsRouteCacheComponent;
 import io.github.tesla.gateway.config.SpringContextHolder;
-import io.github.tesla.filter.domain.ApiDO;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpObject;
@@ -61,10 +62,10 @@ public class HttpFiltersAdapter {
     if (index > -1) {
       actorPath = actorPath.substring(0, index);
     }
-    ApiDO route = dynamicsRouteCache.getRoute(actorPath);
+    Pair<String, String> route = dynamicsRouteCache.getDirectRoute(actorPath);
     if (route != null) {
-      String targetPath = route.getToPath();
-      String targetHostAndPort = route.getToHostport();
+      String targetPath = route.getRight();
+      String targetHostAndPort = route.getLeft();
       if (targetHostAndPort != null)
         httpRequest.headers().set(HttpHeaderNames.HOST, targetHostAndPort);
       if (targetPath != null)

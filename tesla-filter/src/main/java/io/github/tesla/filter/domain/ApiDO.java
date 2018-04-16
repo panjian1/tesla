@@ -126,9 +126,9 @@ public class ApiDO implements Serializable {
     this.gmtModified = gmtModified;
   }
 
-  public ApiDO copy(ApiDO source) {
+  public ApiDO copy() {
     ApiDO target = new ApiDO();
-    BeanUtils.copyProperties(source, target);
+    BeanUtils.copyProperties(this, target);
     return target;
   }
 
