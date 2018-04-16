@@ -29,8 +29,6 @@ public interface ApiDao {
 
   ApiDO get(Long id);
 
-  ApiDO load(String key);
-
   List<ApiDO> list(Map<String, Object> map);
 
   int count(Map<String, Object> map);
