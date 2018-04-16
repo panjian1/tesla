@@ -375,6 +375,8 @@ DROP TABLE IF EXISTS `gateway_api_springcloud`;
 CREATE TABLE `gateway_api_springcloud` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `instance_id` varchar(100) DEFAULT NULL COMMENT '服务ID',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
   `api_id` bigint(20) unsigned NOT NULL COMMENT 'apiId',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_instance` (`instance_id`)
