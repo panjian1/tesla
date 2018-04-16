@@ -29,7 +29,7 @@ import io.github.tesla.filter.domain.ApiRpcDO;
 public interface ApiRpcDao {
   ApiRpcDO get(@Param("apiId") Long apiId);
 
-  ApiRpcDO getByService(@Param("serviceName") String serviceName,
+  ApiRpcDO loadByService(@Param("serviceName") String serviceName,
       @Param("methodName") String methodName, @Param("group") String group,
       @Param("version") String version);
 

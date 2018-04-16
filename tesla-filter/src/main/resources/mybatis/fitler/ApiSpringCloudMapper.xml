@@ -1,37 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="io.github.tesla.filter.dao.FilterRouteDao">
+<mapper namespace="io.github.tesla.filter.dao.ApiSpringCloudDao">
 
-	<select id="get" resultType="io.github.tesla.filter.domain.FilterRouteDO">
+	<select id="get" resultType="io.github.tesla.filter.domain.ApiSpringCloudDO">
 		select
-		`id`,`from_path`,`to_hostport`,`to_path`,`service_id`,`rpc`,`gmt_create`,`gmt_modified`
-		from gateway_route
-		where
-		id = #{value}
+		`id`,`instance_id`,`api_id`,`gmt_create`,`gmt_modified`
+		from gateway_api_springcloud
+		where api_id = #{apiId}
 	</select>
 
-
-	<select id="load" resultType="io.github.tesla.filter.domain.FilterRouteDO">
+	<select id="list" resultType="io.github.tesla.filter.domain.ApiSpringCloudDO">
 		select
-		`id`,`from_path`,`to_hostport`,`to_path`,`service_id`,`rpc`,`gmt_create`,`gmt_modified`
-		from gateway_route
-		where
-		from_path = #{value} or from_pathpattern like
-		concat(concat(#{value},'%'))
-	</select>
-
-	<select id="list" resultType="io.github.tesla.filter.domain.FilterRouteDO">
-		select
-		`id`,`from_path`,`to_hostport`,`to_path`,`service_id`,`rpc`,`gmt_create`,`gmt_modified`
-		from gateway_route
+		`id`,`instance_id`,`api_id`,`gmt_create`,`gmt_modified`
+		from gateway_api_springcloud
 		<where>
 			<if test="id != null and id != ''"> and id = #{id} </if>
-			<if test="fromPath != null and fromPath != ''"> and from_path = #{fromPath} </if>
-			<if test="toHostport != null and toHostport != ''"> and to_hostport = #{toHostport} </if>
-			<if test="toPath != null and toPath != ''"> and to_path = #{toPath} </if>
-			<if test="serviceId != null and serviceId != ''"> and service_id = #{serviceId} </if>
-			<if test="rpc != null and rpc != ''"> and rpc = #{rpc} </if>
+			<if test="api != null"> and api_id = #{api.id} </if>
 		</where>
 		<choose>
 			<when test="sort != null and sort.trim() != ''">
@@ -46,65 +31,45 @@
 		</if>
 	</select>
 
-	<select id="count" resultType="int">
-		select count(*) from gateway_route
-		<where>
-			<if test="id != null and id != ''"> and id = #{id} </if>
-			<if test="fromPath != null and fromPath != ''"> and from_path = #{fromPath} </if>
-			<if test="toHostport != null and toHostport != ''"> and to_hostport = #{toHostport} </if>
-			<if test="toPath != null and toPath != ''"> and to_path = #{toPath} </if>
-			<if test="serviceId != null and serviceId != ''"> and service_id = #{serviceId} </if>
-			<if test="rpc != null and rpc != ''"> and rpc = #{rpc} </if>
-		</where>
-	</select>
-
-	<insert id="save" parameterType="io.github.tesla.filter.domain.FilterRouteDO"
+	<insert id="save" parameterType="io.github.tesla.filter.domain.ApiSpringCloudDO"
 		useGeneratedKeys="true" keyProperty="id">
 		<selectKey resultType="java.lang.Long" order="AFTER"
 			keyProperty="id">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-		insert into gateway_route
+		insert into gateway_api_springcloud
 		(
-		`from_path`,
-		`to_hostport`,
-		`to_path`,
-		`service_id`,
-		`rpc`,
+		`instance_id`,
+		`api_id`,
 		`gmt_create`,
 		`gmt_modified`
 		)
 		values
 		(
-		#{fromPath},
-		#{toHostport},
-		#{toPath},
-		#{serviceId},
-		#{rpc},
+		#{instanceId},
+		#{api.id},
 		sysdate(),
-		sysdate()
+		sysdate(),
 		)
 	</insert>
 
-	<update id="update" parameterType="io.github.tesla.filter.domain.FilterRouteDO">
-		update gateway_route
+	<update id="update" parameterType="io.github.tesla.filter.domain.ApiSpringCloudDO">
+		update gateway_api_springcloud
 		<set>
-			<if test="fromPath != null and fromPath != ''"> from_path = #{fromPath} </if>
-			<if test="toHostport != null and toHostport != ''"> to_hostport = #{toHostport} </if>
-			<if test="toPath != null and toPath != ''"> to_path = #{toPath} </if>
-			<if test="serviceId != null and serviceId != ''"> service_id = #{serviceId} </if>
-			<if test="rpc != null and rpc != ''"> rpc = #{rpc} </if>
+			<if test="instanceId != null and instanceId != ''"> instance_id = #{instanceId} </if>
+			<if test="api_id != null and api_id != ''"> api_id = #{api.id} </if>
 			`gmt_modified`=sysdate()
 		</set>
 		where id = #{id}
 	</update>
 
 	<delete id="remove">
-		delete from gateway_route where id = #{value}
+		delete from gateway_api_springcloud where id =
+		#{value}
 	</delete>
 
 	<delete id="batchRemove">
-		delete from gateway_route where id in
+		delete from gateway_api_springcloud where id in
 		<foreach item="id" collection="array" open="(" separator=","
 			close=")">
 			#{id}

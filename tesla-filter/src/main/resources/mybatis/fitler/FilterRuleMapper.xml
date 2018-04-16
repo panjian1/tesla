@@ -7,7 +7,7 @@
 		select
 		`id`,`filter_type`,`rule`,`url`
 		from
-		gateway_filterrule
+		gateway_filter
 		where id =
 		#{value}
 	</select>
@@ -16,7 +16,7 @@
 	<select id="getByFilterType" resultType="io.github.tesla.filter.domain.FilterRuleDO">
 		select
 		`id`,`filter_type`,`rule`,`url`
-		from gateway_filterrule
+		from gateway_filter
 		where
 		filter_type =
 		#{filterType}
@@ -25,7 +25,7 @@
 	<select id="list" resultType="io.github.tesla.filter.domain.FilterRuleDO">
 		select
 		`id`,`filter_type`,`rule`,`url`
-		from gateway_filterrule
+		from gateway_filter
 		<where>
 			<if test="id != null and id != ''"> and id = #{id} </if>
 			<if test="filterType != null"> and filter_type = #{filterType} </if>
@@ -44,7 +44,7 @@
 	</select>
 
 	<select id="count" resultType="int">
-		select count(*) from gateway_filterrule
+		select count(*) from gateway_filter
 		<where>
 			<if test="id != null and id != ''"> and id = #{id} </if>
 			<if test="filterType != null"> and filter_type = #{filterType} </if>
@@ -57,7 +57,7 @@
 			keyProperty="id">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-		insert into gateway_filterrule
+		insert into gateway_filter
 		(
 		`filter_type`,
 		`rule`,
@@ -76,22 +76,22 @@
 	</insert>
 
 	<update id="update" parameterType="io.github.tesla.filter.domain.FilterRuleDO">
-		update gateway_filterrule
+		update gateway_filter
 		<set>
 			<if test="filterType != null">`filter_type`=#{filterType},</if>
 			<if test="rule != null and rule != ''">`rule` =#{rule},</if>
 			<if test="url != null and url != ''">`url`= #{url},</if>
-			`gmt_modified`=sysdate()  
+			`gmt_modified`=sysdate()
 		</set>
 		where id = #{id}
 	</update>
 
 	<delete id="remove">
-		delete from gateway_filterrule where id = #{value}
+		delete from gateway_filter where id = #{value}
 	</delete>
 
 	<delete id="batchRemove">
-		delete from gateway_filterrule where id in
+		delete from gateway_filter where id in
 		<foreach item="id" collection="array" open="(" separator=","
 			close=")">
 			#{id}
