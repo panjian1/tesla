@@ -75,7 +75,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="io.github.tesla.filter.domain.FilterRouteDO">
+	<update id="update" parameterType="io.github.tesla.filter.domain.ApiGroupDO">
 		update gateway_api_group
 		<set>
 			<if test="id != null and id != ''"> id = #{id} </if>

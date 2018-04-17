@@ -15,6 +15,7 @@ package io.github.tesla.ops.api.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -29,6 +30,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.common.collect.Maps;
+
+import io.github.tesla.filter.domain.ApiGroupDO;
+import io.github.tesla.ops.api.service.ApiGroupService;
 import io.github.tesla.ops.api.service.ApiService;
 import io.github.tesla.ops.api.service.ProtobufService;
 import io.github.tesla.ops.api.vo.ApiVo;
@@ -54,17 +59,22 @@ public class ApiController extends BaseController {
   private ApiService apiService;
 
   @Autowired
+  private ApiGroupService groupService;
+
+  @Autowired
   private ProtobufService protobufService;
 
   @RequiresPermissions("gateway:api:api")
   @GetMapping()
-  public String route() {
-    return prefix + "/route";
+  public String api() {
+    return prefix + "/api";
   }
 
   @RequiresPermissions("gateway:api:add")
   @GetMapping("/add")
-  public String add() {
+  public String add(Model model) {
+    List<ApiGroupDO> apiGroups = groupService.list(Maps.newHashMap());
+    model.addAttribute("apiGroups", apiGroups);
     return prefix + "/add";
   }
 
@@ -72,12 +82,14 @@ public class ApiController extends BaseController {
   @GetMapping("/edit/{id}")
   public String edit(@PathVariable("id") Long id, Model model) {
     ApiVo apiVO = apiService.get(id);
+    List<ApiGroupDO> apiGroups = groupService.list(Maps.newHashMap());
+    model.addAttribute("apiGroups", apiGroups);
     model.addAttribute("api", apiVO);
     return prefix + "/edit";
   }
 
   @Log("保存路由")
-  @RequiresPermissions("filter:route:add")
+  @RequiresPermissions("gateway:api:add")
   @PostMapping("/save")
   @ResponseBody()
   public CommonResponse save(ApiVo apiVO,
@@ -104,7 +116,7 @@ public class ApiController extends BaseController {
   }
 
   @Log("查询路由")
-  @RequiresPermissions("filter:route:route")
+  @RequiresPermissions("gateway:api:api")
   @GetMapping("/list")
   @ResponseBody
   public PageDO<ApiVo> list(@RequestParam Map<String, Object> params) {
@@ -114,7 +126,7 @@ public class ApiController extends BaseController {
 
 
   @Log("更新路由")
-  @RequiresPermissions("filter:route:edit")
+  @RequiresPermissions("gateway:api:edit")
   @PostMapping("/update")
   @ResponseBody()
   public CommonResponse update(ApiVo apiVO,
@@ -139,7 +151,7 @@ public class ApiController extends BaseController {
   }
 
   @Log("删除路由")
-  @RequiresPermissions("filter:route:remove")
+  @RequiresPermissions("gateway:api:remove")
   @PostMapping("/remove")
   @ResponseBody()
   public CommonResponse save(Long id) {
@@ -150,7 +162,7 @@ public class ApiController extends BaseController {
     }
   }
 
-  @RequiresPermissions("filter:route:batchRemove")
+  @RequiresPermissions("gateway:api:batchRemove")
   @Log("批量删除路由")
   @PostMapping("/batchRemove")
   @ResponseBody

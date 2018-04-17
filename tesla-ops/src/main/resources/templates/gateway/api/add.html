@@ -9,7 +9,7 @@
 					<div class="jarviswidget-editbox"></div>
 					<div class="widget-body">
 						<div class="row">
-							<form id="routeForm" novalidate="novalidate">
+							<form id="routeForm" novalidate="novalidate" class="form-horizontal">
 								<div id="routeWizard" class="col-sm-12">
 									<div class="form-bootstrapWizard">
 										<ul class="bootstrapWizard form-wizard">
@@ -54,41 +54,70 @@
 												- 路由基本配置
 											</h3>
 											<div class="row">
-												<div class="col-sm-12">
+												<fieldset>
 													<div class="form-group">
-														<label class="col-sm-3 control-label" for="fromPath">源路径</label>
-														<div class="col-sm-6">
-															<input class="form-control" id="fromPath" name="fromPath" type="text" placeholder="请求源URL路径" />
+														<label class="col-md-2 control-label">API名称</label>
+														<div class="col-md-8">
+															<input class="form-control" type="text" name="name" id="name">
 														</div>
 													</div>
-												</div>
-												<div class="col-sm-12">
 													<div class="form-group">
-														<label class="col-sm-3 control-label" for="rpc">是否RPC</label>
-														<div class="col-sm-6">
-															<select id="rpc" name="rpc" class="form-control">
-																<option value="0">否</option>
-																<option value="1">是</option>
+														<label class="col-md-2 control-label">请求路径</label>
+														<div class="col-md-8">
+															<input class="form-control" placeholder="请求路径" type="text" name="url" id="url">
+															<p class="note">
+																<strong>Note:</strong>
+																以"/"开头，暴露的Restful的API请求路径
+															</p>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-md-2 control-label">所属分组</label>
+														<div class="col-md-8">
+															<select id="apiGroup" name="apiGroup" class="form-control">
+																<option th:each="apiGroup:${apiGroups}" th:value="${apiGroup.id}" th:text="${apiGroup.name}" th:attr="data-host=${#strings.append(apiGroup.backendHost,':'+apiGroup.backendPort)}" th:attrappend="data-backendPath=${apiGroup.backendPath}" />
 															</select>
 														</div>
 													</div>
-												</div>
-												<div class="col-sm-12">
 													<div class="form-group">
-														<label class="col-sm-3 control-label" for="toHostport">目标地址</label>
-														<div class="col-sm-6">
-															<input class="form-control" id="toHostport" name="toHostport" type="text" placeholder="目标IP和端口" />
+														<label class="col-md-2 control-label">路由类型</label>
+														<div class="col-md-8">
+															<select id="routeType" name="routeType" class="form-control">
+																<option value="0">直接路由</option>
+																<option value="1">RPC服务发现</option>
+																<option value="2">Spring Cloud服务发现</option>
+															</select>
 														</div>
 													</div>
-												</div>
-												<div class="col-sm-12">
 													<div class="form-group">
-														<label class="col-sm-3 control-label" for="toPath">目标路径</label>
-														<div class="col-sm-6">
-															<input id="toPath" name="toPath" class="form-control" type="text" placeholder="目标URL路径" />
+														<label class="col-md-2 control-label">目标地址</label>
+														<div class="col-md-8">
+															<input class="form-control" id="backendHostAndPort" placeholder="目标地址" type="text" readonly>
 														</div>
 													</div>
-												</div>
+													<div class="form-group">
+														<label class="col-md-2 control-label">分组路径</label>
+														<div class="col-md-8">
+															<input class="form-control" id="backendPath" placeholder="分组路径" type="text" readonly>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-md-2 control-label">目标路径</label>
+														<div class="col-md-8">
+															<input class="form-control" placeholder="目标路径" type="text" name="path" id="path">
+															<p class="note">
+																<strong>Note:</strong>
+																分组路径为:/group;目标路径为:/api;后端路径则为:/group/api
+															</p>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-md-2 control-label">API描述</label>
+														<div class="col-md-8">
+															<textarea class="form-control" placeholder="描述" rows="4" id="describe" name="describe"></textarea>
+														</div>
+													</div>
+												</fieldset>
 											</div>
 										</div>
 										<div class="tab-pane" id="tab2">
@@ -226,7 +255,7 @@
 		</article>
 	</div>
 </section>
-<script type="text/javascript" src="/js/appjs/filter/route/add.js"></script>
+<script type="text/javascript" src="/js/appjs/gateway/api/add.js"></script>
 <script type="text/javascript">
   function loadZipFile(file) {
     $("#zipfilename").html(file.name);

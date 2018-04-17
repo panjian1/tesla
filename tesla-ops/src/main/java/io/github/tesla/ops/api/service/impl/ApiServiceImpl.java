@@ -141,11 +141,16 @@ public class ApiServiceImpl implements ApiService {
     ApiDO apiDO = vo.buildApiDO();
     apiDao.update(apiDO);
     ApiRpcDO rpcDO = vo.buildApiRpcDO();
+
     ApiSpringCloudDO springCloudDO = vo.buildApiSpringCloudDO();
-    if (rpcDO != null)
+    if (rpcDO != null) {
+      rpcDO.setApi(apiDO);
       rpcDao.update(rpcDO);
-    if (springCloudDO != null)
+    }
+    if (springCloudDO != null) {
+      springCloudDO.setApi(apiDO);
       springCloudDao.update(springCloudDO);
+    }
     return CommonResponse.SUCCESS;
 
   }

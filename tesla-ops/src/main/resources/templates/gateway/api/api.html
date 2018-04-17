@@ -9,12 +9,12 @@
 <div class="row">
 	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
 		<div class="jarviswidget">
-			<button shiro:hasPermission="filter:route:add" type="button" class="btn  btn-primary" onclick="add()">
+			<button shiro:hasPermission="gateway:api:add" type="button" class="btn  btn-primary" onclick="add()">
 				<i class="glyphicon glyphicon-plus"></i>
 				添加
 			</button>
 			&nbsp;
-			<button shiro:hasPermission="filter:route:batchRemove" type="button" class="btn  btn-danger" onclick="batchRemove()">
+			<button shiro:hasPermission="gateway:api:batchRemove" type="button" class="btn  btn-danger" onclick="batchRemove()">
 				<i class="glyphicon glyphicon-remove"></i>
 				删除
 			</button>
@@ -59,4 +59,4 @@
 		</article>
 	</div>
 </section>
-<script type="text/javascript" src="/js/appjs/filter/route/route.js"></script>
+<script type="text/javascript" src="/js/appjs/gateway/api/api.js"></script>

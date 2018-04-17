@@ -1,4 +1,4 @@
-var prefix = "filter/route";
+var prefix = "gateway/api";
 $(function() {
   load();
 });
@@ -19,27 +19,36 @@ function load() {
     columns: [{
       checkbox: true
     }, {
-      field: 'routeId',
+      field: 'id',
       title: '序号'
     }, {
-      field: 'fromPath',
-      title: '源路径'
+      field: 'name',
+      title: 'API名称'
     }, {
-      field: 'toHostport',
-      title: '目标地址'
+      field: 'describe',
+      title: 'API描述'
     }, {
-      field: 'toPath',
-      title: '目标路径'
+      field: 'url',
+      title: '请求路径'
     }, {
-      field: 'serviceId',
-      title: '服务ID'
+      field: 'groupName',
+      title: 'API分组'
+    }, {
+      field: 'directRoute',
+      title: '反向代理'
+    }, {
+      field: 'rpc',
+      title: 'RPC调用'
+    }, {
+      field: 'springCloud',
+      title: 'SpringCloud调用'
     }, {
       title: '操作',
       field: 'routeId',
       align: 'center',
       formatter: function(value, row, index) {
-        var e = '<a class="btn btn-primary btn-sm ' + s_edit_h + '" href="javascript:void(0)" mce_href="#" title="编辑" onclick="edit(\'' + row.routeId + '\')"><i class="fa fa-edit"></i></a> ';
-        var d = '<a class="btn btn-warning btn-sm ' + s_remove_h + '" href="javascript:void(0)" mce_href="#" title="删除" onclick="remove(\'' + row.routeId + '\')"><i class="fa fa-remove"></i></a> ';
+        var e = '<a class="btn btn-primary btn-sm ' + s_edit_h + '" href="javascript:void(0)" mce_href="#" title="编辑" onclick="edit(\'' + row.id + '\')"><i class="fa fa-edit"></i></a> ';
+        var d = '<a class="btn btn-warning btn-sm ' + s_remove_h + '" href="javascript:void(0)" mce_href="#" title="删除" onclick="remove(\'' + row.id + '\')"><i class="fa fa-remove"></i></a> ';
         return e + d;
       }
     }],
@@ -62,9 +71,9 @@ function chirdTable(index, row, $detail) {
       field: 'rpc',
       title: 'Rpc服务',
       formatter: function(value, row, index) {
-        if (row.grpc) {
+        if (row.protoContext != null) {
           return "gRPC";
-        } else if (row.dubbo) { return "dubbo" }
+        } else if (row.inputParam != null) { return "dubbo" }
       }
     }, {
       field: 'serviceName',
@@ -81,7 +90,7 @@ function chirdTable(index, row, $detail) {
     }, {
       title: '入参类型（grpc）',
       formatter: function(value, row, index) {
-        return 'TBD...'
+        return 'Proto字节流未展示'
       }
     }, {
       field: 'inputParam',
@@ -142,7 +151,7 @@ function batchRemove() {
   function sureremove() {
     var ids = new Array();
     $.each(rows, function(i, row) {
-      ids[i] = row['routeId'];
+      ids[i] = row['id'];
     });
     $.ajax({
       type: 'POST',

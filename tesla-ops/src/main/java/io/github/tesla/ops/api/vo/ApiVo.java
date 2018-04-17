@@ -20,6 +20,7 @@ import java.util.List;
 import io.github.tesla.filter.RequestFilterTypeEnum;
 import io.github.tesla.filter.ResponseFilterTypeEnum;
 import io.github.tesla.filter.domain.ApiDO;
+import io.github.tesla.filter.domain.ApiGroupDO;
 import io.github.tesla.filter.domain.ApiRpcDO;
 import io.github.tesla.filter.domain.ApiSpringCloudDO;
 
@@ -40,6 +41,8 @@ public class ApiVo implements Serializable {
   private String url;
 
   private String path;
+
+  private Boolean directRoute;
 
   private Boolean rpc;
 
@@ -255,18 +258,44 @@ public class ApiVo implements Serializable {
     this.responseFilterType = responseFilterType;
   }
 
+
+  public Boolean getDirectRoute() {
+    return directRoute;
+  }
+
+  public void setDirectRoute(Boolean directRoute) {
+    this.directRoute = directRoute;
+  }
+
   public ApiDO buildApiDO() {
     ApiDO apiDO = new ApiDO();
+    apiDO.setId(this.id);
+    apiDO.setName(this.name);
+    apiDO.setDescribe(this.describe);
+    apiDO.setUrl(this.url);
+    apiDO.setPath(this.path);
+    apiDO.setRpc(this.rpc);
+    apiDO.setSpringCloud(this.springCloud);
+    ApiGroupDO apiGroup = new ApiGroupDO();
+    apiGroup.setId(groupId);
+    apiDO.setApiGroup(apiGroup);
     return apiDO;
   }
 
   public ApiRpcDO buildApiRpcDO() {
     ApiRpcDO rpcDO = new ApiRpcDO();
+    rpcDO.setServiceName(this.serviceName);
+    rpcDO.setMethodName(this.methodName);
+    rpcDO.setServiceGroup(this.serviceGroup);
+    rpcDO.setServiceVersion(this.serviceVersion);
+    rpcDO.setProtoContext(this.protoContext);
+    rpcDO.setInputParam(this.inputParam);
     return rpcDO;
   }
 
   public ApiSpringCloudDO buildApiSpringCloudDO() {
     ApiSpringCloudDO springCloudDO = new ApiSpringCloudDO();
+    springCloudDO.setInstanceId(this.instanceId);
     return springCloudDO;
   }
 
@@ -285,6 +314,8 @@ public class ApiVo implements Serializable {
       apiVO.setGmtModified(apiDO.getGmtModified());
       apiVO.setGroupId(apiDO.getApiGroup().getId());
       apiVO.setGroupName(apiDO.getApiGroup().getName());
+      apiVO.setDirectRoute(apiDO.getApiGroup().getBackendHost() != null
+          && apiDO.getApiGroup().getBackendPort() != null);
       // RPC
       apiVO.setServiceName(rpcDO.getServiceName());
       apiVO.setMethodName(rpcDO.getMethodName());
@@ -294,7 +325,6 @@ public class ApiVo implements Serializable {
       apiVO.setInputParam(rpcDO.getInputParam());
       // Spring Cloud
       apiVO.setInstanceId(scDO.getInstanceId());
-      apiVO.setScPath(scDO.getPath());
       return apiVO;
     }
     return null;

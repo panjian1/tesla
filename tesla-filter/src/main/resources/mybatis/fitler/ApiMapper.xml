@@ -26,7 +26,7 @@
 		</association>
 	</resultMap>
 
-	<select id="get" resultType="apiResultMap">
+	<select id="get" resultMap="apiResultMap">
 		select
 		`id`,`name`,`describe`,`url`,`path`,`rpc`,`spring_cloud`,`gmt_create`,`gmt_modified`,`group_id`
 		from gateway_api

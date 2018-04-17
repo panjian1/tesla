@@ -348,6 +348,10 @@ CREATE TABLE `gateway_api_group` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='api';
 
 
+INSERT INTO `gateway_api_group` (`id`, `name`, `describe`, `backend_host`, `backend_port`, `backend_path`, `gmt_create`, `gmt_modified`)
+VALUES
+	(1, 'default', '标准分组', NULL, NULL, NULL, '2018-02-03 03:52:00', '2018-02-03 03:52:00');
+
 
 DROP TABLE IF EXISTS `gateway_api`;
 
@@ -375,7 +379,6 @@ DROP TABLE IF EXISTS `gateway_api_springcloud`;
 CREATE TABLE `gateway_api_springcloud` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `instance_id` varchar(100) DEFAULT NULL COMMENT '服务ID',
-  `path` varchar(100) DEFAULT NULL COMMENT '目标路径',
   `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
   `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
   `api_id` bigint(20) unsigned NOT NULL COMMENT 'apiId',
@@ -412,18 +415,12 @@ CREATE TABLE `gateway_filter` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `filter_type` varchar(100) DEFAULT NULL,
   `rule` varchar(1000) DEFAULT NULL,
-  `api_id` bigint(20) unsigned NOT NULL COMMENT 'apiId',
-  `group_id` bigint(20) unsigned NOT NULL COMMENT 'groupId',
+  `api_id` bigint(20) COMMENT 'apiId',
+  `group_id` bigint(20) COMMENT 'groupId',
   `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
   `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-ALTER TABLE `gateway_filter`
-ADD CONSTRAINT `fk_filter_api` FOREIGN KEY (`api_id`) REFERENCES `gateway_api` (`id`);
-
-ALTER TABLE `gateway_filter`
-ADD CONSTRAINT `fk_filter_group` FOREIGN KEY (`group_id`) REFERENCES `gateway_api_group` (`id`);
 
 
 DROP TABLE IF EXISTS `oauth_access_token`;

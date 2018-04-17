@@ -41,7 +41,7 @@ import io.github.tesla.ops.utils.Query;
 @Controller
 @RequestMapping("/filter/rule")
 public class FilterRuleController extends BaseController {
-  private final String prefix = "filter/rule";
+  private final String prefix = "gateway/filter";
 
   @Autowired
   private FilterRuleService ruleService;
@@ -49,7 +49,7 @@ public class FilterRuleController extends BaseController {
   @RequiresPermissions("filter:rule:rule")
   @GetMapping()
   public String rule() {
-    return prefix + "/rule";
+    return prefix + "/filter";
   }
 
   @RequiresPermissions("filter:rule:add")

@@ -88,7 +88,7 @@
 			<if test="inputParam != null and inputParam != ''">`input_param`=#{inputParam},</if>
 			`gmt_modified`=sysdate()
 		</set>
-		where id = #{id}
+		where api_id = #{api.id}
 	</update>
 
 	<delete id="remove">
