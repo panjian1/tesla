@@ -11,12 +11,35 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package io.github.tesla.ops.api.controller;
+package io.github.tesla.ops.api.service;
 
-/** 
- * @author liushiming 
- * @version APIGroupController.java, v 0.0.1 2018年4月11日 下午4:06:43 liushiming 
+import java.util.List;
+import java.util.Map;
+
+import io.github.tesla.ops.api.vo.ApiVo;
+import io.github.tesla.ops.system.domain.PageDO;
+import io.github.tesla.ops.utils.Query;
+
+/**
+ * @author liushiming
+ * @version GateWayRouteService.java, v 0.0.1 2018年1月5日 上午10:44:41 liushiming
  */
-public class APIGroupController {
+public interface ApiService {
+
+  PageDO<ApiVo> queryList(Query query);
+
+  ApiVo get(Long id);
+
+  List<ApiVo> list(Map<String, Object> map);
+
+  int count(Map<String, Object> map);
+
+  int save(ApiVo vo);
+
+  int update(ApiVo vo);
+
+  int remove(Long id);
+
+  int batchRemove(Long[] ids);
 
 }

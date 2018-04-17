@@ -31,7 +31,9 @@ public class FilterDO implements Serializable {
 
   private String rule;
 
-  private String url;
+  private Long apiId;
+
+  private Long groupId;
 
   public RequestFilterTypeEnum getFilterType() {
     return filterType;
@@ -67,12 +69,44 @@ public class FilterDO implements Serializable {
     this.id = id;
   }
 
-  public String getUrl() {
-    return url;
+  public Long getApiId() {
+    return apiId;
   }
 
-  public void setUrl(String url) {
-    this.url = url;
+  public void setApiId(Long apiId) {
+    this.apiId = apiId;
   }
 
+  public Long getGroupId() {
+    return groupId;
+  }
+
+  public void setGroupId(Long groupId) {
+    this.groupId = groupId;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    FilterDO other = (FilterDO) obj;
+    if (id == null) {
+      if (other.id != null)
+        return false;
+    } else if (!id.equals(other.id))
+      return false;
+    return true;
+  }
 }

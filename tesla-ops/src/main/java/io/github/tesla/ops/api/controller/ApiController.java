@@ -31,14 +31,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.collect.Lists;
-import io.github.tesla.ops.common.TeslaException;
+
 import io.github.tesla.ops.api.dto.APIRouteDto;
-import io.github.tesla.ops.api.service.APIRouteService;
+import io.github.tesla.ops.api.service.ApiService;
 import io.github.tesla.ops.api.service.ProtobufService;
 import io.github.tesla.ops.api.vo.APIRouteVo;
 import io.github.tesla.ops.common.BaseController;
 import io.github.tesla.ops.common.CommonResponse;
 import io.github.tesla.ops.common.Log;
+import io.github.tesla.ops.common.TeslaException;
 import io.github.tesla.ops.system.domain.PageDO;
 import io.github.tesla.ops.utils.FileType;
 import io.github.tesla.ops.utils.Query;
@@ -48,33 +49,32 @@ import io.github.tesla.ops.utils.Query;
  * @version ZuulController.java, v 0.0.1 2018年1月9日 上午11:19:14 liushiming
  */
 @Controller
-@RequestMapping("/filter/route")
-public class APIRouteController extends BaseController {
+@RequestMapping("gateway/api")
+public class ApiController extends BaseController {
 
-  private final String prefix = "filter/route";
+  private final String prefix = "gateway/api";
   @Autowired
   private ProtobufService protobufService;
 
   @Autowired
-  private APIRouteService routeService;
+  private ApiService routeService;
 
-  @RequiresPermissions("filter:route:route")
+  @RequiresPermissions("gateway:api:api")
   @GetMapping()
   public String route() {
     return prefix + "/route";
   }
 
-  @RequiresPermissions("filter:route:add")
+  @RequiresPermissions("gateway:api:add")
   @GetMapping("/add")
   public String add() {
     return prefix + "/add";
   }
 
-  @RequiresPermissions("filter:route:edit")
+  @RequiresPermissions("gateway:api:edit")
   @GetMapping("/edit/{id}")
   public String edit(@PathVariable("id") Long id, Model model) {
-    APIRouteDto zuulDto = routeService.get(id);
-    APIRouteVo zuulVo = APIRouteVo.buildRouteVo(zuulDto);
+    
     model.addAttribute("route", zuulVo);
     return prefix + "/edit";
   }

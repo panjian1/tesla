@@ -28,6 +28,8 @@ public class ApiSpringCloudDO implements Serializable {
 
   private String instanceId;
 
+  private String path;
+
   private ApiDO api;
 
   public Long getId() {
@@ -52,6 +54,14 @@ public class ApiSpringCloudDO implements Serializable {
 
   public void setApi(ApiDO api) {
     this.api = api;
+  }
+
+  public String getPath() {
+    return path;
+  }
+
+  public void setPath(String path) {
+    this.path = path;
   }
 
   public ApiSpringCloudDO copy(ApiSpringCloudDO source) {

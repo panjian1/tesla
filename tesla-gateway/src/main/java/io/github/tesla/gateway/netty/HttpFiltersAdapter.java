@@ -17,7 +17,7 @@ import java.net.InetSocketAddress;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import io.github.tesla.gateway.cache.DynamicsRouteCacheComponent;
+import io.github.tesla.gateway.cache.ApiAndFilterCacheComponent;
 import io.github.tesla.gateway.config.SpringContextHolder;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpHeaderNames;
@@ -33,12 +33,12 @@ public class HttpFiltersAdapter {
 
   protected final HttpRequest originalRequest;
   protected final ChannelHandlerContext ctx;
-  private final DynamicsRouteCacheComponent dynamicsRouteCache;
+  private final ApiAndFilterCacheComponent dynamicsRouteCache;
 
   public HttpFiltersAdapter(HttpRequest originalRequest, ChannelHandlerContext ctx) {
     this.originalRequest = originalRequest;
     this.ctx = ctx;
-    this.dynamicsRouteCache = SpringContextHolder.getBean(DynamicsRouteCacheComponent.class);
+    this.dynamicsRouteCache = SpringContextHolder.getBean(ApiAndFilterCacheComponent.class);
   }
 
   public HttpFiltersAdapter(HttpRequest originalRequest) {

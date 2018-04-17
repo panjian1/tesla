@@ -13,7 +13,7 @@
  */
 package io.github.tesla.gateway.netty.filter.request;
 
-import io.github.tesla.gateway.cache.DynamicsRouteCacheComponent;
+import io.github.tesla.gateway.cache.ApiAndFilterCacheComponent;
 import io.github.tesla.gateway.config.SpringContextHolder;
 import io.github.tesla.gateway.protocol.grpc.DynamicGrpcClient;
 import io.github.tesla.filter.RequestFilterTypeEnum;
@@ -37,8 +37,8 @@ public class GrpcTransformHttpRequestFilter extends HttpRequestFilter {
 
   private final DynamicGrpcClient grpcClient = SpringContextHolder.getBean(DynamicGrpcClient.class);
 
-  private final DynamicsRouteCacheComponent routeRuleCache =
-      SpringContextHolder.getBean(DynamicsRouteCacheComponent.class);
+  private final ApiAndFilterCacheComponent routeRuleCache =
+      SpringContextHolder.getBean(ApiAndFilterCacheComponent.class);
 
   public static HttpRequestFilter newFilter() {
     return new GrpcTransformHttpRequestFilter();

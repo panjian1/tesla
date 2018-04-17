@@ -16,6 +16,7 @@ package io.github.tesla.gateway.netty.filter.request;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import com.google.common.base.Function;
@@ -25,9 +26,9 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.RateLimiter;
 
-import io.github.tesla.gateway.cache.FilterRuleCacheComponent;
-import io.github.tesla.gateway.config.SpringContextHolder;
 import io.github.tesla.filter.RequestFilterTypeEnum;
+import io.github.tesla.gateway.cache.ApiAndFilterCacheComponent;
+import io.github.tesla.gateway.config.SpringContextHolder;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
@@ -41,8 +42,8 @@ public class RateLimitHttpRequestFilter extends HttpRequestFilter {
 
   private LoadingCache<String, RateLimiter> loadingCache;
 
-  private final FilterRuleCacheComponent ruleCache =
-      SpringContextHolder.getBean(FilterRuleCacheComponent.class);
+  private final ApiAndFilterCacheComponent ruleCache =
+      SpringContextHolder.getBean(ApiAndFilterCacheComponent.class);
 
 
   private RateLimitHttpRequestFilter() {
@@ -50,9 +51,9 @@ public class RateLimitHttpRequestFilter extends HttpRequestFilter {
         .build(new CacheLoader<String, RateLimiter>() {
           @Override
           public RateLimiter load(String key) throws Exception {
-            Map<String, List<String>> limiter =
+            Map<String, Set<String>> limiter =
                 ruleCache.getUrlFilterRule(RateLimitHttpRequestFilter.this);
-            List<String> limitValue = limiter.get(key);
+            List<String> limitValue = Lists.newArrayList(limiter.get(key));
             if (limitValue != null) {
               Double limitValueMax =
                   Collections.max(Lists.transform(limitValue, new Function<String, Double>() {

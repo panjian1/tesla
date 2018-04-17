@@ -33,7 +33,7 @@ public interface ApiDao {
 
   int count(Map<String, Object> map);
 
-  int save(ApiDO api);
+  Long save(ApiDO api);
 
   int update(ApiDO api);
 

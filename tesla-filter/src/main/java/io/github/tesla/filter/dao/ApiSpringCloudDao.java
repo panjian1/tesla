@@ -35,9 +35,7 @@ public interface ApiSpringCloudDao {
 
   int update(ApiSpringCloudDO springCloud);
 
-  int remove(Long id);
-
-  int removeByRouteId(Long apiId);
+  int remove(@Param("apiId") Long apiId);
 
   int batchRemove(Long[] apiIds);
 }

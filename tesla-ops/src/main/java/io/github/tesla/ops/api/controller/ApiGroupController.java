@@ -11,12 +11,12 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package io.github.tesla.ops.api.service.impl;
+package io.github.tesla.ops.api.controller;
 
 /** 
  * @author liushiming 
- * @version APIGroupServiceImpl.java, v 0.0.1 2018年4月11日 下午4:06:23 liushiming 
+ * @version APIGroupController.java, v 0.0.1 2018年4月11日 下午4:06:43 liushiming 
  */
-public class APIGroupServiceImpl {
+public class ApiGroupController {
 
 }

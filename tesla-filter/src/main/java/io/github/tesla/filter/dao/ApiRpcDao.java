@@ -39,9 +39,7 @@ public interface ApiRpcDao {
 
   int update(ApiRpcDO rpc);
 
-  int remove(Long id);
-
-  int removeByApiId(Long apiId);
+  int remove(@Param("apiId") Long apiId);
 
   int batchRemove(Long[] apiIds);
 

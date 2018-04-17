@@ -1,6 +1,7 @@
 package io.github.tesla.gateway.netty.filter.request;
 
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
@@ -8,10 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 
-import io.github.tesla.gateway.cache.FilterRuleCacheComponent;
+import com.google.common.collect.Lists;
+
+import io.github.tesla.filter.RequestFilterTypeEnum;
+import io.github.tesla.gateway.cache.ApiAndFilterCacheComponent;
 import io.github.tesla.gateway.config.SpringContextHolder;
 import io.github.tesla.gateway.netty.filter.FilterUtil;
-import io.github.tesla.filter.RequestFilterTypeEnum;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
@@ -39,9 +42,10 @@ public abstract class HttpRequestFilter {
   }
 
   protected List<Pattern> getRule(HttpRequestFilter filterClazz) {
-    FilterRuleCacheComponent ruleCache =
-        SpringContextHolder.getBean(FilterRuleCacheComponent.class);
-    return ruleCache.getPubicFilterRule(filterClazz);
+    ApiAndFilterCacheComponent ruleCache =
+        SpringContextHolder.getBean(ApiAndFilterCacheComponent.class);
+    Set<Pattern> rules = ruleCache.getPubicFilterRule(filterClazz);
+    return Lists.newArrayList(rules);
   }
 
   protected HttpResponse createResponse(HttpResponseStatus httpResponseStatus,

@@ -11,35 +11,40 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package io.github.tesla.ops.api.service;
+package io.github.tesla.filter.dao;
 
 import java.util.List;
 import java.util.Map;
 
-import io.github.tesla.ops.api.dto.APIRouteDto;
-import io.github.tesla.ops.system.domain.PageDO;
-import io.github.tesla.ops.utils.Query;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import io.github.tesla.filter.domain.FilterDO;
 
 /**
  * @author liushiming
- * @version GateWayRouteService.java, v 0.0.1 2018年1月5日 上午10:44:41 liushiming
+ * @version FilterRuleDao.java, v 0.0.1 2018年2月11日 下午2:36:34 liushiming
  */
-public interface APIRouteService {
+@Mapper
+public interface FilterDao {
 
-  PageDO<APIRouteDto> queryList(Query query);
+  FilterDO get(Long filterId);
 
-  APIRouteDto get(Long routeId);
+  List<FilterDO> loadByApiId(@Param("apiId") Long apiId);
 
-  List<APIRouteDto> list(Map<String, Object> map);
+  List<FilterDO> loadByGroupId(@Param("groupId") Long groupId);
+
+  List<FilterDO> loadCommon();
+
+  List<FilterDO> list(Map<String, Object> map);
 
   int count(Map<String, Object> map);
 
-  int save(APIRouteDto zuulDto);
+  int save(FilterDO filter);
 
-  int update(APIRouteDto zuulDto);
+  int update(FilterDO filter);
 
-  int remove(Long routeId);
+  int remove(Long id);
 
-  int batchRemove(Long[] routeIds);
-
+  int batchRemove(Long[] filterIds);
 }

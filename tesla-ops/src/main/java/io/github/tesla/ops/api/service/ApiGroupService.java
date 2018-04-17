@@ -11,12 +11,29 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package io.github.tesla.ops.api.domain;
+package io.github.tesla.ops.api.service;
 
-/** 
- * @author liushiming 
- * @version APIGroupDO.java, v 0.0.1 2018年4月11日 下午4:05:39 liushiming 
+import java.util.List;
+
+import io.github.tesla.filter.domain.ApiGroupDO;
+
+/**
+ * @author liushiming
+ * @version APIGroupService.java, v 0.0.1 2018年4月11日 下午4:06:13 liushiming
  */
-public class APIGroupDO {
+public interface ApiGroupService {
 
+  ApiGroupDO get(Long id);
+
+  List<ApiGroupDO> list();
+
+  int save(ApiGroupDO role);
+
+  int update(ApiGroupDO role);
+
+  int remove(Long id);
+
+  List<ApiGroupDO> list(Long userId);
+
+  int batchremove(Long[] ids);
 }
