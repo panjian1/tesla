@@ -14,11 +14,16 @@
 package io.github.tesla.ops.api.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import io.github.tesla.filter.dao.ApiGroupDao;
 import io.github.tesla.filter.domain.ApiGroupDO;
 import io.github.tesla.ops.api.service.ApiGroupService;
+import io.github.tesla.ops.system.domain.PageDO;
+import io.github.tesla.ops.utils.Query;
 
 /**
  * @author liushiming
@@ -27,45 +32,54 @@ import io.github.tesla.ops.api.service.ApiGroupService;
 @Service
 public class ApiGroupServiceImpl implements ApiGroupService {
 
+  @Autowired
+  private ApiGroupDao apiGroupDao;
+
+  @Override
+  public PageDO<ApiGroupDO> queryList(Query query) {
+    int total = apiGroupDao.count(query);
+    List<ApiGroupDO> groupDOs = apiGroupDao.list(query);
+    PageDO<ApiGroupDO> page = new PageDO<>();
+    page.setTotal(total);
+    page.setRows(groupDOs);
+    return page;
+  }
+
   @Override
   public ApiGroupDO get(Long id) {
-    return null;
+    return apiGroupDao.get(id);
   }
 
   @Override
-  public List<ApiGroupDO> list() {
-    // TODO Auto-generated method stub
-    return null;
+  public List<ApiGroupDO> list(Map<String, Object> map) {
+    return apiGroupDao.list(map);
   }
 
   @Override
-  public int save(ApiGroupDO role) {
-    // TODO Auto-generated method stub
-    return 0;
+  public int count(Map<String, Object> map) {
+    return apiGroupDao.count(map);
   }
 
   @Override
-  public int update(ApiGroupDO role) {
-    // TODO Auto-generated method stub
-    return 0;
+  public int save(ApiGroupDO apiGroupDO) {
+    return apiGroupDao.save(apiGroupDO);
+  }
+
+  @Override
+  public int update(ApiGroupDO apiGroupDO) {
+    return apiGroupDao.update(apiGroupDO);
   }
 
   @Override
   public int remove(Long id) {
-    // TODO Auto-generated method stub
-    return 0;
+    return apiGroupDao.remove(id);
   }
 
   @Override
-  public List<ApiGroupDO> list(Long userId) {
-    // TODO Auto-generated method stub
-    return null;
+  public int batchRemove(Long[] ids) {
+    return apiGroupDao.batchRemove(ids);
   }
 
-  @Override
-  public int batchremove(Long[] ids) {
-    // TODO Auto-generated method stub
-    return 0;
-  }
+
 
 }

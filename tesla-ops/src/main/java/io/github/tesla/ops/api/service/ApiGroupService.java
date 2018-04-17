@@ -14,8 +14,11 @@
 package io.github.tesla.ops.api.service;
 
 import java.util.List;
+import java.util.Map;
 
 import io.github.tesla.filter.domain.ApiGroupDO;
+import io.github.tesla.ops.system.domain.PageDO;
+import io.github.tesla.ops.utils.Query;
 
 /**
  * @author liushiming
@@ -23,17 +26,20 @@ import io.github.tesla.filter.domain.ApiGroupDO;
  */
 public interface ApiGroupService {
 
+  PageDO<ApiGroupDO> queryList(Query query);
+
   ApiGroupDO get(Long id);
 
-  List<ApiGroupDO> list();
+  List<ApiGroupDO> list(Map<String, Object> map);
 
-  int save(ApiGroupDO role);
+  int count(Map<String, Object> map);
 
-  int update(ApiGroupDO role);
+  int save(ApiGroupDO apiGroupDO);
+
+  int update(ApiGroupDO apiGroupDO);
 
   int remove(Long id);
 
-  List<ApiGroupDO> list(Long userId);
+  int batchRemove(Long[] ids);
 
-  int batchremove(Long[] ids);
 }

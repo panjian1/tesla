@@ -34,9 +34,9 @@ public interface ApiGroupDao {
 
   int count(Map<String, Object> map);
 
-  int save(ApiGroupDO api);
+  int save(ApiGroupDO apiGroupDO);
 
-  int update(ApiGroupDO api);
+  int update(ApiGroupDO apiGroupDO);
 
   int remove(Long id);
 
