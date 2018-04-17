@@ -15,7 +15,6 @@ package io.github.tesla.ops.api.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -30,12 +29,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.common.collect.Lists;
-
-import io.github.tesla.ops.api.dto.APIRouteDto;
 import io.github.tesla.ops.api.service.ApiService;
 import io.github.tesla.ops.api.service.ProtobufService;
-import io.github.tesla.ops.api.vo.APIRouteVo;
+import io.github.tesla.ops.api.vo.ApiVo;
 import io.github.tesla.ops.common.BaseController;
 import io.github.tesla.ops.common.CommonResponse;
 import io.github.tesla.ops.common.Log;
@@ -46,18 +42,19 @@ import io.github.tesla.ops.utils.Query;
 
 /**
  * @author liushiming
- * @version ZuulController.java, v 0.0.1 2018年1月9日 上午11:19:14 liushiming
+ * @version Api.java, v 0.0.1 2018年1月9日 上午11:19:14 liushiming
  */
 @Controller
 @RequestMapping("gateway/api")
 public class ApiController extends BaseController {
 
   private final String prefix = "gateway/api";
-  @Autowired
-  private ProtobufService protobufService;
 
   @Autowired
-  private ApiService routeService;
+  private ApiService apiService;
+
+  @Autowired
+  private ProtobufService protobufService;
 
   @RequiresPermissions("gateway:api:api")
   @GetMapping()
@@ -74,8 +71,8 @@ public class ApiController extends BaseController {
   @RequiresPermissions("gateway:api:edit")
   @GetMapping("/edit/{id}")
   public String edit(@PathVariable("id") Long id, Model model) {
-    
-    model.addAttribute("route", zuulVo);
+    ApiVo apiVO = apiService.get(id);
+    model.addAttribute("api", apiVO);
     return prefix + "/edit";
   }
 
@@ -83,7 +80,7 @@ public class ApiController extends BaseController {
   @RequiresPermissions("filter:route:add")
   @PostMapping("/save")
   @ResponseBody()
-  public CommonResponse save(APIRouteVo zuulVo,
+  public CommonResponse save(ApiVo apiVO,
       @RequestParam(name = "zipFile", required = false) MultipartFile zipFile) {
     try {
       // grpc路由
@@ -93,16 +90,13 @@ public class ApiController extends BaseController {
         if (response != null) {
           return response;
         } else {
-          String serviceFileName = zuulVo.getServiceFileName();
-          byte[] protoContext = protobufService.compileDirectoryProto(zipFile, serviceFileName);
-          APIRouteDto zuulDto = zuulVo.buildRouteDto();
-          zuulDto.setProtoContext(protoContext);
-          routeService.save(zuulDto);
+          String protoServiceFileName = apiVO.getProtoServiceFileName();
+          byte[] protoContext =
+              protobufService.compileDirectoryProto(zipFile, protoServiceFileName);
+          apiVO.setProtoContext(protoContext);
         }
-      } else {
-        APIRouteDto zuulDto = zuulVo.buildRouteDto();
-        routeService.save(zuulDto);
       }
+      apiService.save(apiVO);
     } catch (IOException e) {
       throw new TeslaException("保存路由失败", e);
     }
@@ -113,18 +107,9 @@ public class ApiController extends BaseController {
   @RequiresPermissions("filter:route:route")
   @GetMapping("/list")
   @ResponseBody
-  public PageDO<APIRouteVo> list(@RequestParam Map<String, Object> params) {
+  public PageDO<ApiVo> list(@RequestParam Map<String, Object> params) {
     Query query = new Query(params);
-    PageDO<APIRouteDto> pageDto = routeService.queryList(query);
-    PageDO<APIRouteVo> pageVo = new PageDO<>();
-    pageVo.setTotal(pageDto.getTotal());
-    List<APIRouteDto> zuulDtos = pageDto.getRows();
-    List<APIRouteVo> vos = Lists.newArrayListWithCapacity(zuulDtos.size());
-    for (APIRouteDto zuulDto : zuulDtos) {
-      vos.add(APIRouteVo.buildRouteVo(zuulDto));
-    }
-    pageVo.setRows(vos);
-    return pageVo;
+    return apiService.queryList(query);
   }
 
 
@@ -132,26 +117,21 @@ public class ApiController extends BaseController {
   @RequiresPermissions("filter:route:edit")
   @PostMapping("/update")
   @ResponseBody()
-  public CommonResponse update(APIRouteVo zuulVo,
+  public CommonResponse update(ApiVo apiVO,
       @RequestParam(name = "zipFile", required = false) MultipartFile zipFile) {
     try {
-      // grpc路由
       if (zipFile != null) {
         InputStream directoryZipStream = zipFile.getInputStream();
         CommonResponse response = judgeFileType(directoryZipStream, "zip");
         if (response != null) {
           return response;
         } else {
-          String serviceFileName = zuulVo.getServiceFileName();
+          String serviceFileName = apiVO.getProtoServiceFileName();
           byte[] protoContext = protobufService.compileDirectoryProto(zipFile, serviceFileName);
-          APIRouteDto zuulDto = zuulVo.buildRouteDto();
-          zuulDto.setProtoContext(protoContext);
-          routeService.update(zuulDto);
+          apiVO.setProtoContext(protoContext);
         }
-      } else {
-        APIRouteDto zuulDto = zuulVo.buildRouteDto();
-        routeService.update(zuulDto);
       }
+      apiService.update(apiVO);
     } catch (IOException e) {
       throw new TeslaException("保存路由失败", e);
     }
@@ -163,7 +143,7 @@ public class ApiController extends BaseController {
   @PostMapping("/remove")
   @ResponseBody()
   public CommonResponse save(Long id) {
-    if (routeService.remove(id) > 0) {
+    if (apiService.remove(id) > 0) {
       return CommonResponse.ok();
     } else {
       return CommonResponse.error(1, "删除失败");
@@ -175,7 +155,7 @@ public class ApiController extends BaseController {
   @PostMapping("/batchRemove")
   @ResponseBody
   public CommonResponse batchRemove(@RequestParam("ids[]") Long[] ids) {
-    int response = routeService.batchRemove(ids);
+    int response = apiService.batchRemove(ids);
     if (response > 0) {
       return CommonResponse.ok();
     }

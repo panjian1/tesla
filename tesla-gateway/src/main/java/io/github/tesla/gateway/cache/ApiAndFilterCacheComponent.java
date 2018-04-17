@@ -165,10 +165,16 @@ public class ApiAndFilterCacheComponent extends AbstractScheduleCache {
     // 直接路由
     String backEndHost = group.getBackendHost();
     String backEndPort = group.getBackendPort();
-    String backEndPath = group.getBackendPath();
-    if (backEndHost != null && backEndPort != null && backEndPath != null) {
+    if (backEndHost != null && backEndPort != null) {
+      String backEndPath = group.getBackendPath();
+      String urlPath = "";
+      if (backEndPath != null) {
+        urlPath = path(backEndPath) + path(apiClone.getPath());
+      } else {
+        urlPath = apiClone.getPath();
+      }
       REDIRECT_ROUTE.put(url,
-          new MutablePair<String, String>(backEndHost + ":" + backEndPort, backEndPath));
+          new MutablePair<String, String>(backEndHost + ":" + backEndPort, urlPath));
     } // RPC路由
     else if (apiClone.getRpc()) {
       ApiRpcDO rpc = rpcDao.get(apiId);
@@ -177,6 +183,14 @@ public class ApiAndFilterCacheComponent extends AbstractScheduleCache {
     else if (apiClone.getSpringCloud()) {
       ApiSpringCloudDO springCloud = springCloudDao.get(apiId);
       SPRINGCLOUD_ROUTE.put(url, springCloud);
+    }
+  }
+
+  private String path(String path) {
+    if (path.startsWith("/")) {
+      return path;
+    } else {
+      return "/" + path;
     }
   }
 

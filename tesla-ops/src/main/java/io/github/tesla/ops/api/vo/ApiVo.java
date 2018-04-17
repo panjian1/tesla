@@ -66,6 +66,8 @@ public class ApiVo implements Serializable {
 
   private String inputParam;
 
+  private String protoServiceFileName;
+
   // Spring Cloud
   private String instanceId;
 
@@ -227,6 +229,30 @@ public class ApiVo implements Serializable {
 
   public void setScPath(String scPath) {
     this.scPath = scPath;
+  }
+
+  public String getProtoServiceFileName() {
+    return protoServiceFileName;
+  }
+
+  public void setProtoServiceFileName(String protoServiceFileName) {
+    this.protoServiceFileName = protoServiceFileName;
+  }
+
+  public List<RequestFilterTypeEnum> getRequestFilterType() {
+    return requestFilterType;
+  }
+
+  public void setRequestFilterType(List<RequestFilterTypeEnum> requestFilterType) {
+    this.requestFilterType = requestFilterType;
+  }
+
+  public List<ResponseFilterTypeEnum> getResponseFilterType() {
+    return responseFilterType;
+  }
+
+  public void setResponseFilterType(List<ResponseFilterTypeEnum> responseFilterType) {
+    this.responseFilterType = responseFilterType;
   }
 
   public ApiDO buildApiDO() {

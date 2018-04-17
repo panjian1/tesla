@@ -29,7 +29,7 @@
 		select
 		`id`,`filter_type`,`rule`,`api_id`,`group_id`,`gmt_create`,`gmt_modified`
 		from gateway_filter
-		where api_id = null and group_id = null;
+		where (api_id = null or api_id = 0) and (group_id = null or group_id=0)
 	</select>
 
 	<select id="list" resultType="io.github.tesla.filter.domain.FilterDO">

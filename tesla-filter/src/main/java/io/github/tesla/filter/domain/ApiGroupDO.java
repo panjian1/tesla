@@ -15,7 +15,6 @@ package io.github.tesla.filter.domain;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.List;
 
 /**
  * @author liushiming
@@ -36,8 +35,6 @@ public class ApiGroupDO implements Serializable {
   private String backendPort;
 
   private String backendPath;
-
-  private List<ApiDO> apis;
 
   private Timestamp gmtCreate;
 
@@ -89,14 +86,6 @@ public class ApiGroupDO implements Serializable {
 
   public void setBackendPath(String backendPath) {
     this.backendPath = backendPath;
-  }
-
-  public List<ApiDO> getApis() {
-    return apis;
-  }
-
-  public void setApis(List<ApiDO> apis) {
-    this.apis = apis;
   }
 
   public Timestamp getGmtCreate() {

@@ -15,6 +15,7 @@ package io.github.tesla.gateway.netty;
 
 import java.net.InetSocketAddress;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import io.github.tesla.gateway.cache.ApiAndFilterCacheComponent;
@@ -68,7 +69,7 @@ public class HttpFiltersAdapter {
       String targetHostAndPort = route.getLeft();
       if (targetHostAndPort != null)
         httpRequest.headers().set(HttpHeaderNames.HOST, targetHostAndPort);
-      if (targetPath != null)
+      if (StringUtils.isNotBlank(targetPath))
         httpRequest.setUri(targetPath);
     }
   }

@@ -2,40 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="io.github.tesla.filter.dao.ApiGroupDao">
-	<resultMap type="io.github.tesla.filter.domain.ApiGroupDO"
-		id="apiGroupResult">
-		<id column="id" property="id" />
-		<result column="name" property="name" />
-		<result column="describe" property="describe" />
-		<result column="backend_path" property="backendPath" />
-		<result column="backend_host" property="backendHost" />
-		<result column="backend_port" property="backendPort" />
-		<result column="gmt_create" property="gmtCreate" />
-		<result column="gmt_modified" property="gmtModified" />
-		<collection property="apis" ofType="io.github.tesla.filter.domain.ApiDO"
-			select="io.github.tesla.filter.dao.ApiDao.get" column="id">
-		</collection>
-	</resultMap>
 
-	<select id="get" resultType="io.github.tesla.filter.domain.ApiDO">
+	<select id="get" resultType="io.github.tesla.filter.domain.ApiGroupDO">
 		select
-		`id`,`name`,`describe`,`url`,`path`,`rpc`,`spring_cloud`,`gmt_create`,`gmt_modified`,`group_id`,
-		from gateway_api
-		where
-		id = #{value}
+		`id`,`name`,`describe`,`backend_host`,`backend_port`,`backend_path`,`gmt_create`,`gmt_modified`
+		from gateway_api_group
+		where id = #{value}
 	</select>
 
-	<select id="list" resultType="io.github.tesla.filter.domain.ApiDO">
+	<select id="list" resultType="io.github.tesla.filter.domain.ApiGroupDO">
 		select
-		`id`,`name`,`describe`,`url`,`path`,`rpc`,`spring_cloud`,`gmt_create`,`gmt_modified`,`group_id`,
-		from gateway_api
+		`id`,`name`,`describe`,`backend_host`,`backend_port`,`backend_path`,`gmt_create`,`gmt_modified`
+		from gateway_api_group
 		<where>
 			<if test="id != null and id != ''"> and id = #{id} </if>
 			<if test="name != null and name != ''"> and name = #{name} </if>
-			<if test="toHostport != null and toHostport != ''"> and to_hostport = #{toHostport} </if>
-			<if test="toPath != null and toPath != ''"> and to_path = #{toPath} </if>
-			<if test="serviceId != null and serviceId != ''"> and service_id = #{serviceId} </if>
-			<if test="rpc != null and rpc != ''"> and rpc = #{rpc} </if>
+			<if test="describe != null and describe != ''"> and describe = #{describe} </if>
+			<if test="backendHost != null and backendHost != ''"> and backend_host = #{backendHost} </if>
+			<if test="backendPort != null and backendPort != ''"> and backend_port = #{backendPort} </if>
+			<if test="backendPath != null and backendPath != ''"> and backend_path = #{backendPath} </if>
 		</where>
 		<choose>
 			<when test="sort != null and sort.trim() != ''">
@@ -51,64 +36,65 @@
 	</select>
 
 	<select id="count" resultType="int">
-		select count(*) from gateway_route
+		select count(*) from gateway_api_group
 		<where>
 			<if test="id != null and id != ''"> and id = #{id} </if>
-			<if test="fromPath != null and fromPath != ''"> and from_path = #{fromPath} </if>
-			<if test="toHostport != null and toHostport != ''"> and to_hostport = #{toHostport} </if>
-			<if test="toPath != null and toPath != ''"> and to_path = #{toPath} </if>
-			<if test="serviceId != null and serviceId != ''"> and service_id = #{serviceId} </if>
-			<if test="rpc != null and rpc != ''"> and rpc = #{rpc} </if>
+			<if test="name != null and name != ''"> and name = #{name} </if>
+			<if test="describe != null and describe != ''"> and describe = #{describe} </if>
+			<if test="backendHost != null and backendHost != ''"> and backend_host = #{backendHost} </if>
+			<if test="backendPort != null and backendPort != ''"> and backend_port = #{backendPort} </if>
+			<if test="backendPath != null and backendPath != ''"> and backend_path = #{backendPath} </if>
 		</where>
 	</select>
 
-	<insert id="save" parameterType="io.github.tesla.filter.domain.FilterRouteDO"
+	<insert id="save" parameterType="io.github.tesla.filter.domain.ApiGroupDO"
 		useGeneratedKeys="true" keyProperty="id">
 		<selectKey resultType="java.lang.Long" order="AFTER"
 			keyProperty="id">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-		insert into gateway_route
+		insert into gateway_api_group
 		(
-		`from_path`,
-		`to_hostport`,
-		`to_path`,
-		`service_id`,
-		`rpc`,
+		`name`,
+		`describe`,
+		`backend_host`,
+		`backend_port`,
+		`backend_path`,
 		`gmt_create`,
 		`gmt_modified`
 		)
 		values
 		(
-		#{fromPath},
-		#{toHostport},
-		#{toPath},
-		#{serviceId},
-		#{rpc},
+		#{name},
+		#{describe},
+		#{backendHost},
+		#{backendPort},
+		#{backendPath},
 		sysdate(),
 		sysdate()
 		)
 	</insert>
 
 	<update id="update" parameterType="io.github.tesla.filter.domain.FilterRouteDO">
-		update gateway_route
+		update gateway_api_group
 		<set>
-			<if test="fromPath != null and fromPath != ''"> from_path = #{fromPath} </if>
-			<if test="toHostport != null and toHostport != ''"> to_hostport = #{toHostport} </if>
-			<if test="toPath != null and toPath != ''"> to_path = #{toPath} </if>
-			<if test="serviceId != null and serviceId != ''"> service_id = #{serviceId} </if>
-			<if test="rpc != null and rpc != ''"> rpc = #{rpc} </if>
+			<if test="id != null and id != ''"> id = #{id} </if>
+			<if test="name != null and name != ''"> name = #{name} </if>
+			<if test="describe != null and describe != ''"> describe = #{describe} </if>
+			<if test="backendHost != null and backendHost != ''"> backend_host = #{backendHost} </if>
+			<if test="backendPort != null and backendPort != ''"> backend_port = #{backendPort} </if>
+			<if test="backendPath != null and backendPath != ''"> and backend_path = #{backendPath} </if>
 			`gmt_modified`=sysdate()
 		</set>
 		where id = #{id}
 	</update>
 
 	<delete id="remove">
-		delete from gateway_route where id = #{value}
+		delete from gateway_api_group where id = #{value}
 	</delete>
 
 	<delete id="batchRemove">
-		delete from gateway_route where id in
+		delete from gateway_api_group where id in
 		<foreach item="id" collection="array" open="(" separator=","
 			close=")">
 			#{id}
