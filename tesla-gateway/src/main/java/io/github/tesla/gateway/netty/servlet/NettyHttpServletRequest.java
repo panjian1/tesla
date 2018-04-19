@@ -113,7 +113,7 @@ public class NettyHttpServletRequest implements HttpServletRequest {
         try {
           attributes.put(SSL_PEER_CERT_CHAIN_ATTRIBUTE, session.getPeerCertificates());
         } catch (SSLPeerUnverifiedException ex) {
-          // do nothing here
+          ex.printStackTrace();
         }
       }
     }
