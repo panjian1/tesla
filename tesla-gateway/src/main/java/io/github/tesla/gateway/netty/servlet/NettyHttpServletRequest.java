@@ -1,459 +1,581 @@
 /*
- * Copyright 2014-2017 the original author or authors.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package io.github.tesla.gateway.netty.servlet;
 
+import com.jinx.netty.config.NettyContainerConfig;
+import com.jinx.netty.context.NettyAsyncContext;
+import com.jinx.netty.context.NettyEmbeddedContext;
+import com.jinx.netty.dispatcher.NettyRequestDispatcher;
+import com.jinx.netty.session.HttpSessionThreadLocal;
+import com.jinx.netty.session.NettyHttpSession;
+import com.jinx.netty.utils.ChannelThreadLocal;
+import com.jinx.netty.utils.URIParser;
+import com.jinx.netty.utils.Utils;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.CookieDecoder;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.HttpHeaders.Names;
+import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.QueryStringDecoder;
+
+import javax.servlet.AsyncContext;
+import javax.servlet.DispatcherType;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpUpgradeHandler;
+import javax.servlet.http.Part;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.net.ssl.SSLPeerUnverifiedException;
-import javax.net.ssl.SSLSession;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import static io.netty.handler.codec.http.HttpHeaders.Names.AUTHORIZATION;
+import static io.netty.handler.codec.http.HttpHeaders.Names.COOKIE;
+import static io.netty.handler.codec.http.HttpHeaders.Names.WWW_AUTHENTICATE;
 
-import io.github.tesla.gateway.netty.ChannelThreadLocal;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.HttpContent;
-import io.netty.handler.codec.http.HttpHeaderNames;
-import io.netty.handler.codec.http.HttpRequest;
-import io.netty.handler.codec.http.HttpUtil;
-import io.netty.handler.codec.http.QueryStringDecoder;
-import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
-import io.netty.handler.ssl.SslHandler;
-
+/**
+ * @author xiaoyu
+ */
 public class NettyHttpServletRequest implements HttpServletRequest {
 
-  private static final String SSL_CIPHER_SUITE_ATTRIBUTE = "javax.servlet.request.cipher_suite";
-  private static final String SSL_PEER_CERT_CHAIN_ATTRIBUTE =
-      "javax.servlet.request.X509Certificate";
+    private static final Locale         DEFAULT_LOCALE  = Locale.getDefault();
+    public static final String          DISPATCHER_TYPE = NettyRequestDispatcher.class.getName() + ".DISPATCHER_TYPE";
 
-  private static final Locale DEFAULT_LOCALE = Locale.getDefault();
+    private final ChannelHandlerContext ctx;
+    private final NettyEmbeddedContext servletContext;
+    private final HttpRequest           request;
+    private final ServletInputStream    inputStream;
+    private final Map<String, Object>   attributes;
+    private final QueryStringDecoder    queryStringDecoder;
+    private Principal                   userPrincipal;
 
-  private URIParser uriParser;
+    private boolean                     asyncSupported  = true;
+    private NettyAsyncContext asyncContext;
+    private HttpServletResponse         servletResponse;
+    private String                      characterEncoding;
+    private BufferedReader              reader;
+    private Map<String, List<String>>   params;
+    private URIParser uriParser;
 
-  private HttpRequest originalRequest;
+    public NettyHttpServletRequest(ChannelHandlerContext ctx, NettyEmbeddedContext servletContext, HttpRequest request,
+                            HttpServletResponse servletResponse, HttpContentInputStream inputStream) {
+        this.ctx = ctx;
+        this.servletContext = servletContext;
+        this.request = request;
+        this.servletResponse = servletResponse;
+        this.inputStream = inputStream;
+        this.attributes = new ConcurrentHashMap<>();
 
-  private NettyServletInputStream inputStream;
+        this.reader = new BufferedReader(new InputStreamReader(inputStream));
+        this.queryStringDecoder = new QueryStringDecoder(request.uri());
+        this.characterEncoding = Utils.getCharsetFromContentType(getContentType());
+        this.uriParser = new URIParser(servletContext);
+        this.uriParser.parse(request.uri());
 
-  private BufferedReader reader;
-
-  private QueryStringDecoder queryStringDecoder;
-
-  private Map<String, Object> attributes = new ConcurrentHashMap<String, Object>();
-
-  private String characterEncoding;
-
-  private String contextPath;
-
-  private ChannelHandlerContext channelHandlerContext;
-
-  public NettyHttpServletRequest(HttpRequest request, String contextPath,
-      ChannelHandlerContext ctx) {
-    this.originalRequest = request;
-    this.contextPath = contextPath;
-    this.uriParser = new URIParser(contextPath);
-    uriParser.parse(request.uri());
-    this.inputStream = new NettyServletInputStream((HttpContent) request);
-    this.reader = new BufferedReader(new InputStreamReader(inputStream));
-    this.queryStringDecoder = new QueryStringDecoder(request.uri());
-    // setup the SSL security attributes
-    this.channelHandlerContext = ctx;
-    SslHandler sslHandler = channelHandlerContext.pipeline().get(SslHandler.class);
-    if (sslHandler != null) {
-      SSLSession session = sslHandler.engine().getSession();
-      if (session != null) {
-        attributes.put(SSL_CIPHER_SUITE_ATTRIBUTE, session.getCipherSuite());
-        try {
-          attributes.put(SSL_PEER_CERT_CHAIN_ATTRIBUTE, session.getPeerCertificates());
-        } catch (SSLPeerUnverifiedException ex) {
-          // do nothing here
+        if (HttpMethod.POST.equals(request.getMethod())) {
+            if (request instanceof FullHttpRequest) {
+                HttpPostRequestParameters httpPostRequestParameters = new HttpPostRequestParameters(
+                                                                                                    request,
+                                                                                                    ((FullHttpRequest) request).content());
+                params = httpPostRequestParameters.getHttpRequestParameters();
+            } else {
+                params = Collections.emptyMap();
+            }
+        } else {
+            params = this.queryStringDecoder.parameters();
         }
-      }
     }
-  }
 
-  public HttpRequest getOriginalRequest() {
-    return originalRequest;
-  }
+    HttpRequest getNettyRequest() {
+        return request;
+    }
 
-  @Override
-  public String getContextPath() {
-    return contextPath;
-  }
+    @Override
+    public String getAuthType() {
+        return getHeader(WWW_AUTHENTICATE);
+    }
 
-  @Override
-  public Cookie[] getCookies() {
-    String cookieString = this.originalRequest.headers().get(HttpHeaderNames.COOKIE);
-    if (cookieString != null) {
-      Set<io.netty.handler.codec.http.cookie.Cookie> cookies =
-          ServerCookieDecoder.STRICT.decode(cookieString);
-      if (!cookies.isEmpty()) {
-        Cookie[] cookiesArray = new Cookie[cookies.size()];
-        int indx = 0;
-        for (io.netty.handler.codec.http.cookie.Cookie c : cookies) {
-          Cookie cookie = new Cookie(c.name(), c.value());
-          cookie.setDomain(c.domain());
-          cookie.setMaxAge((int) c.maxAge());
-          cookie.setPath(c.path());
-          cookie.setSecure(c.isSecure());
-          cookiesArray[indx] = cookie;
-          indx++;
+    @Override
+    public Cookie[] getCookies() {
+        String cookieString = this.request.headers().get(COOKIE);
+        if (cookieString != null) {
+            Set<io.netty.handler.codec.http.Cookie> cookies = CookieDecoder.decode(cookieString);
+            if (!cookies.isEmpty()) {
+                Cookie[] cookiesArray = new Cookie[cookies.size()];
+                int indx = 0;
+                for (io.netty.handler.codec.http.Cookie c : cookies) {
+                    Cookie cookie = new Cookie(c.getName(), c.getValue());
+                    cookie.setComment(c.getComment());
+                    cookie.setDomain(c.getDomain());
+                    cookie.setMaxAge((int) c.getMaxAge());
+                    cookie.setPath(c.getPath());
+                    cookie.setSecure(c.isSecure());
+                    cookie.setVersion(c.getVersion());
+                    cookiesArray[indx] = cookie;
+                    indx++;
+                }
+                return cookiesArray;
+
+            }
         }
-        return cookiesArray;
-
-      }
-    }
-    return null;
-  }
-
-  @Override
-  public long getDateHeader(String name) {
-    String longVal = getHeader(name);
-    if (longVal == null) {
-      return -1;
+        return new Cookie[0];
     }
 
-    return Long.parseLong(longVal);
-  }
-
-  @Override
-  public String getHeader(String name) {
-    return this.originalRequest.headers().get(name);
-  }
-
-  @SuppressWarnings("rawtypes")
-  @Override
-  public Enumeration getHeaderNames() {
-    return Utils.enumeration(this.originalRequest.headers().names());
-  }
-
-  @SuppressWarnings("rawtypes")
-  @Override
-  public Enumeration getHeaders(String name) {
-    return Utils.enumeration(this.originalRequest.headers().getAll(name));
-  }
-
-  @Override
-  public int getIntHeader(String name) {
-    return this.originalRequest.headers().getInt(name, -1);
-  }
-
-  @Override
-  public String getMethod() {
-    return this.originalRequest.method().name();
-  }
-
-  @Override
-  public String getQueryString() {
-    return this.uriParser.getQueryString();
-  }
-
-  @Override
-  public String getRequestURI() {
-    return this.uriParser.getRequestUri();
-  }
-
-  @Override
-  public StringBuffer getRequestURL() {
-    StringBuffer url = new StringBuffer();
-    String scheme = this.getScheme();
-    int port = this.getServerPort();
-    String urlPath = this.getRequestURI();
-
-
-    url.append(scheme); // http, https
-    url.append("://");
-    url.append(this.getServerName());
-    if (("http".equalsIgnoreCase(scheme) && port != 80)
-        || ("https".equalsIgnoreCase(scheme) && port != 443)) {
-      url.append(':');
-      url.append(this.getServerPort());
+    @Override
+    public long getDateHeader(String name) {
+        String longVal = getHeader(name);
+        if (longVal == null) return -1;
+        return Long.parseLong(longVal);
     }
 
-    url.append(urlPath);
-    return url;
-  }
-
-  @Override
-  public int getContentLength() {
-    return HttpUtil.getContentLength(this.originalRequest, -1);
-  }
-
-  @Override
-  public String getContentType() {
-    return this.originalRequest.headers().get(HttpHeaderNames.CONTENT_TYPE);
-  }
-
-  @Override
-  public ServletInputStream getInputStream() throws IOException {
-    return this.inputStream;
-  }
-
-  @Override
-  public String getCharacterEncoding() {
-    if (characterEncoding == null) {
-      characterEncoding = Utils.getCharsetFromContentType(this.getContentType());
+    @Override
+    public String getHeader(String name) {
+        return HttpHeaders.getHeader(this.request, name);
     }
-    return this.characterEncoding;
-  }
 
-  @Override
-  public String getParameter(String name) {
-    String[] values = getParameterValues(name);
-    return values != null ? values[0] : null;
-  }
-
-  @SuppressWarnings("rawtypes")
-  @Override
-  public Map getParameterMap() {
-    return this.queryStringDecoder.parameters();
-  }
-
-  @SuppressWarnings("rawtypes")
-  @Override
-  public Enumeration getParameterNames() {
-    return Utils.enumerationFromKeys(this.queryStringDecoder.parameters());
-  }
-
-  @Override
-  public String[] getParameterValues(String name) {
-    List<String> values = this.queryStringDecoder.parameters().get(name);
-    if (values == null || values.isEmpty()) {
-      return null;
+    @Override
+    public Enumeration<String> getHeaders(String name) {
+        return Utils.enumeration(this.request.headers().getAll(name));
     }
-    return values.toArray(new String[values.size()]);
-  }
 
-  @Override
-  public String getProtocol() {
-    return this.originalRequest.protocolVersion().toString();
-  }
-
-  @Override
-  public Object getAttribute(String name) {
-    if (attributes != null) {
-      return this.attributes.get(name);
+    @Override
+    public Enumeration<String> getHeaderNames() {
+        return Utils.enumeration(this.request.headers().names());
     }
-    return null;
-  }
 
-  @SuppressWarnings("rawtypes")
-  @Override
-  public Enumeration getAttributeNames() {
-    return Utils.enumerationFromKeys(this.attributes);
-  }
-
-  @Override
-  public void removeAttribute(String name) {
-    if (this.attributes != null) {
-      this.attributes.remove(name);
+    @Override
+    public int getIntHeader(String name) {
+        return HttpHeaders.getIntHeader(this.request, name, -1);
     }
-  }
 
-  @Override
-  public void setAttribute(String name, Object o) {
-    this.attributes.put(name, o);
-  }
-
-  @Override
-  public BufferedReader getReader() throws IOException {
-    return this.reader;
-  }
-
-  @Override
-  public String getRequestedSessionId() {
-    // doesn't implement it yet
-    return null;
-  }
-
-  @Override
-  public HttpSession getSession() {
-    // doesn't implement it yet
-    return null;
-  }
-
-  @Override
-  public HttpSession getSession(boolean create) {
-    // doesn't implement it yet
-    return null;
-  }
-
-  @Override
-  public String getPathInfo() {
-    return this.uriParser.getPathInfo();
-  }
-
-  @Override
-  public Locale getLocale() {
-    String locale = this.originalRequest.headers().get(HttpHeaderNames.ACCEPT_LANGUAGE,
-        DEFAULT_LOCALE.toString());
-    return new Locale(locale);
-  }
-
-  @Override
-  public String getRemoteAddr() {
-    InetSocketAddress addr = (InetSocketAddress) ChannelThreadLocal.get().remoteAddress();
-    return addr.getAddress().getHostAddress();
-  }
-
-  @Override
-  public String getRemoteHost() {
-    InetSocketAddress addr = (InetSocketAddress) ChannelThreadLocal.get().remoteAddress();
-    return addr.getHostName();
-  }
-
-  @Override
-  public int getRemotePort() {
-    InetSocketAddress addr = (InetSocketAddress) ChannelThreadLocal.get().remoteAddress();
-    return addr.getPort();
-  }
-
-  @Override
-  public String getServerName() {
-    InetSocketAddress addr = (InetSocketAddress) ChannelThreadLocal.get().localAddress();
-    return addr.getHostName();
-  }
-
-  @Override
-  public int getServerPort() {
-    InetSocketAddress addr = (InetSocketAddress) ChannelThreadLocal.get().localAddress();
-    return addr.getPort();
-  }
-
-  @Override
-  public String getServletPath() {
-    String servletPath = this.uriParser.getServletPath();
-    if ("/".equals(servletPath)) {
-      return "";
+    @Override
+    public String getMethod() {
+        return request.method().name();
     }
-    return servletPath;
-  }
 
-  @Override
-  public String getScheme() {
-    return this.isSecure() ? "https" : "http";
-  }
-
-  @Override
-  public boolean isSecure() {
-    return ChannelThreadLocal.get().pipeline().get(SslHandler.class) != null;
-  }
-
-  @Override
-  public boolean isRequestedSessionIdFromCookie() {
-    return true;
-  }
-
-  @Override
-  public String getLocalAddr() {
-    InetSocketAddress addr = (InetSocketAddress) ChannelThreadLocal.get().localAddress();
-    return addr.getAddress().getHostAddress();
-  }
-
-  @Override
-  public String getLocalName() {
-    return getServerName();
-  }
-
-  @Override
-  public int getLocalPort() {
-    return getServerPort();
-  }
-
-  @Override
-  public void setCharacterEncoding(String env) throws UnsupportedEncodingException {
-    this.characterEncoding = env;
-  }
-
-  @SuppressWarnings("rawtypes")
-  @Override
-  public Enumeration getLocales() {
-    Collection<Locale> locales = Utils.parseAcceptLanguageHeader(
-        this.originalRequest.headers().get(HttpHeaderNames.ACCEPT_LANGUAGE));
-
-    if (locales == null || locales.isEmpty()) {
-      locales = new ArrayList<>();
-      locales.add(Locale.getDefault());
+    @Override
+    public String getPathInfo() {
+        return this.uriParser.getPathInfo();
     }
-    return Utils.enumeration(locales);
-  }
 
-  @Override
-  public String getAuthType() {
-    // CXF Calls this method to cache the Request informaiton
-    return null;
-  }
+    @Override
+    public String getPathTranslated() {
+        return null;
+    }
 
-  @Override
-  public String getPathTranslated() {
-    // CXF Calls this method to cache the Request informaiton
-    return null;
-  }
 
-  @Override
-  public String getRemoteUser() {
-    // CXF Calls this method to cache the Request informaiton
-    return null;
-  }
+    @Override
+    public String getContextPath() {
+        String requestURI = getRequestURI();
+        // FIXME implement properly
+        return "/".equals(requestURI) ? "" : requestURI;
+    }
 
-  @Override
-  public Principal getUserPrincipal() {
-    // CXF will call this method to setup user information for Authentication
-    return null;
-  }
+    @Override
+    public String getQueryString() {
+        return this.uriParser.getQueryString();
+    }
 
-  @Override
-  public boolean isRequestedSessionIdFromURL() {
-    throw new IllegalStateException("Method 'isRequestedSessionIdFromURL' not yet implemented!");
-  }
+    @Override
+    public String getRemoteUser() {
+        return getHeader(AUTHORIZATION);
+    }
 
-  @Override
-  public boolean isRequestedSessionIdFromUrl() {
-    throw new IllegalStateException("Method 'isRequestedSessionIdFromUrl' not yet implemented!");
-  }
+    @Override
+    public boolean isUserInRole(String s) {
+        return false;
+    }
 
-  @Override
-  public boolean isRequestedSessionIdValid() {
-    return false;
-  }
 
-  @Override
-  public boolean isUserInRole(String role) {
-    throw new IllegalStateException("Method 'isUserInRole' not yet implemented!");
-  }
+    @Override
+    public Principal getUserPrincipal() {
+        return userPrincipal;
+    }
 
-  @Override
-  public String getRealPath(String path) {
-    throw new IllegalStateException("Method 'getRealPath' not yet implemented!");
-  }
+    @Override
+    public String getRequestedSessionId() {
+        NettyHttpSession session = HttpSessionThreadLocal.get();
+        return session != null ? session.getId() : null;
+    }
 
-  @Override
-  public RequestDispatcher getRequestDispatcher(String path) {
-    throw new IllegalStateException("Method 'getRequestDispatcher' not yet implemented!");
-  }
+    @Override
+    public String getRequestURI() {
+        // return request.uri();
+        return this.uriParser.getRequestUri();
+    }
+
+    @Override
+    public StringBuffer getRequestURL() {
+        StringBuffer url = new StringBuffer();
+        String scheme = this.getScheme();
+        int port = this.getServerPort();
+        String urlPath = this.getRequestURI();
+
+        // String servletPath = req.getServletPath ();
+        // String pathInfo = req.getPathInfo ();
+
+        url.append(scheme); // http, https
+        url.append("://");
+        url.append(this.getServerName());
+        if ((scheme.equals("http") && port != 80) || (scheme.equals("https") && port != 443)) {
+            url.append(':');
+            url.append(this.getServerPort());
+        }
+        // if (servletPath != null)
+        // url.append (servletPath);
+        // if (pathInfo != null)
+        // url.append (pathInfo);
+        url.append(urlPath);
+        return url;
+    }
+
+    @Override
+    public String getServletPath() {
+        String servletPath = this.uriParser.getServletPath();
+        if (servletPath.equals("/")) return "";
+        return servletPath;
+    }
+
+    @Override
+    public HttpSession getSession(boolean create) {
+        HttpSession session = HttpSessionThreadLocal.get();
+        if (session == null && create) {
+            session = HttpSessionThreadLocal.getOrCreate();
+        }
+        return session;
+    }
+
+    @Override
+    public HttpSession getSession() {
+        HttpSession s = HttpSessionThreadLocal.getOrCreate();
+        return s;
+    }
+
+    @Override
+    public String changeSessionId() {
+        return null;
+    }
+
+    @Override
+    public boolean isRequestedSessionIdValid() {
+        throw new IllegalStateException("Method 'isRequestedSessionIdValid' not yet implemented!");
+    }
+
+    @Override
+    public boolean isRequestedSessionIdFromCookie() {
+        return true;
+    }
+
+    @Override
+    public boolean isRequestedSessionIdFromURL() {
+        throw new IllegalStateException("Method 'isRequestedSessionIdFromURL' not yet implemented!");
+    }
+
+    @Override
+    public boolean isRequestedSessionIdFromUrl() {
+        throw new IllegalStateException("Method 'isRequestedSessionIdFromUrl' not yet implemented!");
+    }
+
+    @Override
+    public boolean authenticate(HttpServletResponse response) throws IOException, ServletException {
+        return false;
+    }
+
+    @Override
+    public void login(String username, String password) throws ServletException {
+
+    }
+
+    @Override
+    public void logout() throws ServletException {
+
+    }
+
+    @Override
+    public Collection<Part> getParts() throws IOException, IllegalStateException, ServletException {
+        return null;
+    }
+
+    @Override
+    public Part getPart(String name) throws IOException, IllegalStateException, ServletException {
+        return null;
+    }
+
+    @Override
+    public <T extends HttpUpgradeHandler> T upgrade(Class<T> handlerClass) throws IOException, ServletException {
+        return null;
+    }
+
+    @Override
+    public Object getAttribute(String name) {
+        synchronized (attributes) {
+            return attributes.get(name);
+        }
+    }
+
+    @Override
+    public Enumeration<String> getAttributeNames() {
+        synchronized (attributes) {
+            return Collections.enumeration(attributes.keySet());
+        }
+    }
+
+    @Override
+    public String getCharacterEncoding() {
+        return this.characterEncoding;
+    }
+
+    @Override
+    public void setCharacterEncoding(String env) throws UnsupportedEncodingException {
+        this.characterEncoding = env;
+    }
+
+    @Override
+    public int getContentLength() {
+        return (int) HttpHeaders.getContentLength(this.request, -1);
+    }
+
+    @Override
+    public long getContentLengthLong() {
+        return (long) HttpHeaders.getContentLength(this.request, -1);
+    }
+
+    @Override
+    public String getContentType() {
+        return HttpHeaders.getHeader(this.request, Names.CONTENT_TYPE);
+    }
+
+    @Override
+    public ServletInputStream getInputStream() throws IOException {
+        return inputStream;
+    }
+
+    @Override
+    public String getParameter(String name) {
+        String[] values = getParameterValues(name);
+        return values != null ? values[0] : null;
+    }
+
+    @Override
+    public Enumeration<String> getParameterNames() {
+        return Utils.enumerationFromKeys(this.params);
+    }
+
+    @Override
+    public String[] getParameterValues(String name) {
+        List<String> values = this.params.get(name);
+        if (values == null || values.isEmpty()) return null;
+        return values.toArray(new String[values.size()]);
+    }
+
+    @Override
+    public Map getParameterMap() {
+        return this.params;
+    }
+
+    @Override
+    public String getProtocol() {
+        return request.protocolVersion().protocolName();
+    }
+
+    @Override
+    public String getScheme() {
+	try {
+	    return this.isSecure() ? "https" : "http";
+        } catch (Exception e) {
+            return "http";
+        }
+    }
+
+    @Override
+    public String getServerName() {
+        final Channel channel = ChannelThreadLocal.get();
+        if(Objects.nonNull(channel)){
+            final Optional<SocketAddress> socketAddress = Optional.ofNullable(channel.localAddress());
+            if(socketAddress.isPresent()){
+                InetSocketAddress addr= (InetSocketAddress)socketAddress.get();
+                return addr.getHostName();
+            }
+        }
+        return "";
+    }
+
+    @Override
+    public int getServerPort() {
+        NettyContainerConfig nettyContainerConfig = servletContext.getNettyContainerConfig();
+        return nettyContainerConfig.getPORT();
+    }
+
+    @Override
+    public BufferedReader getReader() throws IOException {
+        return this.reader;
+    }
+
+    @Override
+    public String getRemoteAddr() {
+        return null;
+        // InetSocketAddress addr = (InetSocketAddress) ChannelThreadLocal.get().remoteAddress();
+        // return addr.getAddress().getHostAddress();
+    }
+
+    @Override
+    public String getRemoteHost() {
+        InetSocketAddress addr = (InetSocketAddress) ChannelThreadLocal.get().remoteAddress();
+        return addr.getHostName();
+    }
+
+    @Override
+    public void setAttribute(String name, Object o) {
+        synchronized (attributes) {
+            attributes.put(name, o);
+        }
+    }
+
+    @Override
+    public void removeAttribute(String name) {
+        synchronized (attributes) {
+            attributes.remove(name);
+        }
+    }
+
+    @Override
+    public Locale getLocale() {
+        String locale = HttpHeaders.getHeader(this.request, Names.ACCEPT_LANGUAGE, DEFAULT_LOCALE.toString());
+        return new Locale(locale);
+    }
+
+    @Override
+    public Enumeration<Locale> getLocales() {
+        Collection<Locale> locales = Utils.parseAcceptLanguageHeader(HttpHeaders.getHeader(this.request,
+                                                                                           Names.ACCEPT_LANGUAGE));
+
+        if (locales == null || locales.isEmpty()) {
+            locales = new ArrayList<Locale>();
+            locales.add(Locale.getDefault());
+        }
+        return Utils.enumeration(locales);
+    }
+
+    @Override
+    public boolean isSecure() {
+        NettyContainerConfig nettyContainerConfig = servletContext.getNettyContainerConfig();
+        return nettyContainerConfig.isSsl();
+    }
+
+    @Override
+    public RequestDispatcher getRequestDispatcher(String path) {
+        throw new IllegalStateException("Method 'getRequestDispatcher' not yet implemented!");
+    }
+
+    @Override
+    public String getRealPath(String path) {
+        throw new IllegalStateException("Method 'getRealPath' not yet implemented!");
+    }
+
+    @Override
+    public int getRemotePort() {
+        InetSocketAddress addr = (InetSocketAddress) ChannelThreadLocal.get().remoteAddress();
+        return addr.getPort();
+    }
+
+    @Override
+    public String getLocalName() {
+        return getServerName();
+    }
+
+    @Override
+    public String getLocalAddr() {
+        InetSocketAddress addr = (InetSocketAddress) ChannelThreadLocal.get().localAddress();
+        return addr.getAddress().getHostAddress();
+    }
+
+    @Override
+    public int getLocalPort() {
+        return getServerPort();
+    }
+
+    @Override
+    public ServletContext getServletContext() {
+        return servletContext;
+    }
+
+    @Override
+    public AsyncContext startAsync() {
+        return startAsync(this, null);
+    }
+
+    @Override
+    public AsyncContext startAsync(ServletRequest servletRequest, ServletResponse servletResponse) {
+        return ((NettyAsyncContext) getAsyncContext()).startAsync(servletRequest, servletResponse);
+    }
+
+    @Override
+    public boolean isAsyncStarted() {
+        return null != asyncContext && asyncContext.isAsyncStarted();
+    }
+
+    void setAsyncSupported(boolean asyncSupported) {
+        this.asyncSupported = asyncSupported;
+    }
+
+    @Override
+    public boolean isAsyncSupported() {
+        return asyncSupported;
+    }
+
+    @Override
+    public AsyncContext getAsyncContext() {
+        if (null == asyncContext) {
+            asyncContext = new NettyAsyncContext(this, ctx);
+        }
+        return asyncContext;
+    }
+
+    @Override
+    public DispatcherType getDispatcherType() {
+        return attributes.containsKey(DISPATCHER_TYPE) ? (DispatcherType) attributes.get(DISPATCHER_TYPE) : DispatcherType.REQUEST;
+    }
+
+    public ServletResponse getServletResponse() {
+        return servletResponse;
+    }
 }
