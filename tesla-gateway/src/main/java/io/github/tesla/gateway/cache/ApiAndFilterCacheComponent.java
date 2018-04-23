@@ -176,11 +176,11 @@ public class ApiAndFilterCacheComponent extends AbstractScheduleCache {
       REDIRECT_ROUTE.put(url,
           new MutablePair<String, String>(backEndHost + ":" + backEndPort, urlPath));
     } // RPC路由
-    else if (apiClone.getRpc()) {
+    else if (apiClone.isRpc()) {
       ApiRpcDO rpc = rpcDao.get(apiId);
       RPC_ROUTE.put(url, rpc);
     } // SpringCloud路由
-    else if (apiClone.getSpringCloud()) {
+    else if (apiClone.isSpringCloud()) {
       ApiSpringCloudDO springCloud = springCloudDao.get(apiId);
       SPRINGCLOUD_ROUTE.put(url, springCloud);
     }

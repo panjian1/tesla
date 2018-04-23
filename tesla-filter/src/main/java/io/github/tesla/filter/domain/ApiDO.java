@@ -18,6 +18,8 @@ import java.sql.Timestamp;
 
 import org.springframework.beans.BeanUtils;
 
+import io.github.tesla.filter.RouteType;
+
 /**
  * @author liushiming
  * @version ApiDO.java, v 0.0.1 2018年1月4日 上午10:28:15 liushiming
@@ -32,13 +34,11 @@ public class ApiDO implements Serializable {
 
   private String describe;
 
+  private Integer routeType;
+
   private String url;
 
   private String path;
-
-  private Boolean rpc;
-
-  private Boolean springCloud;
 
   private ApiGroupDO apiGroup;
 
@@ -86,16 +86,12 @@ public class ApiDO implements Serializable {
     this.path = path;
   }
 
-  public Boolean getRpc() {
-    return rpc;
+  public Integer getRouteType() {
+    return routeType;
   }
 
-  public void setRpc(Boolean rpc) {
-    this.rpc = rpc;
-  }
-
-  public Boolean getSpringCloud() {
-    return springCloud;
+  public void setRouteType(Integer routeType) {
+    this.routeType = routeType;
   }
 
   public ApiGroupDO getApiGroup() {
@@ -106,8 +102,12 @@ public class ApiDO implements Serializable {
     this.apiGroup = apiGroup;
   }
 
-  public void setSpringCloud(Boolean springCloud) {
-    this.springCloud = springCloud;
+  public Boolean isRpc() {
+    return RouteType.isRpc(this.routeType);
+  }
+
+  public Boolean isSpringCloud() {
+    return RouteType.isSpringCloud(this.routeType);
   }
 
   public Timestamp getGmtCreate() {

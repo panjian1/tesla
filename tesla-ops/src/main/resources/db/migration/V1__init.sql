@@ -362,7 +362,6 @@ CREATE TABLE `gateway_api` (
   `url` varchar(255) DEFAULT NULL COMMENT '请求路径',
   `path` varchar(255) DEFAULT NULL COMMENT '后端请求路径',
   `rpc` tinyint(1) DEFAULT NULL COMMENT '是否RPC请求',
-  `spring_cloud` tinyint(1) DEFAULT NULL COMMENT '是否springCloud请求',
   `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
   `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
   `group_id` bigint(20) unsigned NOT NULL COMMENT '分组Id',

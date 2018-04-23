@@ -19,6 +19,7 @@ import java.util.List;
 
 import io.github.tesla.filter.RequestFilterTypeEnum;
 import io.github.tesla.filter.ResponseFilterTypeEnum;
+import io.github.tesla.filter.RouteType;
 import io.github.tesla.filter.domain.ApiDO;
 import io.github.tesla.filter.domain.ApiGroupDO;
 import io.github.tesla.filter.domain.ApiRpcDO;
@@ -42,11 +43,7 @@ public class ApiVo implements Serializable {
 
   private String path;
 
-  private Boolean directRoute;
-
-  private Boolean rpc;
-
-  private Boolean springCloud;
+  private RouteType routeType;
 
   private Long groupId;
 
@@ -74,10 +71,7 @@ public class ApiVo implements Serializable {
   // Spring Cloud
   private String instanceId;
 
-  private String scPath;
-
   // Filter
-
   private List<RequestFilterTypeEnum> requestFilterType;
 
   private List<ResponseFilterTypeEnum> responseFilterType;
@@ -122,24 +116,18 @@ public class ApiVo implements Serializable {
     this.path = path;
   }
 
-  public Boolean getRpc() {
-    return rpc;
-  }
-
-  public void setRpc(Boolean rpc) {
-    this.rpc = rpc;
-  }
-
-  public Boolean getSpringCloud() {
-    return springCloud;
-  }
-
-  public void setSpringCloud(Boolean springCloud) {
-    this.springCloud = springCloud;
-  }
 
   public Long getGroupId() {
     return groupId;
+  }
+
+
+  public RouteType getRouteType() {
+    return routeType;
+  }
+
+  public void setRouteType(RouteType routeType) {
+    this.routeType = routeType;
   }
 
   public void setGroupId(Long groupId) {
@@ -226,13 +214,6 @@ public class ApiVo implements Serializable {
     this.instanceId = instanceId;
   }
 
-  public String getScPath() {
-    return scPath;
-  }
-
-  public void setScPath(String scPath) {
-    this.scPath = scPath;
-  }
 
   public String getProtoServiceFileName() {
     return protoServiceFileName;
@@ -259,14 +240,6 @@ public class ApiVo implements Serializable {
   }
 
 
-  public Boolean getDirectRoute() {
-    return directRoute;
-  }
-
-  public void setDirectRoute(Boolean directRoute) {
-    this.directRoute = directRoute;
-  }
-
   public ApiDO buildApiDO() {
     ApiDO apiDO = new ApiDO();
     apiDO.setId(this.id);
@@ -274,8 +247,7 @@ public class ApiVo implements Serializable {
     apiDO.setDescribe(this.describe);
     apiDO.setUrl(this.url);
     apiDO.setPath(this.path);
-    apiDO.setRpc(this.rpc);
-    apiDO.setSpringCloud(this.springCloud);
+    apiDO.setRouteType(this.routeType.type());
     ApiGroupDO apiGroup = new ApiGroupDO();
     apiGroup.setId(groupId);
     apiDO.setApiGroup(apiGroup);
@@ -283,20 +255,28 @@ public class ApiVo implements Serializable {
   }
 
   public ApiRpcDO buildApiRpcDO() {
-    ApiRpcDO rpcDO = new ApiRpcDO();
-    rpcDO.setServiceName(this.serviceName);
-    rpcDO.setMethodName(this.methodName);
-    rpcDO.setServiceGroup(this.serviceGroup);
-    rpcDO.setServiceVersion(this.serviceVersion);
-    rpcDO.setProtoContext(this.protoContext);
-    rpcDO.setInputParam(this.inputParam);
-    return rpcDO;
+    if (this.routeType != null && this.routeType == RouteType.Rpc) {
+      ApiRpcDO rpcDO = new ApiRpcDO();
+      rpcDO.setServiceName(this.serviceName);
+      rpcDO.setMethodName(this.methodName);
+      rpcDO.setServiceGroup(this.serviceGroup);
+      rpcDO.setServiceVersion(this.serviceVersion);
+      rpcDO.setProtoContext(this.protoContext);
+      rpcDO.setInputParam(this.inputParam);
+      return rpcDO;
+    } else {
+      return null;
+    }
   }
 
   public ApiSpringCloudDO buildApiSpringCloudDO() {
-    ApiSpringCloudDO springCloudDO = new ApiSpringCloudDO();
-    springCloudDO.setInstanceId(this.instanceId);
-    return springCloudDO;
+    if (this.routeType != null && this.routeType == RouteType.SpringCloud) {
+      ApiSpringCloudDO springCloudDO = new ApiSpringCloudDO();
+      springCloudDO.setInstanceId(this.instanceId);
+      return springCloudDO;
+    } else {
+      return null;
+    }
   }
 
 
@@ -308,23 +288,24 @@ public class ApiVo implements Serializable {
       apiVO.setDescribe(apiDO.getDescribe());
       apiVO.setUrl(apiDO.getUrl());
       apiVO.setPath(apiDO.getPath());
-      apiVO.setRpc(apiDO.getRpc());
-      apiVO.setSpringCloud(apiDO.getSpringCloud());
       apiVO.setGmtCreate(apiDO.getGmtCreate());
       apiVO.setGmtModified(apiDO.getGmtModified());
       apiVO.setGroupId(apiDO.getApiGroup().getId());
       apiVO.setGroupName(apiDO.getApiGroup().getName());
-      apiVO.setDirectRoute(apiDO.getApiGroup().getBackendHost() != null
-          && apiDO.getApiGroup().getBackendPort() != null);
+      apiVO.setRouteType(RouteType.fromType(apiDO.getRouteType()));
       // RPC
-      apiVO.setServiceName(rpcDO.getServiceName());
-      apiVO.setMethodName(rpcDO.getMethodName());
-      apiVO.setServiceGroup(rpcDO.getServiceGroup());
-      apiVO.setServiceVersion(rpcDO.getServiceVersion());
-      apiVO.setProtoContext(rpcDO.getProtoContext());
-      apiVO.setInputParam(rpcDO.getInputParam());
-      // Spring Cloud
-      apiVO.setInstanceId(scDO.getInstanceId());
+      if (apiDO.getRouteType() == RouteType.Rpc.type() && rpcDO != null) {
+        apiVO.setServiceName(rpcDO.getServiceName());
+        apiVO.setMethodName(rpcDO.getMethodName());
+        apiVO.setServiceGroup(rpcDO.getServiceGroup());
+        apiVO.setServiceVersion(rpcDO.getServiceVersion());
+        apiVO.setProtoContext(rpcDO.getProtoContext());
+        apiVO.setInputParam(rpcDO.getInputParam());
+      }
+      if (apiDO.getRouteType() == RouteType.SpringCloud.type() && scDO != null) {
+        // Spring Cloud
+        apiVO.setInstanceId(scDO.getInstanceId());
+      }
       return apiVO;
     }
     return null;

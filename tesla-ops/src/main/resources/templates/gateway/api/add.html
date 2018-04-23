@@ -58,13 +58,13 @@
 													<div class="form-group">
 														<label class="col-md-2 control-label">API名称</label>
 														<div class="col-md-8">
-															<input class="form-control" type="text" name="name" id="name">
+															<input class="form-control" placeholder="API的名称" type="text" name="name">
 														</div>
 													</div>
 													<div class="form-group">
 														<label class="col-md-2 control-label">请求路径</label>
 														<div class="col-md-8">
-															<input class="form-control" placeholder="请求路径" type="text" name="url" id="url">
+															<input class="form-control" placeholder="API对外的请求路径" type="text" name="url">
 															<p class="note">
 																<strong>Note:</strong>
 																以"/"开头，暴露的Restful的API请求路径
@@ -74,8 +74,8 @@
 													<div class="form-group">
 														<label class="col-md-2 control-label">所属分组</label>
 														<div class="col-md-8">
-															<select id="apiGroup" name="apiGroup" class="form-control">
-																<option th:each="apiGroup:${apiGroups}" th:value="${apiGroup.id}" th:text="${apiGroup.name}" th:attr="data-host=${#strings.append(apiGroup.backendHost,':'+apiGroup.backendPort)}" th:attrappend="data-backendPath=${apiGroup.backendPath}" />
+															<select id="groupId" name="groupId" class="form-control">
+																<option th:each="apiGroup:${apiGroups}" th:value="${apiGroup.id}" th:text="${apiGroup.name}" th:attr="data-backendhost=${#strings.append(apiGroup.backendHost,':'+apiGroup.backendPort)}" th:attrappend="data-backendpath=${apiGroup.backendPath}" />
 															</select>
 														</div>
 													</div>
@@ -89,22 +89,22 @@
 															</select>
 														</div>
 													</div>
-													<div class="form-group">
+													<div class="form-group" id="backendHostAndPortView">
 														<label class="col-md-2 control-label">目标地址</label>
 														<div class="col-md-8">
-															<input class="form-control" id="backendHostAndPort" placeholder="目标地址" type="text" readonly>
+															<input class="form-control" id="backendHostAndPort" placeholder="直接路由的目标地址" type="text" readonly>
 														</div>
 													</div>
-													<div class="form-group">
+													<div class="form-group" id="backendPathView">
 														<label class="col-md-2 control-label">分组路径</label>
 														<div class="col-md-8">
-															<input class="form-control" id="backendPath" placeholder="分组路径" type="text" readonly>
+															<input class="form-control" id="backendPath" placeholder="直接路由的分组路径" type="text" readonly>
 														</div>
 													</div>
 													<div class="form-group">
 														<label class="col-md-2 control-label">目标路径</label>
 														<div class="col-md-8">
-															<input class="form-control" placeholder="目标路径" type="text" name="path" id="path">
+															<input class="form-control" name="path" placeholder="后端服务的目标路径" type="text">
 															<p class="note">
 																<strong>Note:</strong>
 																分组路径为:/group;目标路径为:/api;后端路径则为:/group/api
@@ -114,7 +114,7 @@
 													<div class="form-group">
 														<label class="col-md-2 control-label">API描述</label>
 														<div class="col-md-8">
-															<textarea class="form-control" placeholder="描述" rows="4" id="describe" name="describe"></textarea>
+															<textarea class="form-control" placeholder="描述该API的详细职责" rows="4" name="describe"></textarea>
 														</div>
 													</div>
 												</fieldset>
@@ -131,7 +131,7 @@
 													<div class="form-group">
 														<label class="col-sm-3 control-label" for="serviceId">服务ID</label>
 														<div class="col-sm-6">
-															<input class="form-control" id="serviceId" name="serviceId" type="text" placeholder="SpringCloud服务ID" />
+															<input class="form-control" name="instanceId" type="text" placeholder="SpringCloud服务ID" />
 														</div>
 													</div>
 												</div>
@@ -148,7 +148,7 @@
 													<div class="form-group">
 														<label class="col-sm-3 control-label" for="serviceName">服务名</label>
 														<div class="col-sm-6">
-															<input class="form-control" id="serviceName" name="serviceName" type="text" placeholder="服务接口名" />
+															<input class="form-control" name="serviceName" type="text" placeholder="服务接口名" />
 														</div>
 													</div>
 												</div>
@@ -156,7 +156,7 @@
 													<div class="form-group">
 														<label class="col-sm-3 control-label" for="methodName">方法名</label>
 														<div class="col-sm-6">
-															<input class="form-control" id="methodName" name="methodName" type="text" placeholder="服务方法名" />
+															<input class="form-control" name="methodName" type="text" placeholder="服务方法名" />
 														</div>
 													</div>
 												</div>
@@ -164,7 +164,7 @@
 													<div class="form-group">
 														<label class="col-sm-3 control-label" for="serviceGroup">组别</label>
 														<div class="col-sm-6">
-															<input class="form-control" id="serviceGroup" name="serviceGroup" type="text" placeholder="服务Group" />
+															<input class="form-control" name="serviceGroup" type="text" placeholder="服务Group" />
 														</div>
 													</div>
 												</div>
@@ -172,7 +172,7 @@
 													<div class="form-group">
 														<label class="col-sm-3 control-label" for="serviceVersion">版本</label>
 														<div class="col-sm-6">
-															<input class="form-control" id="serviceVersion" name="serviceVersion" type="text" placeholder="服务Version" />
+															<input class="form-control" name="serviceVersion" type="text" placeholder="服务Version" />
 														</div>
 													</div>
 												</div>
@@ -202,7 +202,7 @@
 													<div class="form-group">
 														<label class="col-sm-3 control-label" for="serviceFileName">服务文件名</label>
 														<div class="col-sm-6">
-															<input class="form-control" id="serviceFileName" name="serviceFileName" type="text" placeholder="指定gRpc的服务定义文件名" />
+															<input class="form-control" name="protoServiceFileName" type="text" placeholder="指定gRpc的服务定义文件名" />
 														</div>
 													</div>
 												</div>
@@ -219,7 +219,7 @@
 													<div class="form-group">
 														<label class="col-sm-3 control-label" for="inputParam">dubbo入参类名</label>
 														<div class="col-sm-6">
-															<input class="form-control" id="inputParam" name="inputParam" type="text" placeholder="dubbo入参全类名" />
+															<input class="form-control" name="inputParam" type="text" placeholder="dubbo入参全类名" />
 														</div>
 													</div>
 												</div>

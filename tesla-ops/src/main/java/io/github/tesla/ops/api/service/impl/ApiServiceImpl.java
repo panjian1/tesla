@@ -56,8 +56,8 @@ public class ApiServiceImpl implements ApiService {
     List<ApiVo> apiVOs = Lists.newArrayListWithCapacity(apiDOs.size());
     for (ApiDO apiDO : apiDOs) {
       Long apiId = apiDO.getId();
-      Boolean isRpc = apiDO.getRpc();
-      Boolean isSpringCloud = apiDO.getSpringCloud();
+      Boolean isRpc = apiDO.isRpc();
+      Boolean isSpringCloud = apiDO.isSpringCloud();
       ApiRpcDO rpcDO = null;
       ApiSpringCloudDO springCloudDO = null;
       if (isRpc) {
@@ -79,8 +79,8 @@ public class ApiServiceImpl implements ApiService {
   public ApiVo get(Long id) {
     ApiDO apiDO = apiDao.get(id);
     Long apiId = apiDO.getId();
-    Boolean isRpc = apiDO.getRpc();
-    Boolean isSpringCloud = apiDO.getSpringCloud();
+    Boolean isRpc = apiDO.isRpc();
+    Boolean isSpringCloud = apiDO.isSpringCloud();
     ApiRpcDO rpcDO = null;
     ApiSpringCloudDO springCloudDO = null;
     if (isRpc) {
@@ -99,8 +99,8 @@ public class ApiServiceImpl implements ApiService {
     List<ApiVo> apiVOs = Lists.newArrayListWithCapacity(apiDOs.size());
     for (ApiDO apiDO : apiDOs) {
       Long apiId = apiDO.getId();
-      Boolean isRpc = apiDO.getRpc();
-      Boolean isSpringCloud = apiDO.getSpringCloud();
+      Boolean isRpc = apiDO.isRpc();
+      Boolean isSpringCloud = apiDO.isSpringCloud();
       ApiRpcDO rpcDO = null;
       ApiSpringCloudDO springCloudDO = null;
       if (isRpc) {

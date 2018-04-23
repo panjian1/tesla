@@ -5,13 +5,30 @@ $(document).ready(function() {
     function runBootstrapWizard() {
       var $validator = $("#routeForm").validate({
         rules: {
-          fromPath: {
+          name: {
             required: true
+          },
+          url: {
+            required: true
+          },
+          path: {
+            required: true
+          },
+          describe: {
+            required: true
+          },
+          instanceId: {
+            required: {
+              depends: function(value, element) {
+                var isSpringCloud = $('#routeType').val();
+                return isSpringCloud == 2;
+              }
+            }
           },
           serviceName: {
             required: {
               depends: function(value, element) {
-                var isRpc = $('#rpc').val();
+                var isRpc = $('#routeType').val();
                 return isRpc == 1;
               }
             }
@@ -19,7 +36,7 @@ $(document).ready(function() {
           methodName: {
             required: {
               depends: function(value, element) {
-                var isRpc = $('#rpc').val();
+                var isRpc = $('#routeType').val();
                 return isRpc == 1;
               }
             }
@@ -27,7 +44,7 @@ $(document).ready(function() {
           serviceGroup: {
             required: {
               depends: function(value, element) {
-                var isRpc = $('#rpc').val();
+                var isRpc = $('#routeType').val();
                 return isRpc == 1;
               }
             }
@@ -35,7 +52,7 @@ $(document).ready(function() {
           serviceVersion: {
             required: {
               depends: function(value, element) {
-                var isRpc = $('#rpc').val();
+                var isRpc = $('#routeType').val();
                 return isRpc == 1;
               }
             }
@@ -43,7 +60,7 @@ $(document).ready(function() {
           zipFile: {
             required: {
               depends: function(value, element) {
-                var isRpc = $('#rpc').val();
+                var isRpc = $('#routeType').val();
                 return isRpc == 1;
               }
             }
@@ -51,7 +68,7 @@ $(document).ready(function() {
           serviceFileName: {
             required: {
               depends: function(value, element) {
-                var isRpc = $('#rpc').val();
+                var isRpc = $('#routeType').val();
                 if (isRpc == 1) {
                   return $('#zipFile').val() != null;
                 } else {
@@ -62,8 +79,20 @@ $(document).ready(function() {
           }
         },
         messages: {
-          fromPath: {
-            required: "请输入路由路径！"
+          name: {
+            required: "请输入API名称！"
+          },
+          url: {
+            required: "请输入API请求路径！"
+          },
+          path: {
+            required: "请输入API目标路径！"
+          },
+          describe: {
+            required: "请输入API描述！"
+          },
+          instanceId: {
+            required: "请输入Spring Cloud服务ID！"
           },
           serviceName: {
             required: "请输入服务名！"
@@ -105,6 +134,7 @@ $(document).ready(function() {
         'onNext': function(tab, navigation, index) {
           var $valid = $("#routeForm").valid();
           if (!$valid) {
+            alert($valid);
             $validator.focusInvalid();
             return false;
           } else {
@@ -131,14 +161,14 @@ $(document).ready(function() {
             loadScript("js/plugin/jquery-form/jquery-form.min.js", function() {
               $("#routeForm").ajaxSubmit({
                 type: "POST",
-                url: "/filter/route/save",
+                url: "gateway/api/save",
                 dataType: 'json',
                 data: $('#routeForm').serialize(),
                 error: function(request) {
                   parent.layer.alert("Connection error");
                 },
                 success: function() {
-                  loadURL("filter/route", $('#content'));
+                  loadURL("gateway/api", $('#content'));
                 }
               });
             });
@@ -147,5 +177,34 @@ $(document).ready(function() {
       });
     }
   }
+  var routeType = function() {
+    $("#routeType").change(function() {
+      var isDirectRoute = $(this).children('option:selected').val();
+      if (isDirectRoute == 0) {
+        $('#backendHostAndPortView').show();
+        $('#backendPathView').show();
+        var backendhost = $('#groupId').children('option:selected').data("backendhost");
+        var backendpath = $('#groupId').children('option:selected').data("backendpath");
+        $('#backendHostAndPort').attr("value", backendhost);
+        $('#backendPath').attr("value", backendpath);
+      } else {
+        $('#backendHostAndPortView').hide();
+        $('#backendPathView').hide();
+      }
+    });
+    var isDirectRoute = $('#routeType').val();
+    if (isDirectRoute == 0) {
+      $('#backendHostAndPortView').show();
+      $('#backendPathView').show();
+      var backendhost = $('#groupId').children('option:selected').data("backendhost");
+      var backendpath = $('#groupId').children('option:selected').data("backendpath");
+      $('#backendHostAndPort').attr("value", backendhost);
+      $('#backendPath').attr("value", backendpath);
+    } else {
+      $('#backendHostAndPortView').hide();
+      $('#backendPathView').hide();
+    }
+  }
+  routeType();
   pagefunction();
 });
