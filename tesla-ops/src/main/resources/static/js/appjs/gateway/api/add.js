@@ -183,10 +183,13 @@ $(document).ready(function() {
       if (isDirectRoute == 0) {
         $('#backendHostAndPortView').show();
         $('#backendPathView').show();
-        var backendhost = $('#groupId').children('option:selected').data("backendhost");
-        var backendpath = $('#groupId').children('option:selected').data("backendpath");
-        $('#backendHostAndPort').attr("value", backendhost);
-        $('#backendPath').attr("value", backendpath);
+        var host = $('#groupId').children('option:selected').data("backendhost");
+        var port = $('#groupId').children('option:selected').data("backendport");
+        var path = $('#groupId').children('option:selected').data("backendpath");
+        if (host && port && path) {
+          $('#backendHostAndPort').attr("value", host + ":" + port);
+          $('#backendPath').attr("value", path);
+        }
       } else {
         $('#backendHostAndPortView').hide();
         $('#backendPathView').hide();
@@ -196,10 +199,13 @@ $(document).ready(function() {
     if (isDirectRoute == 0) {
       $('#backendHostAndPortView').show();
       $('#backendPathView').show();
-      var backendhost = $('#groupId').children('option:selected').data("backendhost");
-      var backendpath = $('#groupId').children('option:selected').data("backendpath");
-      $('#backendHostAndPort').attr("value", backendhost);
-      $('#backendPath').attr("value", backendpath);
+      var host = $('#groupId').children('option:selected').data("backendhost");
+      var port = $('#groupId').children('option:selected').data("backendport");
+      var path = $('#groupId').children('option:selected').data("backendpath");
+      if (host && port && path) {
+        $('#backendHostAndPort').attr("value", host + ":" + port);
+        $('#backendPath').attr("value", path);
+      }
     } else {
       $('#backendHostAndPortView').hide();
       $('#backendPathView').hide();

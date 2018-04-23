@@ -7,7 +7,6 @@ function load() {
   $('#routeTable').bootstrapTable({
     method: 'get',
     url: prefix + "/list",
-    expandColumn: '3',
     striped: true,
     dataType: "json",
     pagination: true,
@@ -34,17 +33,11 @@ function load() {
       field: 'groupName',
       title: 'API分组'
     }, {
-      field: 'directRoute',
-      title: '反向代理'
-    }, {
-      field: 'rpc',
-      title: 'RPC调用'
-    }, {
-      field: 'springCloud',
-      title: 'SpringCloud调用'
+      field: 'routeType',
+      title: '路由模式'
     }, {
       title: '操作',
-      field: 'routeId',
+      field: 'id',
       align: 'center',
       formatter: function(value, row, index) {
         var e = '<a class="btn btn-primary btn-sm ' + s_edit_h + '" href="javascript:void(0)" mce_href="#" title="编辑" onclick="edit(\'' + row.id + '\')"><i class="fa fa-edit"></i></a> ';
@@ -53,7 +46,7 @@ function load() {
       }
     }],
     onExpandRow: function(index, row, $detail) {
-      if (row.rpc) {
+      if (row.routeType == 'Rpc') {
         chirdTable(index, row, $detail);
       }
     }

@@ -75,7 +75,10 @@
 														<label class="col-md-2 control-label">所属分组</label>
 														<div class="col-md-8">
 															<select id="groupId" name="groupId" class="form-control">
-																<option th:each="apiGroup:${apiGroups}" th:value="${apiGroup.id}" th:text="${apiGroup.name}" th:attr="data-backendhost=${#strings.append(apiGroup.backendHost,':'+apiGroup.backendPort)}" th:attrappend="data-backendpath=${apiGroup.backendPath}" />
+																<option th:each="apiGroup:${apiGroups}" th:value="${apiGroup.id}" th:text="${apiGroup.name}" 
+																   th:attrprepend="data-backendhost=${apiGroup.backendHost}" 
+																   th:attr="data-backendport=${apiGroup.backendPort}"
+																   th:attrappend="data-backendpath=${apiGroup.backendPath}" />
 															</select>
 														</div>
 													</div>

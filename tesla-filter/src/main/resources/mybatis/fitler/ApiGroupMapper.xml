@@ -3,7 +3,8 @@
 
 <mapper namespace="io.github.tesla.filter.dao.ApiGroupDao">
 
-	<select id="get" resultType="io.github.tesla.filter.domain.ApiGroupDO">
+	<select id="get" parameterType="long"
+		resultType="io.github.tesla.filter.domain.ApiGroupDO">
 		select
 		`id`,`name`,`describe`,`backend_host`,`backend_port`,`backend_path`,`gmt_create`,`gmt_modified`
 		from gateway_api_group

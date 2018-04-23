@@ -43,7 +43,7 @@ public class ApiVo implements Serializable {
 
   private String path;
 
-  private RouteType routeType;
+  private Integer routeType;
 
   private Long groupId;
 
@@ -123,10 +123,10 @@ public class ApiVo implements Serializable {
 
 
   public RouteType getRouteType() {
-    return routeType;
+    return RouteType.fromType(Integer.valueOf(routeType));
   }
 
-  public void setRouteType(RouteType routeType) {
+  public void setRouteType(Integer routeType) {
     this.routeType = routeType;
   }
 
@@ -247,7 +247,7 @@ public class ApiVo implements Serializable {
     apiDO.setDescribe(this.describe);
     apiDO.setUrl(this.url);
     apiDO.setPath(this.path);
-    apiDO.setRouteType(this.routeType.type());
+    apiDO.setRoutes(this.routeType);
     ApiGroupDO apiGroup = new ApiGroupDO();
     apiGroup.setId(groupId);
     apiDO.setApiGroup(apiGroup);
@@ -255,7 +255,7 @@ public class ApiVo implements Serializable {
   }
 
   public ApiRpcDO buildApiRpcDO() {
-    if (this.routeType != null && this.routeType == RouteType.Rpc) {
+    if (this.routeType != null && this.getRouteType() == RouteType.Rpc) {
       ApiRpcDO rpcDO = new ApiRpcDO();
       rpcDO.setServiceName(this.serviceName);
       rpcDO.setMethodName(this.methodName);
@@ -270,7 +270,7 @@ public class ApiVo implements Serializable {
   }
 
   public ApiSpringCloudDO buildApiSpringCloudDO() {
-    if (this.routeType != null && this.routeType == RouteType.SpringCloud) {
+    if (this.routeType != null && this.getRouteType() == RouteType.SpringCloud) {
       ApiSpringCloudDO springCloudDO = new ApiSpringCloudDO();
       springCloudDO.setInstanceId(this.instanceId);
       return springCloudDO;
@@ -292,9 +292,9 @@ public class ApiVo implements Serializable {
       apiVO.setGmtModified(apiDO.getGmtModified());
       apiVO.setGroupId(apiDO.getApiGroup().getId());
       apiVO.setGroupName(apiDO.getApiGroup().getName());
-      apiVO.setRouteType(RouteType.fromType(apiDO.getRouteType()));
+      apiVO.setRouteType(apiDO.getRoutes());
       // RPC
-      if (apiDO.getRouteType() == RouteType.Rpc.type() && rpcDO != null) {
+      if (apiDO.isRpc() && rpcDO != null) {
         apiVO.setServiceName(rpcDO.getServiceName());
         apiVO.setMethodName(rpcDO.getMethodName());
         apiVO.setServiceGroup(rpcDO.getServiceGroup());
@@ -302,7 +302,7 @@ public class ApiVo implements Serializable {
         apiVO.setProtoContext(rpcDO.getProtoContext());
         apiVO.setInputParam(rpcDO.getInputParam());
       }
-      if (apiDO.getRouteType() == RouteType.SpringCloud.type() && scDO != null) {
+      if (apiDO.isSpringCloud() && scDO != null) {
         // Spring Cloud
         apiVO.setInstanceId(scDO.getInstanceId());
       }

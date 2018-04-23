@@ -34,7 +34,7 @@ public class ApiDO implements Serializable {
 
   private String describe;
 
-  private Integer routeType;
+  private Integer routes;
 
   private String url;
 
@@ -86,12 +86,12 @@ public class ApiDO implements Serializable {
     this.path = path;
   }
 
-  public Integer getRouteType() {
-    return routeType;
+  public Integer getRoutes() {
+    return routes;
   }
 
-  public void setRouteType(Integer routeType) {
-    this.routeType = routeType;
+  public void setRoutes(Integer routes) {
+    this.routes = routes;
   }
 
   public ApiGroupDO getApiGroup() {
@@ -103,11 +103,11 @@ public class ApiDO implements Serializable {
   }
 
   public Boolean isRpc() {
-    return RouteType.isRpc(this.routeType);
+    return RouteType.isRpc(this.routes);
   }
 
   public Boolean isSpringCloud() {
-    return RouteType.isSpringCloud(this.routeType);
+    return RouteType.isSpringCloud(this.routes);
   }
 
   public Timestamp getGmtCreate() {
