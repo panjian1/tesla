@@ -12,7 +12,11 @@ $(document).ready(function() {
             required: true
           },
           path: {
-            required: true
+            required: {
+              depends: function(value, element) {
+                return $('#routeType').val() != 1;
+              }
+            }
           },
           describe: {
             required: true
@@ -50,14 +54,6 @@ $(document).ready(function() {
             }
           },
           serviceVersion: {
-            required: {
-              depends: function(value, element) {
-                var isRpc = $('#routeType').val();
-                return isRpc == 1;
-              }
-            }
-          },
-          zipFile: {
             required: {
               depends: function(value, element) {
                 var isRpc = $('#routeType').val();
@@ -106,9 +102,6 @@ $(document).ready(function() {
           serviceVersion: {
             required: "请输入版本！"
           },
-          zipFile: {
-            required: "请上传proto目录文件！"
-          },
           serviceFileName: {
             required: "上传proto目录文件，需要指定目录中的服务定义文件名！"
           }
@@ -134,7 +127,6 @@ $(document).ready(function() {
         'onNext': function(tab, navigation, index) {
           var $valid = $("#routeForm").valid();
           if (!$valid) {
-            alert($valid);
             $validator.focusInvalid();
             return false;
           } else {
@@ -193,6 +185,9 @@ $(document).ready(function() {
       } else {
         $('#backendHostAndPortView').hide();
         $('#backendPathView').hide();
+        if (isDirectRoute == 1) {
+          $('#pathView').hide();
+        }
       }
     });
     var isDirectRoute = $('#routeType').val();
@@ -209,6 +204,9 @@ $(document).ready(function() {
     } else {
       $('#backendHostAndPortView').hide();
       $('#backendPathView').hide();
+      if (isDirectRoute == 1) {
+        $('#pathView').hide();
+      }
     }
   }
   routeType();

@@ -44,7 +44,7 @@ public class ApiRpcDO implements Serializable {
   /**
    * dubbo input 参数
    */
-  private String inputParam;
+  private String inputTemplate;
 
   private ApiDO api;
 
@@ -100,12 +100,12 @@ public class ApiRpcDO implements Serializable {
     this.protoContext = protoContext;
   }
 
-  public String getInputParam() {
-    return inputParam;
+  public String getInputTemplate() {
+    return inputTemplate;
   }
 
-  public void setInputParam(String inputParam) {
-    this.inputParam = inputParam;
+  public void setInputTemplate(String inputTemplate) {
+    this.inputTemplate = inputTemplate;
   }
 
   public ApiDO getApi() {

@@ -75,10 +75,7 @@
 														<label class="col-md-2 control-label">所属分组</label>
 														<div class="col-md-8">
 															<select id="groupId" name="groupId" class="form-control">
-																<option th:each="apiGroup:${apiGroups}" th:value="${apiGroup.id}" th:text="${apiGroup.name}" 
-																   th:attrprepend="data-backendhost=${apiGroup.backendHost}" 
-																   th:attr="data-backendport=${apiGroup.backendPort}"
-																   th:attrappend="data-backendpath=${apiGroup.backendPath}" />
+																<option th:each="apiGroup:${apiGroups}" th:value="${apiGroup.id}" th:text="${apiGroup.name}" th:attrprepend="data-backendhost=${apiGroup.backendHost}" th:attr="data-backendport=${apiGroup.backendPort}" th:attrappend="data-backendpath=${apiGroup.backendPath}" />
 															</select>
 														</div>
 													</div>
@@ -104,7 +101,7 @@
 															<input class="form-control" id="backendPath" placeholder="直接路由的分组路径" type="text" readonly>
 														</div>
 													</div>
-													<div class="form-group">
+													<div class="form-group" id="pathView">
 														<label class="col-md-2 control-label">目标路径</label>
 														<div class="col-md-8">
 															<input class="form-control" name="path" placeholder="后端服务的目标路径" type="text">

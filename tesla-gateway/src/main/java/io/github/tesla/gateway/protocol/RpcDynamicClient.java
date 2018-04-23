@@ -13,7 +13,24 @@
  */
 package io.github.tesla.gateway.protocol;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
+
+import freemarker.cache.StringTemplateLoader;
+import freemarker.core.JSONOutputFormat;
+import freemarker.core.ParseException;
+import freemarker.template.Configuration;
+import freemarker.template.DefaultObjectWrapper;
+import freemarker.template.MalformedTemplateNameException;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateNotFoundException;
 import io.github.tesla.filter.domain.ApiRpcDO;
+import io.github.tesla.gateway.mapping.MappingHeader;
+import io.github.tesla.gateway.mapping.MappingInput;
+import io.netty.handler.codec.http.FullHttpRequest;
 
 /**
  * @author liushiming
@@ -21,6 +38,38 @@ import io.github.tesla.filter.domain.ApiRpcDO;
  */
 public abstract class RpcDynamicClient {
 
+  private final Configuration configuration;
 
-  public abstract String doRemoteCall(final ApiRpcDO rpcDo, final String jsonInput);
+  private final StringTemplateLoader templateHolder = new StringTemplateLoader();
+
+  public abstract String doRemoteCall(final ApiRpcDO rpcDo, final FullHttpRequest jsonInput);
+
+  public RpcDynamicClient() {
+    Configuration configuration_ = new Configuration(Configuration.VERSION_2_3_26);
+    configuration_.setObjectWrapper(new DefaultObjectWrapper(Configuration.VERSION_2_3_26));
+    configuration_.setOutputFormat(JSONOutputFormat.INSTANCE);
+    configuration_.setTemplateLoader(templateHolder);
+    this.configuration = configuration_;
+
+  }
+
+  protected String cacheTemplate(final ApiRpcDO rpcDo) {
+    final String templateContent = rpcDo.getInputTemplate();
+    final String templateKey = rpcDo.getServiceName() + "_" + rpcDo.getMethodName();
+    templateHolder.putTemplate(templateKey, templateContent);
+    return templateKey;
+  }
+
+  protected String doDataMapping(final String templateKey, final FullHttpRequest httpRequest)
+      throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException,
+      TemplateException {
+    Map<String, Object> templateContext = new HashMap<String, Object>();
+    templateContext.put("header", new MappingHeader(httpRequest));
+    templateContext.put("input", new MappingInput(httpRequest));
+    Template template = configuration.getTemplate(templateKey);
+    StringWriter outPutWrite = new StringWriter();
+    template.process(templateContext, outPutWrite);
+    String outPutJson = outPutWrite.toString();
+    return outPutJson;
+  }
 }

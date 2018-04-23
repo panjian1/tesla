@@ -255,7 +255,7 @@ public class ApiVo implements Serializable {
   }
 
   public ApiRpcDO buildApiRpcDO() {
-    if (this.routeType != null && this.getRouteType() == RouteType.Rpc) {
+    if (this.routeType != null && this.getRouteType() == RouteType.DUBBO) {
       ApiRpcDO rpcDO = new ApiRpcDO();
       rpcDO.setServiceName(this.serviceName);
       rpcDO.setMethodName(this.methodName);

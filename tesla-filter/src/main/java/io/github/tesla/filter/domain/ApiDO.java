@@ -103,7 +103,7 @@ public class ApiDO implements Serializable {
   }
 
   public Boolean isRpc() {
-    return RouteType.isRpc(this.routes);
+    return RouteType.isDubbo(this.routes);
   }
 
   public Boolean isSpringCloud() {

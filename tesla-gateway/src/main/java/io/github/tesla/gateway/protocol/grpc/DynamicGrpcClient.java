@@ -33,6 +33,7 @@ import io.github.tesla.filter.domain.ApiRpcDO;
 import io.grpc.MethodDescriptor;
 import io.grpc.MethodDescriptor.Marshaller;
 import io.grpc.MethodDescriptor.MethodType;
+import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.util.CharsetUtil;
 
 /**
@@ -56,9 +57,10 @@ public class DynamicGrpcClient extends RpcDynamicClient {
   }
 
   @Override
-  public String doRemoteCall(final ApiRpcDO rpcDo, final String jsonInput) {
+  public String doRemoteCall(final ApiRpcDO rpcDo, final FullHttpRequest httpRequest) {
+    String outPutJson = null;
     try {
-
+      outPutJson = httpRequest.content().toString(CharsetUtil.UTF_8);
       final String serviceName = rpcDo.getServiceName();
       final String methodName = rpcDo.getMethodName();
       final String group = rpcDo.getServiceGroup();
@@ -68,14 +70,18 @@ public class DynamicGrpcClient extends RpcDynamicClient {
       Descriptor outPutType = inOutType.getRight();
       MethodDescriptor<DynamicMessage, DynamicMessage> methodDesc =
           this.createGrpcMethodDescriptor(serviceName, methodName, inPutType, outPutType);
-      DynamicMessage message = this.createGrpcDynamicMessage(inPutType, jsonInput);
+      if (rpcDo.getInputTemplate() != null) {
+        String templateKey = super.cacheTemplate(rpcDo);
+        outPutJson = super.doDataMapping(templateKey, httpRequest);
+      }
+      DynamicMessage message = this.createGrpcDynamicMessage(inPutType, outPutJson);
       Message response = (Message) genricService.$invoke(serviceName, group, version, methodName,
           methodDesc, message);
       return JSON2PROTOBUF.printToString(response);
     } catch (IOException e) {
       throw new RpcServiceException(String.format(
           "json covert to DynamicMessage failed! the json is :%s, the protobuf type is: %s",
-          jsonInput), e);
+          outPutJson), e);
     } catch (Throwable e) {
       throw new RpcFrameworkException(String.format(
           "service definition is wrong,please check the proto file you update,service is %s, method is %s",

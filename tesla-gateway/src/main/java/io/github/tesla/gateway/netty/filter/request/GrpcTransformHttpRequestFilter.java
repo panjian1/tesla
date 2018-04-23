@@ -13,12 +13,11 @@
  */
 package io.github.tesla.gateway.netty.filter.request;
 
+import io.github.tesla.filter.RequestFilterTypeEnum;
+import io.github.tesla.filter.domain.ApiRpcDO;
 import io.github.tesla.gateway.cache.ApiAndFilterCacheComponent;
 import io.github.tesla.gateway.config.SpringContextHolder;
 import io.github.tesla.gateway.protocol.grpc.DynamicGrpcClient;
-import io.github.tesla.filter.RequestFilterTypeEnum;
-import io.github.tesla.filter.domain.ApiRpcDO;
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
@@ -56,9 +55,7 @@ public class GrpcTransformHttpRequestFilter extends HttpRequestFilter {
       }
       ApiRpcDO rpc = routeRuleCache.getRpcRoute(actorPath);
       if (rpc != null && rpc.getProtoContext() != null) {
-        ByteBuf jsonBuf = httpRequest.content();
-        String jsonInput = jsonBuf.toString(CharsetUtil.UTF_8);
-        String jsonOutput = grpcClient.doRemoteCall(rpc, jsonInput);
+        String jsonOutput = grpcClient.doRemoteCall(rpc, httpRequest);
         return new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK,
             Unpooled.wrappedBuffer(jsonOutput.getBytes(CharsetUtil.UTF_8)));
       } else {

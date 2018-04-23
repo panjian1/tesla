@@ -13,12 +13,11 @@
  */
 package io.github.tesla.gateway.netty.filter.request;
 
+import io.github.tesla.filter.RequestFilterTypeEnum;
+import io.github.tesla.filter.domain.ApiRpcDO;
 import io.github.tesla.gateway.cache.ApiAndFilterCacheComponent;
 import io.github.tesla.gateway.config.SpringContextHolder;
 import io.github.tesla.gateway.protocol.dubbo.DynamicDubboClient;
-import io.github.tesla.filter.RequestFilterTypeEnum;
-import io.github.tesla.filter.domain.ApiRpcDO;
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
@@ -57,10 +56,8 @@ public class DubboTransformHttpRequestFilter extends HttpRequestFilter {
         actorPath = actorPath.substring(0, index);
       }
       ApiRpcDO rpc = routeRuleCache.getRpcRoute(actorPath);
-      if (rpc != null && rpc.getInputParam() != null) {
-        ByteBuf jsonBuf = httpRequest.content();
-        String jsonInput = jsonBuf.toString(CharsetUtil.UTF_8);
-        String jsonOutput = dubboClient.doRemoteCall(rpc, jsonInput);
+      if (rpc != null && rpc.getInputTemplate() != null) {
+        String jsonOutput = dubboClient.doRemoteCall(rpc, httpRequest);
         return new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK,
             Unpooled.wrappedBuffer(jsonOutput.getBytes(CharsetUtil.UTF_8)));
       } else {
