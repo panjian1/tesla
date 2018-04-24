@@ -27,8 +27,6 @@ import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.RateLimiter;
 
 import io.github.tesla.filter.RequestFilterTypeEnum;
-import io.github.tesla.gateway.cache.ApiAndFilterCacheComponent;
-import io.github.tesla.gateway.config.SpringContextHolder;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
@@ -42,17 +40,13 @@ public class RateLimitHttpRequestFilter extends HttpRequestFilter {
 
   private LoadingCache<String, RateLimiter> loadingCache;
 
-  private final ApiAndFilterCacheComponent ruleCache =
-      SpringContextHolder.getBean(ApiAndFilterCacheComponent.class);
-
-
   private RateLimitHttpRequestFilter() {
     loadingCache = CacheBuilder.newBuilder().maximumSize(1000).expireAfterWrite(2, TimeUnit.SECONDS)
         .build(new CacheLoader<String, RateLimiter>() {
           @Override
           public RateLimiter load(String key) throws Exception {
             Map<String, Set<String>> limiter =
-                ruleCache.getUrlFilterRule(RateLimitHttpRequestFilter.this);
+                RateLimitHttpRequestFilter.this.getUrlRule(RateLimitHttpRequestFilter.this);
             List<String> limitValue = Lists.newArrayList(limiter.get(key));
             if (limitValue != null) {
               Double limitValueMax =

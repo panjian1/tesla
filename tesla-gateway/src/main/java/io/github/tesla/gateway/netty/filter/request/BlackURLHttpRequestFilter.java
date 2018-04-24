@@ -43,7 +43,7 @@ public class BlackURLHttpRequestFilter extends HttpRequestFilter {
       if (index > -1) {
         url = url.substring(0, index);
       }
-      List<Pattern> patterns = super.getRule(this);
+      List<Pattern> patterns = super.getCommonRule(this);
       for (Pattern pattern : patterns) {
         Matcher matcher = pattern.matcher(url);
         if (matcher.find()) {

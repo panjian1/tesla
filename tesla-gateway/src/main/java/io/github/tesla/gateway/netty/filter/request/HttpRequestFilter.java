@@ -1,6 +1,7 @@
 package io.github.tesla.gateway.netty.filter.request;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -41,11 +42,18 @@ public abstract class HttpRequestFilter {
     return filterType().name();
   }
 
-  protected List<Pattern> getRule(HttpRequestFilter filterClazz) {
+  protected List<Pattern> getCommonRule(HttpRequestFilter filterClazz) {
     ApiAndFilterCacheComponent ruleCache =
         SpringContextHolder.getBean(ApiAndFilterCacheComponent.class);
     Set<Pattern> rules = ruleCache.getPubicFilterRule(filterClazz);
     return Lists.newArrayList(rules);
+  }
+
+  protected Map<String, Set<String>> getUrlRule(HttpRequestFilter filterClazz) {
+    ApiAndFilterCacheComponent ruleCache =
+        SpringContextHolder.getBean(ApiAndFilterCacheComponent.class);
+    Map<String, Set<String>> rules = ruleCache.getUrlFilterRule(filterClazz);
+    return rules;
   }
 
   protected HttpResponse createResponse(HttpResponseStatus httpResponseStatus,

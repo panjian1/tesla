@@ -41,7 +41,7 @@ public class BlackIpHttpRequesFilter extends HttpRequestFilter {
       HttpRequest httpRequest = (HttpRequest) httpObject;
       String realIp = FilterUtil.getRealIp(httpRequest, channelHandlerContext);
       if (realIp != null) {
-        List<Pattern> patterns = super.getRule(this);
+        List<Pattern> patterns = super.getCommonRule(this);
         for (Pattern pattern : patterns) {
           Matcher matcher = pattern.matcher(realIp.toLowerCase());
           if (matcher.find()) {

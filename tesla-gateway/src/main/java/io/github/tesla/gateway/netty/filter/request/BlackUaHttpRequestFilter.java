@@ -39,7 +39,7 @@ public class BlackUaHttpRequestFilter extends HttpRequestFilter {
       ChannelHandlerContext channelHandlerContext) {
     if (httpObject instanceof HttpRequest) {
       List<String> headerValues = FilterUtil.getHeaderValues(originalRequest, "User-Agent");
-      List<Pattern> patterns = super.getRule(this);
+      List<Pattern> patterns = super.getCommonRule(this);
       if (headerValues.size() > 0 && headerValues.get(0) != null) {
         for (Pattern pattern : patterns) {
           Matcher matcher = pattern.matcher(headerValues.get(0));

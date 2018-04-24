@@ -23,7 +23,7 @@ public enum RequestFilterTypeEnum {
   /**
    * 各种限制
    */
-  Oauth2HttpRequestFilter(0),// oauth2
+  Oauth2HttpRequestFilter(0), // oauth2
   URLParamHttpRequestFilter(1), // URL参数黑名单参数拦截
   BlackCookieHttpRequestFilter(2), // Cookie黑名单拦截
   BlackUaHttpRequestFilter(3), // User-Agent黑名单拦截
@@ -31,6 +31,7 @@ public enum RequestFilterTypeEnum {
   BlackIpHttpRequesFilter(5), // IP黑名单
   SecurityScannerHttpRequestFilter(6), // 扫描
   RateLimitHttpRequestFilter(7), // 限流
+  DataMappingRequestFilter(8), // 数据格式转化Mapping
 
 
 

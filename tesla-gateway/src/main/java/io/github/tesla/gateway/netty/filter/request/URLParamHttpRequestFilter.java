@@ -54,7 +54,7 @@ public class URLParamHttpRequestFilter extends HttpRequestFilter {
           for (String arg : args) {
             String[] kv = arg.split("=");
             if (kv.length == 2) {
-              List<Pattern> patterns = super.getRule(this);
+              List<Pattern> patterns = super.getCommonRule(this);
               for (Pattern pattern : patterns) {
                 String param = kv[1].toLowerCase();
                 Matcher matcher = pattern.matcher(param);
