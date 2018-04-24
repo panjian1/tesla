@@ -28,10 +28,9 @@ import io.github.tesla.gateway.mapping.MappingHeader;
 import io.github.tesla.gateway.mapping.MappingInput;
 import io.github.tesla.gateway.utils.JsonUtils;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.CompositeByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
@@ -61,16 +60,16 @@ public class DataMappingRequestFilter extends HttpRequestFilter {
   }
 
   @Override
-  public HttpResponse doFilter(HttpRequest originalRequest, HttpObject httpObject,
+  public HttpResponse doFilter(HttpRequest httpRequest, HttpObject httpObject,
       ChannelHandlerContext channelHandlerContext) {
-    if (originalRequest instanceof FullHttpRequest) {
-      FullHttpRequest httpRequest = (FullHttpRequest) httpObject;
+    if (httpObject instanceof HttpContent) {
+      HttpContent httpContent = (HttpContent) httpObject;
       String url = httpRequest.uri();
       int index = url.indexOf("?");
       if (index > -1) {
         url = url.substring(0, index);
       }
-      CompositeByteBuf contentBuf = (CompositeByteBuf) httpRequest.content();
+      ByteBuf contentBuf = httpContent.content();
       Boolean canDataMapping = isCanDataMapping(contentBuf);
       if (canDataMapping) {
         Map<String, Set<String>> rules = super.getUrlRule(DataMappingRequestFilter.this);
@@ -78,11 +77,11 @@ public class DataMappingRequestFilter extends HttpRequestFilter {
         if (urlRules != null && urlRules.size() == 1) {
           String tempalteContent = urlRules.iterator().next();
           try {
-            templateHolder.putTemplate(url, tempalteContent);
+            templateHolder.putTemplate("template" + url, tempalteContent);
             Map<String, Object> templateContext = new HashMap<String, Object>();
             templateContext.put("header", new MappingHeader(httpRequest));
-            templateContext.put("input", new MappingInput(httpRequest));
-            Template template = configuration.getTemplate(url);
+            templateContext.put("input", new MappingInput(httpContent));
+            Template template = configuration.getTemplate("template" + url);
             StringWriter outPutWrite = new StringWriter();
             template.process(templateContext, outPutWrite);
             String outPutJson = outPutWrite.toString();
@@ -90,16 +89,19 @@ public class DataMappingRequestFilter extends HttpRequestFilter {
             contentBuf.clear().writeBytes(bodyContent);
             HttpUtil.setContentLength(httpRequest, outPutJson.length());
           } catch (Throwable e) {
+            e.printStackTrace();
             super.writeFilterLog(tempalteContent, this.getClass(), "dataMapping");
           }
         }
       }
+
     }
+
     return null;
   }
 
 
-  private Boolean isCanDataMapping(CompositeByteBuf contentBuf) {
+  private Boolean isCanDataMapping(ByteBuf contentBuf) {
     try {
       String contentStr = contentBuf.toString(CharsetUtil.UTF_8);
       JsonUtils.parse(contentStr);
@@ -111,7 +113,7 @@ public class DataMappingRequestFilter extends HttpRequestFilter {
 
   @Override
   public RequestFilterTypeEnum filterType() {
-    return RequestFilterTypeEnum.BlackCookieHttpRequestFilter;
+    return RequestFilterTypeEnum.DataMappingRequestFilter;
   }
 
 }

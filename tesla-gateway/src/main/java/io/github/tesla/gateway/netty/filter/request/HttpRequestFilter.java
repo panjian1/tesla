@@ -5,12 +5,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import io.github.tesla.filter.RequestFilterTypeEnum;
 import io.github.tesla.gateway.cache.ApiAndFilterCacheComponent;
@@ -33,6 +35,11 @@ public abstract class HttpRequestFilter {
 
   protected static final PathMatcher pathMatcher = new AntPathMatcher();
 
+  private static final String LINE_SEPARATOR_UNIX = "\n";
+
+  private static final String LINE_SEPARATOR_WINDOWS = "\r\n";
+
+
   public abstract HttpResponse doFilter(HttpRequest originalRequest, HttpObject httpObject,
       ChannelHandlerContext channelHandlerContext);
 
@@ -45,8 +52,29 @@ public abstract class HttpRequestFilter {
   protected List<Pattern> getCommonRule(HttpRequestFilter filterClazz) {
     ApiAndFilterCacheComponent ruleCache =
         SpringContextHolder.getBean(ApiAndFilterCacheComponent.class);
-    Set<Pattern> rules = ruleCache.getPubicFilterRule(filterClazz);
-    return Lists.newArrayList(rules);
+    Set<Pattern> compilePatterns = Sets.newHashSet();
+    Set<String> rules = ruleCache.getPubicFilterRule(filterClazz);
+    for (String rule : rules) {
+      String[] rulesSplits = new String[] {rule};
+      if (filterClazz instanceof BlackCookieHttpRequestFilter
+          || filterClazz instanceof URLParamHttpRequestFilter
+          || filterClazz instanceof BlackURLHttpRequestFilter) {
+        if (StringUtils.contains(rule, LINE_SEPARATOR_UNIX)) {
+          rulesSplits = StringUtils.split(rule, LINE_SEPARATOR_UNIX);
+        } else if (StringUtils.contains(rule, LINE_SEPARATOR_WINDOWS)) {
+          rulesSplits = StringUtils.split(rule, LINE_SEPARATOR_UNIX);
+        }
+      }
+      for (String rulesSplit : rulesSplits) {
+        try {
+          Pattern compilePattern = Pattern.compile(rulesSplit);
+          compilePatterns.add(compilePattern);
+        } catch (Throwable e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    return Lists.newArrayList(compilePatterns);
   }
 
   protected Map<String, Set<String>> getUrlRule(HttpRequestFilter filterClazz) {

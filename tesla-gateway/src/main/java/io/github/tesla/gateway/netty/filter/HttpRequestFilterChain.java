@@ -16,6 +16,7 @@ import io.github.tesla.gateway.netty.filter.request.BlackCookieHttpRequestFilter
 import io.github.tesla.gateway.netty.filter.request.BlackIpHttpRequesFilter;
 import io.github.tesla.gateway.netty.filter.request.BlackURLHttpRequestFilter;
 import io.github.tesla.gateway.netty.filter.request.BlackUaHttpRequestFilter;
+import io.github.tesla.gateway.netty.filter.request.DataMappingRequestFilter;
 import io.github.tesla.gateway.netty.filter.request.DubboTransformHttpRequestFilter;
 import io.github.tesla.gateway.netty.filter.request.GrpcTransformHttpRequestFilter;
 import io.github.tesla.gateway.netty.filter.request.HttpRequestFilter;
@@ -40,14 +41,15 @@ public class HttpRequestFilterChain {
     filters.put(rateLimitHttpRequestFilter.filterName(), rateLimitHttpRequestFilter);
     HttpRequestFilter securityScannerHttpRequestFilter =
         SecurityScannerHttpRequestFilter.newFilter();
-    filters.put(securityScannerHttpRequestFilter.filterName(),
-        securityScannerHttpRequestFilter);
+    filters.put(securityScannerHttpRequestFilter.filterName(), securityScannerHttpRequestFilter);
     HttpRequestFilter blackUaHttpRequestFilter = BlackUaHttpRequestFilter.newFilter();
     filters.put(blackUaHttpRequestFilter.filterName(), blackUaHttpRequestFilter);
     HttpRequestFilter blackURLHttpRequestFilter = BlackURLHttpRequestFilter.newFilter();
     filters.put(blackURLHttpRequestFilter.filterName(), blackURLHttpRequestFilter);
     HttpRequestFilter uRLParamHttpRequestFilter = URLParamHttpRequestFilter.newFilter();
     filters.put(uRLParamHttpRequestFilter.filterName(), uRLParamHttpRequestFilter);
+    HttpRequestFilter dataMappingFilter = DataMappingRequestFilter.newFilter();
+    filters.put(dataMappingFilter.filterName(), dataMappingFilter);
     HttpRequestFilter dubboAdapterHttpRequestFilter = DubboTransformHttpRequestFilter.newFilter();
     filters.put(dubboAdapterHttpRequestFilter.filterName(), dubboAdapterHttpRequestFilter);
     HttpRequestFilter grpcAdapterHttpRequestFilter = GrpcTransformHttpRequestFilter.newFilter();

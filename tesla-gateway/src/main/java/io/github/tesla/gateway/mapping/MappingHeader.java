@@ -13,6 +13,8 @@
  */
 package io.github.tesla.gateway.mapping;
 
+import io.netty.handler.codec.http.HttpRequest;
+
 /**
  * @author liushiming
  * @version MappingContext.java, v 0.0.1 2018年4月23日 下午6:27:51 liushiming
@@ -25,7 +27,7 @@ public class MappingHeader {
 
   private String uri;
 
-  public MappingHeader(io.netty.handler.codec.http.FullHttpRequest request) {
+  public MappingHeader(HttpRequest request) {
     this.headers = request.headers();
     this.method = request.method().name();
     this.uri = request.uri();

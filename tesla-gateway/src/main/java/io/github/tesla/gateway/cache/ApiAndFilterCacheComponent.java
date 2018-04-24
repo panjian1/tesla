@@ -13,16 +13,13 @@
  */
 package io.github.tesla.gateway.cache;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,10 +70,6 @@ public class ApiAndFilterCacheComponent extends AbstractScheduleCache {
   private static final Map<String, Map<String, Set<String>>> URL_RULE_CACHE =
       Collections.synchronizedMap(new WeakHashMap<String, Map<String, Set<String>>>());
 
-  private static final String LINE_SEPARATOR_UNIX = "\n";
-
-  private static final String LINE_SEPARATOR_WINDOWS = "\r\n";
-
   private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
   @Autowired
@@ -114,15 +107,7 @@ public class ApiAndFilterCacheComponent extends AbstractScheduleCache {
           rules = Sets.newHashSet();
           COMMUNITY_RULE_CACHE.put(type, rules);
         }
-        if (StringUtils.contains(rule, LINE_SEPARATOR_UNIX)) {
-          String[] rulesSplits = StringUtils.split(rule, LINE_SEPARATOR_UNIX);
-          rules.addAll(Arrays.asList(rulesSplits));
-        } else if (StringUtils.contains(rule, LINE_SEPARATOR_WINDOWS)) {
-          String[] rulesSplits = StringUtils.split(rule, LINE_SEPARATOR_UNIX);
-          rules.addAll(Arrays.asList(rulesSplits));
-        } else {
-          rules.add(rule);
-        }
+        rules.add(rule);
       }
 
     } finally {
@@ -149,15 +134,7 @@ public class ApiAndFilterCacheComponent extends AbstractScheduleCache {
         rules = Sets.newHashSet();
         maprules.put(url, rules);
       }
-      if (StringUtils.contains(rule, LINE_SEPARATOR_UNIX)) {
-        String[] rulesSplits = StringUtils.split(rule, LINE_SEPARATOR_UNIX);
-        rules.addAll(Arrays.asList(rulesSplits));
-      } else if (StringUtils.contains(rule, LINE_SEPARATOR_WINDOWS)) {
-        String[] rulesSplits = StringUtils.split(rule, LINE_SEPARATOR_UNIX);
-        rules.addAll(Arrays.asList(rulesSplits));
-      } else {
-        rules.add(rule);
-      }
+      rules.add(rule);
     }
   }
 
@@ -233,23 +210,15 @@ public class ApiAndFilterCacheComponent extends AbstractScheduleCache {
     }
   }
 
-  public Set<Pattern> getPubicFilterRule(HttpRequestFilter filter) {
+  public Set<String> getPubicFilterRule(HttpRequestFilter filter) {
     try {
       readWriteLock.readLock().lock();
       String type = filter.filterType().name();
-      Set<String> patterns = COMMUNITY_RULE_CACHE.get(type);
-      Set<Pattern> compilePatterns = Sets.newHashSet();
-      if (patterns != null) {
-        for (String pattern : patterns) {
-          try {
-            Pattern compilePattern = Pattern.compile(pattern);
-            compilePatterns.add(compilePattern);
-          } catch (Throwable e) {
-            e.printStackTrace();
-          }
-        }
+      Set<String> rules = COMMUNITY_RULE_CACHE.get(type);
+      if (rules == null) {
+        rules = Sets.newHashSet();
       }
-      return compilePatterns;
+      return rules;
     } finally {
       readWriteLock.readLock().unlock();
     }
