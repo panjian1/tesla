@@ -397,7 +397,7 @@ CREATE TABLE `gateway_api_rpc` (
   `service_group` varchar(100) DEFAULT NULL COMMENT '服务组名',
   `service_version` varchar(100) DEFAULT NULL COMMENT '服务版本',
   `proto_context` blob COMMENT 'proto内容',
-  `input_param` blob COMMENT 'dubbo请求参数类型',
+  `dubbo_param_template` blob COMMENT 'dubbo请求参数类型',
   `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
   `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
   `api_id` bigint(20) unsigned NOT NULL COMMENT 'apiId',

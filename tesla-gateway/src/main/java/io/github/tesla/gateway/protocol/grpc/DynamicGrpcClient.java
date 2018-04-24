@@ -28,8 +28,8 @@ import com.quancheng.saluki.core.grpc.exception.RpcFrameworkException;
 import com.quancheng.saluki.core.grpc.exception.RpcServiceException;
 import com.quancheng.saluki.core.grpc.service.GenericService;
 
-import io.github.tesla.gateway.protocol.RpcDynamicClient;
 import io.github.tesla.filter.domain.ApiRpcDO;
+import io.github.tesla.gateway.protocol.RpcDynamicClient;
 import io.grpc.MethodDescriptor;
 import io.grpc.MethodDescriptor.Marshaller;
 import io.grpc.MethodDescriptor.MethodType;
@@ -70,10 +70,6 @@ public class DynamicGrpcClient extends RpcDynamicClient {
       Descriptor outPutType = inOutType.getRight();
       MethodDescriptor<DynamicMessage, DynamicMessage> methodDesc =
           this.createGrpcMethodDescriptor(serviceName, methodName, inPutType, outPutType);
-      if (rpcDo.getInputTemplate() != null) {
-        String templateKey = super.cacheTemplate(rpcDo);
-        outPutJson = super.doDataMapping(templateKey, httpRequest);
-      }
       DynamicMessage message = this.createGrpcDynamicMessage(inPutType, outPutJson);
       Message response = (Message) genricService.$invoke(serviceName, group, version, methodName,
           methodDesc, message);

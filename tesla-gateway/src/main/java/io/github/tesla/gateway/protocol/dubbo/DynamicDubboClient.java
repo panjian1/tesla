@@ -14,6 +14,8 @@
 package io.github.tesla.gateway.protocol.dubbo;
 
 import java.io.IOException;
+import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,11 +31,18 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import freemarker.cache.StringTemplateLoader;
+import freemarker.core.JSONOutputFormat;
 import freemarker.core.ParseException;
+import freemarker.template.Configuration;
+import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.MalformedTemplateNameException;
+import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateNotFoundException;
 import io.github.tesla.filter.domain.ApiRpcDO;
+import io.github.tesla.gateway.mapping.MappingHeader;
+import io.github.tesla.gateway.mapping.MappingInput;
 import io.github.tesla.gateway.protocol.RpcDynamicClient;
 import io.netty.handler.codec.http.FullHttpRequest;
 
@@ -47,11 +56,40 @@ public class DynamicDubboClient extends RpcDynamicClient {
 
   private final RegistryConfig registryConfig;
 
+  private final StringTemplateLoader templateHolder = new StringTemplateLoader();
+
+  private final Configuration configuration;
+
   public DynamicDubboClient(final ApplicationConfig applicationConfig,
       RegistryConfig registryConfig) {
     super();
     this.applicationConfig = applicationConfig;
     this.registryConfig = registryConfig;
+    Configuration configuration_ = new Configuration(Configuration.VERSION_2_3_26);
+    configuration_.setObjectWrapper(new DefaultObjectWrapper(Configuration.VERSION_2_3_26));
+    configuration_.setOutputFormat(JSONOutputFormat.INSTANCE);
+    configuration_.setTemplateLoader(templateHolder);
+    this.configuration = configuration_;
+  }
+
+  private String cacheTemplate(final ApiRpcDO rpcDo) {
+    final String templateContent = rpcDo.getDubboParamTemplate();
+    final String templateKey = rpcDo.getServiceName() + "_" + rpcDo.getMethodName();
+    templateHolder.putTemplate(templateKey, templateContent);
+    return templateKey;
+  }
+
+  private String doDataMapping(final String templateKey, final FullHttpRequest httpRequest)
+      throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException,
+      TemplateException {
+    Map<String, Object> templateContext = new HashMap<String, Object>();
+    templateContext.put("header", new MappingHeader(httpRequest));
+    templateContext.put("input", new MappingInput(httpRequest));
+    Template template = configuration.getTemplate(templateKey);
+    StringWriter outPutWrite = new StringWriter();
+    template.process(templateContext, outPutWrite);
+    String outPutJson = outPutWrite.toString();
+    return outPutJson;
   }
 
   @Override
@@ -71,7 +109,7 @@ public class DynamicDubboClient extends RpcDynamicClient {
       reference.setVersion(version);
       ReferenceConfigCache cache = ReferenceConfigCache.getCache();
       GenericService genericService = cache.get(reference);
-      String templateKey = super.cacheTemplate(rpcDo);
+      String templateKey = this.cacheTemplate(rpcDo);
       Pair<String[], Object[]> typeAndValue = this.transformerData(templateKey, httpRequest);
       Object response =
           genericService.$invoke(methodName, typeAndValue.getLeft(), typeAndValue.getRight());
@@ -88,7 +126,7 @@ public class DynamicDubboClient extends RpcDynamicClient {
   private Pair<String[], Object[]> transformerData(String templateKey,
       final FullHttpRequest httpRequest) throws TemplateNotFoundException,
       MalformedTemplateNameException, ParseException, IOException, TemplateException {
-    String outPutJson = super.doDataMapping(templateKey, httpRequest);
+    String outPutJson = this.doDataMapping(templateKey, httpRequest);
     Map<String, Object> dubboParamters = com.alibaba.fastjson.JSON.parseObject(outPutJson);
     List<String> type = Lists.newArrayList();
     List<Object> value = Lists.newArrayList();

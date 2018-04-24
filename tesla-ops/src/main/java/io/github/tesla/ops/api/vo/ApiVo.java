@@ -64,7 +64,7 @@ public class ApiVo implements Serializable {
 
   private byte[] protoContext;
 
-  private String inputParam;
+  private String dubboParamTemplate;
 
   private String protoServiceFileName;
 
@@ -116,11 +116,9 @@ public class ApiVo implements Serializable {
     this.path = path;
   }
 
-
   public Long getGroupId() {
     return groupId;
   }
-
 
   public RouteType getRouteType() {
     return RouteType.fromType(Integer.valueOf(routeType));
@@ -198,12 +196,12 @@ public class ApiVo implements Serializable {
     this.protoContext = protoContext;
   }
 
-  public String getInputParam() {
-    return inputParam;
+  public String getDubboParamTemplate() {
+    return dubboParamTemplate;
   }
 
-  public void setInputParam(String inputParam) {
-    this.inputParam = inputParam;
+  public void setDubboParamTemplate(String dubboParamTemplate) {
+    this.dubboParamTemplate = dubboParamTemplate;
   }
 
   public String getInstanceId() {
@@ -262,7 +260,7 @@ public class ApiVo implements Serializable {
       rpcDO.setServiceGroup(this.serviceGroup);
       rpcDO.setServiceVersion(this.serviceVersion);
       rpcDO.setProtoContext(this.protoContext);
-      rpcDO.setInputParam(this.inputParam);
+      rpcDO.setDubboParamTemplate(this.dubboParamTemplate);
       return rpcDO;
     } else {
       return null;
@@ -300,7 +298,7 @@ public class ApiVo implements Serializable {
         apiVO.setServiceGroup(rpcDO.getServiceGroup());
         apiVO.setServiceVersion(rpcDO.getServiceVersion());
         apiVO.setProtoContext(rpcDO.getProtoContext());
-        apiVO.setInputParam(rpcDO.getInputParam());
+        apiVO.setDubboParamTemplate(rpcDO.getDubboParamTemplate());
       }
       if (apiDO.isSpringCloud() && scDO != null) {
         // Spring Cloud
