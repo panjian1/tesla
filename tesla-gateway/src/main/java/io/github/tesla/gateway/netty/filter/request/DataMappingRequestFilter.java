@@ -18,19 +18,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.gson.JsonElement;
+
 import freemarker.cache.StringTemplateLoader;
 import freemarker.core.JSONOutputFormat;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
+import freemarker.template.DefaultObjectWrapperBuilder;
 import freemarker.template.Template;
 import io.github.tesla.filter.RequestFilterTypeEnum;
 import io.github.tesla.gateway.mapping.MappingHeader;
 import io.github.tesla.gateway.mapping.MappingInput;
 import io.github.tesla.gateway.utils.JsonUtils;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.CompositeByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.HttpContent;
+import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
@@ -52,6 +56,9 @@ public class DataMappingRequestFilter extends HttpRequestFilter {
     configuration_.setObjectWrapper(new DefaultObjectWrapper(Configuration.VERSION_2_3_26));
     configuration_.setOutputFormat(JSONOutputFormat.INSTANCE);
     configuration_.setTemplateLoader(templateHolder);
+    DefaultObjectWrapperBuilder owb = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_26);
+    owb.setIterableSupport(true);
+    configuration_.setObjectWrapper(owb.build());
     this.configuration = configuration_;
   }
 
@@ -62,14 +69,14 @@ public class DataMappingRequestFilter extends HttpRequestFilter {
   @Override
   public HttpResponse doFilter(HttpRequest httpRequest, HttpObject httpObject,
       ChannelHandlerContext channelHandlerContext) {
-    if (httpObject instanceof HttpContent) {
-      HttpContent httpContent = (HttpContent) httpObject;
+    if (httpObject instanceof FullHttpRequest) {
+      FullHttpRequest httpContent = (FullHttpRequest) httpObject;
       String url = httpRequest.uri();
       int index = url.indexOf("?");
       if (index > -1) {
         url = url.substring(0, index);
       }
-      ByteBuf contentBuf = httpContent.content();
+      CompositeByteBuf contentBuf = (CompositeByteBuf) httpContent.content();
       Boolean canDataMapping = isCanDataMapping(contentBuf);
       if (canDataMapping) {
         Map<String, Set<String>> rules = super.getUrlRule(DataMappingRequestFilter.this);
@@ -85,7 +92,8 @@ public class DataMappingRequestFilter extends HttpRequestFilter {
             StringWriter outPutWrite = new StringWriter();
             template.process(templateContext, outPutWrite);
             String outPutJson = outPutWrite.toString();
-            ByteBuf bodyContent = Unpooled.copiedBuffer(outPutJson, CharsetUtil.UTF_8);
+            JsonElement jsonElement = (JsonElement) JsonUtils.parse(outPutJson);
+            ByteBuf bodyContent = Unpooled.copiedBuffer(jsonElement.toString(), CharsetUtil.UTF_8);
             contentBuf.clear().writeBytes(bodyContent);
             HttpUtil.setContentLength(httpRequest, outPutJson.length());
           } catch (Throwable e) {

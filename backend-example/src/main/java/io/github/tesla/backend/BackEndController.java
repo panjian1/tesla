@@ -32,4 +32,22 @@ public class BackEndController {
     System.out.println(messages);
     return "yes";
   }
+
+  // @RequestMapping(value = "test", method = RequestMethod.POST)
+  // public String setterMessage1(HttpServletRequest request) throws IOException {
+  // BufferedReader reader = request.getReader();
+  // StringBuilder sb = new StringBuilder();
+  // String line = reader.readLine();
+  // while (line != null) {
+  // sb.append(line + "\n");
+  // line = reader.readLine();
+  // }
+  // reader.close();
+  // String params = sb.toString();
+  // String[] _params = params.split("&");
+  // for (String param : _params) {
+  // System.out.println(param);
+  // }
+  // return "yes";
+  // }
 }

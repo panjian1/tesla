@@ -1,4 +1,4 @@
-package  io.github.tesla.gateway.netty;
+package io.github.tesla.gateway.netty;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpRequest;
@@ -11,7 +11,7 @@ public class HttpFiltersSourceAdapter {
   }
 
   public int getMaximumRequestBufferSizeInBytes() {
-    return 0;
+    return 512 * 1024;
   }
 
   public int getMaximumResponseBufferSizeInBytes() {
