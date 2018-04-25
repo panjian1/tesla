@@ -13,6 +13,7 @@ import com.google.common.collect.Maps;
 import io.github.tesla.gateway.cache.GroovyFilterCacheComponent;
 import io.github.tesla.gateway.config.SpringContextHolder;
 import io.github.tesla.gateway.netty.filter.response.ClickjackHttpResponseFilter;
+import io.github.tesla.gateway.netty.filter.response.DataMappingHttpResponseFilter;
 import io.github.tesla.gateway.netty.filter.response.HttpResponseFilter;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
@@ -25,6 +26,8 @@ public class HttpResponseFilterChain {
   static {
     HttpResponseFilter clickjackHttpResponseFilter = ClickjackHttpResponseFilter.newFilter();
     filters.put(clickjackHttpResponseFilter.filterType().name(), clickjackHttpResponseFilter);
+    HttpResponseFilter dataMapingHttpResonseFilter = DataMappingHttpResponseFilter.newFilter();
+    filters.put(dataMapingHttpResonseFilter.filterType().name(), dataMapingHttpResonseFilter);
   }
 
   public static HttpResponseFilterChain responseFilterChain() {
