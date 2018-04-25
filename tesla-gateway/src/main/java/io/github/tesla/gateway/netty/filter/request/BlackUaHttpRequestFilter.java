@@ -17,16 +17,17 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import io.github.tesla.gateway.netty.filter.FilterUtil;
 import io.github.tesla.filter.RequestFilterTypeEnum;
+import io.github.tesla.gateway.netty.filter.FilterUtil;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
- *user-agent黑名单过滤
+ * user-agent黑名单过滤
  */
 public class BlackUaHttpRequestFilter extends HttpRequestFilter {
 
@@ -37,8 +38,9 @@ public class BlackUaHttpRequestFilter extends HttpRequestFilter {
   @Override
   public HttpResponse doFilter(HttpRequest originalRequest, HttpObject httpObject,
       ChannelHandlerContext channelHandlerContext) {
-    if (httpObject instanceof HttpRequest) {
-      List<String> headerValues = FilterUtil.getHeaderValues(originalRequest, "User-Agent");
+    if (httpObject instanceof FullHttpRequest) {
+      FullHttpRequest httpRequest = (FullHttpRequest) httpObject;
+      List<String> headerValues = FilterUtil.getHeaderValues(httpRequest, "User-Agent");
       List<Pattern> patterns = super.getCommonRule(this);
       if (headerValues.size() > 0 && headerValues.get(0) != null) {
         for (Pattern pattern : patterns) {

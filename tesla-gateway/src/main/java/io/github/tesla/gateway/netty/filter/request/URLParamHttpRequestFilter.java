@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 
 import io.github.tesla.filter.RequestFilterTypeEnum;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
@@ -37,8 +38,8 @@ public class URLParamHttpRequestFilter extends HttpRequestFilter {
   @Override
   public HttpResponse doFilter(HttpRequest originalRequest, HttpObject httpObject,
       ChannelHandlerContext channelHandlerContext) {
-    if (httpObject instanceof HttpRequest) {
-      HttpRequest httpRequest = (HttpRequest) httpObject;
+    if (httpObject instanceof FullHttpRequest) {
+      FullHttpRequest httpRequest = (FullHttpRequest) httpObject;
       String url = null;
       try {
         String uri = httpRequest.uri().replaceAll("%", "%25");

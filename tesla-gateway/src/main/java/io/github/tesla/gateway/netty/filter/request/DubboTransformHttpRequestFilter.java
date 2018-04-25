@@ -48,8 +48,8 @@ public class DubboTransformHttpRequestFilter extends HttpRequestFilter {
   @Override
   public HttpResponse doFilter(HttpRequest originalRequest, HttpObject httpObject,
       ChannelHandlerContext channelHandlerContext) {
-    if (originalRequest instanceof FullHttpRequest && dubboClient != null) {
-      FullHttpRequest httpRequest = (FullHttpRequest) originalRequest;
+    if (httpObject instanceof FullHttpRequest && dubboClient != null) {
+      FullHttpRequest httpRequest = (FullHttpRequest) httpObject;
       String actorPath = httpRequest.uri();
       int index = actorPath.indexOf("?");
       if (index > -1) {

@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 
 import io.github.tesla.filter.RequestFilterTypeEnum;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
@@ -36,8 +37,8 @@ public class SecurityScannerHttpRequestFilter extends HttpRequestFilter {
   @Override
   public HttpResponse doFilter(HttpRequest originalRequest, HttpObject httpObject,
       ChannelHandlerContext channelHandlerContext) {
-    if (httpObject instanceof HttpRequest) {
-      HttpRequest httpRequest = (HttpRequest) httpObject;
+    if (httpObject instanceof FullHttpRequest) {
+      FullHttpRequest httpRequest = (FullHttpRequest) httpObject;
       boolean acunetixAspect = httpRequest.headers().contains("Acunetix-Aspect");
       boolean acunetixAspectPassword = httpRequest.headers().contains("Acunetix-Aspect-Password");
       boolean acunetixAspectQueries = httpRequest.headers().contains("Acunetix-Aspect-Queries");

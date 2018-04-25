@@ -16,11 +16,12 @@ package io.github.tesla.gateway.netty.filter.request;
 import org.apache.oltu.oauth2.common.message.types.ParameterStyle;
 import org.apache.oltu.oauth2.rs.request.OAuthAccessResourceRequest;
 
+import io.github.tesla.filter.RequestFilterTypeEnum;
 import io.github.tesla.gateway.cache.Oauth2TokenCacheComponent;
 import io.github.tesla.gateway.config.SpringContextHolder;
 import io.github.tesla.gateway.netty.servlet.NettyHttpServletRequest;
-import io.github.tesla.filter.RequestFilterTypeEnum;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
@@ -42,9 +43,9 @@ public class Oauth2HttpRequestFilter extends HttpRequestFilter {
   @Override
   public HttpResponse doFilter(HttpRequest originalRequest, HttpObject httpObject,
       ChannelHandlerContext channelHandlerContext) {
-    if (httpObject instanceof HttpRequest) {
+    if (httpObject instanceof FullHttpRequest) {
       try {
-        HttpRequest httpRequest = (HttpRequest) httpObject;
+        FullHttpRequest httpRequest = (FullHttpRequest) httpObject;
         NettyHttpServletRequest servletRequest =
             new NettyHttpServletRequest(httpRequest, "/", channelHandlerContext);
         OAuthAccessResourceRequest oauthRequest =
