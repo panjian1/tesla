@@ -26,13 +26,13 @@ import io.netty.util.CharsetUtil;
  * @author liushiming
  * @version MappingInput.java, v 0.0.1 2018年4月23日 下午6:37:32 liushiming
  */
-public class MappingInput {
+public class BodyMapping {
 
   private final String body;
 
   private final Object document;
 
-  public MappingInput(HttpContent httpConent) {
+  public BodyMapping(HttpContent httpConent) {
     ByteBuf jsonBuf = httpConent.content();
     this.body = jsonBuf.toString(CharsetUtil.UTF_8);;
     this.document = Configuration.builder()//

@@ -18,8 +18,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.gson.JsonElement;
-
 import freemarker.cache.StringTemplateLoader;
 import freemarker.core.JSONOutputFormat;
 import freemarker.template.Configuration;
@@ -27,8 +25,8 @@ import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.DefaultObjectWrapperBuilder;
 import freemarker.template.Template;
 import io.github.tesla.filter.RequestFilterTypeEnum;
-import io.github.tesla.gateway.mapping.MappingHeader;
-import io.github.tesla.gateway.mapping.MappingInput;
+import io.github.tesla.gateway.mapping.BodyMapping;
+import io.github.tesla.gateway.mapping.HeaderMapping;
 import io.github.tesla.gateway.utils.JsonUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.CompositeByteBuf;
@@ -38,6 +36,7 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpUtil;
 import io.netty.util.CharsetUtil;
 
@@ -67,16 +66,16 @@ public class DataMappingRequestFilter extends HttpRequestFilter {
   }
 
   @Override
-  public HttpResponse doFilter(HttpRequest httpRequest, HttpObject httpObject,
+  public HttpResponse doFilter(HttpRequest originalRequest, HttpObject httpObject,
       ChannelHandlerContext channelHandlerContext) {
     if (httpObject instanceof FullHttpRequest) {
-      FullHttpRequest httpContent = (FullHttpRequest) httpObject;
-      String url = httpRequest.uri();
+      FullHttpRequest fullHttpRequest = (FullHttpRequest) httpObject;
+      String url = originalRequest.uri();
       int index = url.indexOf("?");
       if (index > -1) {
         url = url.substring(0, index);
       }
-      CompositeByteBuf contentBuf = (CompositeByteBuf) httpContent.content();
+      CompositeByteBuf contentBuf = (CompositeByteBuf) fullHttpRequest.content();
       Boolean canDataMapping = isCanDataMapping(contentBuf);
       if (canDataMapping) {
         Map<String, Set<String>> rules = super.getUrlRule(DataMappingRequestFilter.this);
@@ -86,19 +85,19 @@ public class DataMappingRequestFilter extends HttpRequestFilter {
           try {
             templateHolder.putTemplate("template" + url, tempalteContent);
             Map<String, Object> templateContext = new HashMap<String, Object>();
-            templateContext.put("header", new MappingHeader(httpRequest));
-            templateContext.put("input", new MappingInput(httpContent));
+            templateContext.put("header", new HeaderMapping(fullHttpRequest));
+            templateContext.put("input", new BodyMapping(fullHttpRequest));
             Template template = configuration.getTemplate("template" + url);
-            StringWriter outPutWrite = new StringWriter();
-            template.process(templateContext, outPutWrite);
-            String outPutJson = outPutWrite.toString();
-            JsonElement jsonElement = (JsonElement) JsonUtils.parse(outPutJson);
-            ByteBuf bodyContent = Unpooled.copiedBuffer(jsonElement.toString(), CharsetUtil.UTF_8);
+            StringWriter transformedWriter = new StringWriter();
+            template.process(templateContext, transformedWriter);
+            String transformedJson = transformedWriter.toString();
+            ByteBuf bodyContent = Unpooled.copiedBuffer(transformedJson, CharsetUtil.UTF_8);
             contentBuf.clear().writeBytes(bodyContent);
-            HttpUtil.setContentLength(httpRequest, outPutJson.length());
+            HttpUtil.setContentLength(fullHttpRequest, bodyContent.readerIndex());
           } catch (Throwable e) {
-            e.printStackTrace();
             super.writeFilterLog(tempalteContent, this.getClass(), "dataMapping");
+            return super.createResponse(HttpResponseStatus.INTERNAL_SERVER_ERROR, originalRequest,
+                "DataMapping Error");
           }
         }
       }

@@ -41,8 +41,8 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateNotFoundException;
 import io.github.tesla.filter.domain.ApiRpcDO;
-import io.github.tesla.gateway.mapping.MappingHeader;
-import io.github.tesla.gateway.mapping.MappingInput;
+import io.github.tesla.gateway.mapping.HeaderMapping;
+import io.github.tesla.gateway.mapping.BodyMapping;
 import io.github.tesla.gateway.protocol.RpcDynamicClient;
 import io.netty.handler.codec.http.FullHttpRequest;
 
@@ -83,8 +83,8 @@ public class DynamicDubboClient extends RpcDynamicClient {
       throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException,
       TemplateException {
     Map<String, Object> templateContext = new HashMap<String, Object>();
-    templateContext.put("header", new MappingHeader(httpRequest));
-    templateContext.put("input", new MappingInput(httpRequest));
+    templateContext.put("header", new HeaderMapping(httpRequest));
+    templateContext.put("input", new BodyMapping(httpRequest));
     Template template = configuration.getTemplate(templateKey);
     StringWriter outPutWrite = new StringWriter();
     template.process(templateContext, outPutWrite);

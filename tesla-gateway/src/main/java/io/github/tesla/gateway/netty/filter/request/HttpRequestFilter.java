@@ -1,5 +1,6 @@
 package io.github.tesla.gateway.netty.filter.request;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,6 +19,7 @@ import io.github.tesla.filter.RequestFilterTypeEnum;
 import io.github.tesla.gateway.cache.ApiAndFilterCacheComponent;
 import io.github.tesla.gateway.config.SpringContextHolder;
 import io.github.tesla.gateway.netty.filter.FilterUtil;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
@@ -27,6 +29,7 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
+import io.netty.util.CharsetUtil;
 
 
 public abstract class HttpRequestFilter {
@@ -85,11 +88,16 @@ public abstract class HttpRequestFilter {
   }
 
   protected HttpResponse createResponse(HttpResponseStatus httpResponseStatus,
-      HttpRequest originalRequest) {
+      HttpRequest originalRequest, String... reason) {
     HttpHeaders httpHeaders = new DefaultHttpHeaders();
     httpHeaders.add("Transfer-Encoding", "chunked");
-    HttpResponse httpResponse =
-        new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, httpResponseStatus);
+    HttpResponse httpResponse;
+    if (reason != null) {
+      httpResponse = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, httpResponseStatus,
+          Unpooled.copiedBuffer(Arrays.toString(reason), CharsetUtil.UTF_8));
+    } else {
+      httpResponse = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, httpResponseStatus);
+    }
     List<String> originHeader = FilterUtil.getHeaderValues(originalRequest, "Origin");
     if (originHeader.size() > 0) {
       httpHeaders.set("Access-Control-Allow-Credentials", "true");

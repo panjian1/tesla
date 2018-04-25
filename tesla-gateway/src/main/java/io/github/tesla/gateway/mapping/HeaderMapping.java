@@ -19,7 +19,7 @@ import io.netty.handler.codec.http.HttpRequest;
  * @author liushiming
  * @version MappingContext.java, v 0.0.1 2018年4月23日 下午6:27:51 liushiming
  */
-public class MappingHeader {
+public class HeaderMapping {
 
   private final io.netty.handler.codec.http.HttpHeaders headers;
 
@@ -27,7 +27,7 @@ public class MappingHeader {
 
   private String uri;
 
-  public MappingHeader(HttpRequest request) {
+  public HeaderMapping(HttpRequest request) {
     this.headers = request.headers();
     this.method = request.method().name();
     this.uri = request.uri();

@@ -32,7 +32,7 @@ public class BackEndController {
     System.out.println(messages);
     return "yes";
   }
-
+  //
   // @RequestMapping(value = "test", method = RequestMethod.POST)
   // public String setterMessage1(HttpServletRequest request) throws IOException {
   // BufferedReader reader = request.getReader();
