@@ -25,6 +25,6 @@ public class ClickjackHttpResponseFilter extends HttpResponseFilter {
 
   @Override
   public ResponseFilterTypeEnum filterType() {
-    return ResponseFilterTypeEnum.CLICKJACK;
+    return ResponseFilterTypeEnum.ClickjackHttpResponseFilter;
   }
 }

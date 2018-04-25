@@ -19,7 +19,6 @@ import com.jayway.jsonpath.Option;
 
 import io.github.tesla.gateway.utils.JsonUtils;
 import io.netty.buffer.ByteBuf;
-import io.netty.handler.codec.http.HttpContent;
 import io.netty.util.CharsetUtil;
 
 /**
@@ -32,9 +31,8 @@ public class BodyMapping {
 
   private final Object document;
 
-  public BodyMapping(HttpContent httpConent) {
-    ByteBuf jsonBuf = httpConent.content();
-    this.body = jsonBuf.toString(CharsetUtil.UTF_8);;
+  public BodyMapping(ByteBuf content) {
+    this.body = content.toString(CharsetUtil.UTF_8);;
     this.document = Configuration.builder()//
         .options(Option.DEFAULT_PATH_LEAF_TO_NULL)//
         .jsonProvider(JsonUtils.jsonProvider)//

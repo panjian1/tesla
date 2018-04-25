@@ -15,7 +15,7 @@ public class HttpFiltersSourceAdapter {
   }
 
   public int getMaximumResponseBufferSizeInBytes() {
-    return 0;
+    return 512 * 1024;
   }
 
 }

@@ -39,7 +39,7 @@ import io.github.tesla.filter.domain.ApiGroupDO;
 import io.github.tesla.filter.domain.ApiRpcDO;
 import io.github.tesla.filter.domain.ApiSpringCloudDO;
 import io.github.tesla.filter.domain.FilterDO;
-import io.github.tesla.gateway.netty.filter.request.HttpRequestFilter;
+import io.github.tesla.gateway.netty.filter.AbstractCommonFilter;
 
 /**
  * @author liushiming
@@ -210,10 +210,10 @@ public class ApiAndFilterCacheComponent extends AbstractScheduleCache {
     }
   }
 
-  public Set<String> getPubicFilterRule(HttpRequestFilter filter) {
+  public Set<String> getPubicFilterRule(AbstractCommonFilter filter) {
     try {
       readWriteLock.readLock().lock();
-      String type = filter.filterType().name();
+      String type = filter.filterName();
       Set<String> rules = COMMUNITY_RULE_CACHE.get(type);
       if (rules == null) {
         rules = Sets.newHashSet();
@@ -226,10 +226,10 @@ public class ApiAndFilterCacheComponent extends AbstractScheduleCache {
   }
 
 
-  public Map<String, Set<String>> getUrlFilterRule(HttpRequestFilter filter) {
+  public Map<String, Set<String>> getUrlFilterRule(AbstractCommonFilter filter) {
     try {
       readWriteLock.readLock().lock();
-      String type = filter.filterType().name();
+      String type = filter.filterName();
       Map<String, Set<String>> patterns = URL_RULE_CACHE.get(type);
       if (patterns == null) {
         patterns = Maps.newConcurrentMap();

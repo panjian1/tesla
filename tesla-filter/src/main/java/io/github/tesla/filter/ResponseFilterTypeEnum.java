@@ -23,8 +23,8 @@ public enum ResponseFilterTypeEnum {
   /**
    * 各种限制
    */
-  CLICKJACK(1) //
-  ;
+  ClickjackHttpResponseFilter(1), //
+  DataMappingHttpResponseFilter(2);
 
   private int filterOrder;
 
