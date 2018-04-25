@@ -84,7 +84,7 @@ public class DynamicDubboClient extends RpcDynamicClient {
       TemplateException {
     Map<String, Object> templateContext = new HashMap<String, Object>();
     templateContext.put("header", new HeaderMapping(httpRequest));
-    templateContext.put("input", new BodyMapping(httpRequest));
+    templateContext.put("input", new BodyMapping(httpRequest.content()));
     Template template = configuration.getTemplate(templateKey);
     StringWriter outPutWrite = new StringWriter();
     template.process(templateContext, outPutWrite);
